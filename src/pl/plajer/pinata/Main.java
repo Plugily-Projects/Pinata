@@ -45,28 +45,7 @@ public class Main extends JavaPlugin {
 		menuHandler = new MenuHandler(this);
 		pinataListeners = new PinataListeners(this);
 		pinataManager = new PinataManager(this);
-		if(setupCrackshot()){
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Detected CrackShot plugin!");
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Enabling CrackShot support.");
-		} else{
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] CrackShot plugin isn't installed!");
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Disabling CrackShot support.");
-		}
-		if(!setupEconomy()){
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Vault plugin isn't installed!");
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Disabling Vault support.");
-		} else{
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Detected Vault plugin!");
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Enabling economy support.");
-		}
-		if(!setupHolographicDisplays()){
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Holographic Displays plugin isn't installed!");
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Disabling holograms support.");
-		} else{
-			getCrateManager().hologramScheduler();
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Detected Holographic Displays plugin!");
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Enabling holograms support.");
-		}
+		setupDependencies();
 		saveDefaultConfig();
 		getFileManager().saveDefaultMessagesConfig();
 		getFileManager().reloadMessagesConfig();
@@ -174,6 +153,31 @@ public class Main extends JavaPlugin {
 
 	public static Main getInstance() {
 		return instance;
+	}
+	
+	private void setupDependencies() {
+		if(setupCrackshot()) {
+			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Detected CrackShot plugin!");
+			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Enabling CrackShot support.");
+		} else {
+			Bukkit.getConsoleSender().sendMessage("§c[Pinata] CrackShot plugin isn't installed!");
+			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Disabling CrackShot support.");
+		}
+		if(!setupEconomy()) {
+			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Vault plugin isn't installed!");
+			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Disabling Vault support.");
+		} else {
+			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Detected Vault plugin!");
+			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Enabling economy support.");
+		}
+		if(!setupHolographicDisplays()) {
+			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Holographic Displays plugin isn't installed!");
+			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Disabling holograms support.");
+		} else {
+			getCrateManager().hologramScheduler();
+			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Detected Holographic Displays plugin!");
+			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Enabling holograms support.");
+		}
 	}
 
 	private boolean setupCrackshot() {

@@ -1,15 +1,8 @@
 package pl.plajer.pinata;
 
-/*
- * TODO
- * Pinata creation for each crate?
- */
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,9 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -84,7 +74,6 @@ public class CrateManager implements Listener {
 		}, (long) plugin.getConfig().getDouble("particle-refresh") * 20, (long) plugin.getConfig().getDouble("particle-refresh") * 20);
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onCrateClick(PlayerInteractEvent e){
 		if(!(e.getClickedBlock() == null) && !(e.getClickedBlock().getType() == null) && e.getClickedBlock().getType().equals(Material.CHEST) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
@@ -102,37 +91,8 @@ public class CrateManager implements Listener {
 							e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
 							return;
 						}
-						int rows = 1;
-						float trick = plugin.getPinataManager().getPinatalist().size() / 9;
-						if(!((int) trick % 9 == 0)){
-							rows++;
-						}
 						crateuse.put(e.getPlayer(), e.getClickedBlock().getLocation());
-						Inventory pinatasMenu = Bukkit.createInventory(null, rows*9, Utils.colorRawMessage("Menus.Crate-Menu.Inventory-Name"));
-						for(int i = 0; i < plugin.getPinataManager().getPinatalist().size(); i++){
-							String pinata = plugin.getPinataManager().getPinatalist().get(i).toString();
-							ItemStack item = new ItemStack(Material.WOOL, 1, DyeColor.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase()).getDyeData());
-							ItemMeta meta = item.getItemMeta();
-							meta.setDisplayName("§6" + pinata);
-							ArrayList<String> lore = new ArrayList<String>();
-							if(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".type").equals("private")){
-								lore.add(Utils.colorRawMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
-							} else{
-								lore.add(Utils.colorRawMessage("Menus.List-Menu.Pinata-Types.Type-Public"));
-							}
-							if(Integer.parseInt(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) == -1){
-								lore.add(Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));
-							} else{
-								String cost = Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost");
-								lore.add(cost.replaceAll("%money%", plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) + "$");
-								lore.add(Utils.colorRawMessage("Menus.List-Menu.Click-Selection.Right-Click"));
-							}
-							lore.add(Utils.colorRawMessage("Menus.List-Menu.Click-Selection.Left-Click"));
-							meta.setLore(lore);
-							item.setItemMeta(meta);
-							pinatasMenu.setItem(i, item);
-						}
-						e.getPlayer().openInventory(pinatasMenu);
+						Utils.createPinatasGUI("Menus.Crate-Menu.Inventory-Name", e.getPlayer());
 						return;
 					}
 				}

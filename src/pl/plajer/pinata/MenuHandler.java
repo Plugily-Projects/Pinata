@@ -24,26 +24,26 @@ public class MenuHandler implements Listener {
 
 	@EventHandler
 	public void onMenuInteract(final InventoryClickEvent e){
-		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"))){
-			e.setCancelled(true);
-		}
 		if(e.getCurrentItem() == null || !e.getCurrentItem().getType().equals(Material.WOOL)){
 			return;
 		}
+		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"))){
+			e.setCancelled(true);
+		}
+		final ItemMeta item = e.getCurrentItem().getItemMeta();
+		final String pinata = item.getDisplayName().replaceAll("§6", "");
 		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.List-Menu.Inventory-Name"))){
 			if(e.getClick() == ClickType.LEFT){
-				final ItemMeta item = e.getCurrentItem().getItemMeta();
 				e.getWhoClicked().closeInventory();
 				//Scheduler to prevent bugged GUI
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
 					@Override
 					public void run(){
-						Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + item.getDisplayName().replaceAll("§6", ""));
+						Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinata);
 					}
 				}, 1);
 			}
 			if(e.getClick() == ClickType.RIGHT){
-				final ItemMeta item = e.getCurrentItem().getItemMeta();
 				if(item.getLore().get(1).equals(Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"))){
 					e.getWhoClicked().closeInventory();
 					e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
@@ -59,11 +59,6 @@ public class MenuHandler implements Listener {
 			}
 		}
 		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Crate-Menu.Inventory-Name"))){
-			if(!e.getCurrentItem().getType().equals(Material.WOOL)){
-				return;
-			}
-			final ItemMeta item = e.getCurrentItem().getItemMeta();
-			final String pinata = item.getDisplayName().replaceAll("§6", "");
 			if(e.getClick() == ClickType.LEFT){
 				e.getWhoClicked().closeInventory();
 				//Scheduler to prevent bugged GUI

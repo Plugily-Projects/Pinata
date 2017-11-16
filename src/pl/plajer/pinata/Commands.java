@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -39,7 +38,6 @@ public class Commands implements CommandExecutor{
 		plugin.getCommand("pinata").setExecutor(this);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
 		if(command.getName().equalsIgnoreCase("pinata")){
@@ -58,36 +56,7 @@ public class Commands implements CommandExecutor{
 						sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
 						return true;
 					}
-					int rows = 1;
-					float trick = plugin.getPinataManager().getPinatalist().size() / 9;
-					if(!((int) trick % 9 == 0)){
-						rows++;
-					}
-					Inventory pinatasMenu = Bukkit.createInventory(null, rows*9, Utils.colorRawMessage("Menus.List-Menu.Inventory-Name"));
-					for(int i = 0; i < plugin.getPinataManager().getPinatalist().size(); i++){
-						String pinata = plugin.getPinataManager().getPinatalist().get(i).toString();
-						ItemStack item = new ItemStack(Material.WOOL, 1, DyeColor.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase()).getDyeData());
-						ItemMeta meta = item.getItemMeta();
-						meta.setDisplayName("§6" + pinata);
-						ArrayList<String> lore = new ArrayList<String>();
-						if(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".type").equals("private")){
-							lore.add(Utils.colorRawMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
-						} else{
-							lore.add(Utils.colorRawMessage("Menus.List-Menu.Pinata-Types.Type-Public"));
-						}
-						if(Integer.parseInt(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) == -1){
-							lore.add(Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));
-						} else{
-							String cost = Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost");
-							lore.add(cost.replaceAll("%money%", plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) + "$");
-							lore.add(Utils.colorRawMessage("Menus.List-Menu.Click-Selection.Right-Click"));
-						}
-						lore.add(Utils.colorRawMessage("Menus.List-Menu.Click-Selection.Left-Click"));
-						meta.setLore(lore);
-						item.setItemMeta(meta);
-						pinatasMenu.setItem(i, item);
-					}
-					((Player) sender).openInventory(pinatasMenu);
+					Utils.createPinatasGUI("Menus.List-Menu.Inventory-Name", (Player) sender);
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("preview")){
@@ -175,36 +144,7 @@ public class Commands implements CommandExecutor{
 							}
 						}
 						if(args.length == 1){
-							int rows = 1;
-							float trick = plugin.getPinataManager().getPinatalist().size() / 9;
-							if(!((int) trick % 9 == 0)){
-								rows++;
-							}
-							Inventory pinatasMenu = Bukkit.createInventory(null, rows*9, Utils.colorRawMessage("Menus.List-Menu.Inventory-Name"));
-							for(int i = 0; i < plugin.getPinataManager().getPinatalist().size(); i++){
-								String pinata = plugin.getPinataManager().getPinatalist().get(i).toString();
-								ItemStack item = new ItemStack(Material.WOOL, 1, DyeColor.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase()).getDyeData());
-								ItemMeta meta = item.getItemMeta();
-								meta.setDisplayName("§6" + pinata);
-								ArrayList<String> lore = new ArrayList<String>();
-								if(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".type").equals("private")){
-									lore.add(Utils.colorRawMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
-								} else{
-									lore.add(Utils.colorRawMessage("Menus.List-Menu.Pinata-Types.Type-Public"));
-								}
-								if(Integer.parseInt(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) == -1){
-									lore.add(Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));
-								} else{
-									String cost = Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost");
-									lore.add(cost.replaceAll("%money%", plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) + "$");
-									lore.add(Utils.colorRawMessage("Menus.List-Menu.Click-Selection.Right-Click"));
-								}
-								lore.add(Utils.colorRawMessage("Menus.List-Menu.Click-Selection.Left-Click"));
-								meta.setLore(lore);
-								item.setItemMeta(meta);
-								pinatasMenu.setItem(i, item);
-							}
-							p.openInventory(pinatasMenu);
+							Utils.createPinatasGUI("Menus.List-Menu.Inventory-Name", p);
 							return true;
 						}
 						if(!plugin.getPinataManager().getPinatalist().contains(args[1])) {
