@@ -133,6 +133,7 @@ public class PinataListeners implements Listener {
 								e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("WOLF_HOWL"), 1, 1);
 							case 2:
 								e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("WITHER_DEATH"), 1, 1);
+							default: break;
 						}
 					} else {
 						Random r = new Random();
@@ -142,6 +143,7 @@ public class PinataListeners implements Listener {
 								e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WOLF_HOWL, 1, 1);
 							case 2:
 								e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 1);
+							default: break;
 						}
 					}
 					final ArrayList<Entity> bats = new ArrayList<Entity>();
@@ -250,6 +252,7 @@ public class PinataListeners implements Listener {
 									shot.giveWeapon(p, parts[1], 1);
 									item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(plugin.getConfig().getString("gun-item").toUpperCase())));
 									break;
+								default: break;
 							}
 							item.setPickupDelay(1000);
 							final Item finalitem = item;

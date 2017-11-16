@@ -118,6 +118,7 @@ public class Commands implements CommandExecutor{
 								meta.setDisplayName(Utils.colorMessage(parts[2]));
 								lore.add(droplore.replaceAll("%chance%", parts[3]));
 								break;
+							default: break;
 						}
 						meta.setLore(lore);
 						item.setItemMeta(meta);
