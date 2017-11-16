@@ -18,41 +18,41 @@ public class PinataDeathEvent extends Event {
 	private final ArrayList<ItemStack[]> drops;
 	private static final HandlerList HANDLERS = new HandlerList();
 
-    @Override
+	@Override
 	public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+		return HANDLERS;
+	}
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-    
-    public PinataDeathEvent(Player killer, Sheep pinata, ArrayList<ItemStack[]> drops) {
-        this.killer = killer;
-        this.pinata = pinata;
-        this.drops = drops;
-    }
-    
-    /**
-     * @return killer of pinata.
-     */
-    public Player getKiller() {
-        return this.killer;
-    }
-    
-    /**
-     * @return killed pinata.
-     */
-    public Sheep getPinata() {
-    	return this.pinata;
-    }
-    
-    /**
-     * <b>Warning! getDrops() doesn't return command, gun, money drops! TODO in future versions.</b>
-     * @return drops from pinata.
-     * @since 2.1.3
-     */
-    public ArrayList<ItemStack[]> getDrops(){
-    	return this.drops;
-    }
+	public static HandlerList getHandlerList() {
+		return HANDLERS;
+	}
+
+	public PinataDeathEvent(Player killer, Sheep pinata, ArrayList<ItemStack[]> drops) {
+		this.killer = killer;
+		this.pinata = pinata;
+		this.drops = drops;
+	}
+
+	/**
+	 * @return killer of pinata.
+	 */
+	public Player getKiller() {
+		return this.killer;
+	}
+
+	/**
+	 * @return killed pinata.
+	 */
+	public Sheep getPinata() {
+		return this.pinata;
+	}
+
+	/**
+	 * <b>Warning! getDrops() doesn't return command, gun, money drops! TODO in future versions.</b>
+	 * @return drops from pinata.
+	 * @since 2.1.3
+	 */
+	public ArrayList<ItemStack[]> getDrops(){
+		return this.drops;
+	}
 }

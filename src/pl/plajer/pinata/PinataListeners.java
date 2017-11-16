@@ -34,14 +34,14 @@ import com.shampaggon.crackshot.CSUtility;
 import pl.plajer.pinata.pinataapi.PinataDeathEvent;
 
 public class PinataListeners implements Listener {
-	
+
 	private Main plugin;
-	
+
 	public PinataListeners(Main plugin) {
 		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
-	
+
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e){
 		for(Entity en : Bukkit.getServer().getWorld(e.getPlayer().getWorld().getName()).getEntities()){
@@ -61,7 +61,7 @@ public class PinataListeners implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e){
 		if(!e.getPlayer().hasPermission("pinata.admin.notify")){
@@ -69,19 +69,19 @@ public class PinataListeners implements Listener {
 		}
 		String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
 		if (plugin.getConfig().getBoolean("update-notify")){
-            try {
-                UpdateChecker.checkUpdate(currentVersion);
-                String latestVersion = UpdateChecker.getLatestVersion();
-                if (latestVersion != null) {
-                    latestVersion = "v" + latestVersion;
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
-                }
-            } catch (Exception ex) {
-            	e.getPlayer().sendMessage(Utils.colorRawMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
-            }
-        }
+			try {
+				UpdateChecker.checkUpdate(currentVersion);
+				String latestVersion = UpdateChecker.getLatestVersion();
+				if (latestVersion != null) {
+					latestVersion = "v" + latestVersion;
+					e.getPlayer().sendMessage(Utils.colorRawMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
+				}
+			} catch (Exception ex) {
+				e.getPlayer().sendMessage(Utils.colorRawMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+			}
+		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPinataDamage(EntityDamageByEntityEvent e){
 		if(e.getEntityType().equals(EntityType.SHEEP)){
@@ -108,14 +108,14 @@ public class PinataListeners implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onBatDamage(EntityDamageEvent e) {
 		if(e.getEntityType().equals(EntityType.BAT) || (e.getEntity().getCustomName() != null && e.getEntity().getCustomName().equals("§6Halloween!"))) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void onPinataDeath(final EntityDeathEvent e){
 		if(e.getEntityType().equals(EntityType.SHEEP)){
@@ -169,25 +169,25 @@ public class PinataListeners implements Listener {
 				plugin.getCommands().getLeash().remove(e.getEntity());
 				final ArrayList<Item> itemstogive = new ArrayList<Item>();
 				Player preplr;
-		        if(e.getEntity().getKiller() instanceof Player){
-		        	preplr = e.getEntity().getKiller();
-		        } else{
-		        	preplr = plugin.getCommands().getPinatas().get(e.getEntity());
-		        }
-		        final Player p = preplr;
-		        if(plugin.getConfig().getBoolean("blindness-effect")) {
-		        	if(p.hasPotionEffect(PotionEffectType.BLINDNESS)) {
-		        		p.removePotionEffect(PotionEffectType.BLINDNESS);
-		        	}
-		        	if(plugin.getConfig().getBoolean("full-blindness-effect")) {
-		        		if(p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
-			        		p.removePotionEffect(PotionEffectType.NIGHT_VISION);
-			        	}
-		        	}
-		        }
-		        final int timer = plugin.getFileManager().getPinataConfig().getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
-		        final ArrayList<ItemStack[]> items = new ArrayList<ItemStack[]>();
-		        int otheritems = 0;
+				if(e.getEntity().getKiller() instanceof Player){
+					preplr = e.getEntity().getKiller();
+				} else{
+					preplr = plugin.getCommands().getPinatas().get(e.getEntity());
+				}
+				final Player p = preplr;
+				if(plugin.getConfig().getBoolean("blindness-effect")) {
+					if(p.hasPotionEffect(PotionEffectType.BLINDNESS)) {
+						p.removePotionEffect(PotionEffectType.BLINDNESS);
+					}
+					if(plugin.getConfig().getBoolean("full-blindness-effect")) {
+						if(p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+							p.removePotionEffect(PotionEffectType.NIGHT_VISION);
+						}
+					}
+				}
+				final int timer = plugin.getFileManager().getPinataConfig().getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
+				final ArrayList<ItemStack[]> items = new ArrayList<ItemStack[]>();
+				int otheritems = 0;
 				for(int i = 0; i < plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName()).size(); i++){
 					String drop = plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName()).get(i);
 					final String[] parts = drop.split(";");
@@ -284,16 +284,16 @@ public class PinataListeners implements Listener {
 				}
 				for(int i = 0; i < itemstogive.size(); i++){
 					Item factoryitem = itemstogive.get(i);
-		        	p.sendMessage(Utils.colorRawMessage("Pinata.Drop.DropMsg").replaceAll("%item%", StringUtils.capitalize(factoryitem.getItemStack().getItemMeta().getDisplayName())).replaceAll("%amount%", String.valueOf(factoryitem.getItemStack().getAmount())));
-		        	ItemStack[] temp = { (factoryitem.getItemStack()) };
-			        items.add(temp);
+					p.sendMessage(Utils.colorRawMessage("Pinata.Drop.DropMsg").replaceAll("%item%", StringUtils.capitalize(factoryitem.getItemStack().getItemMeta().getDisplayName())).replaceAll("%amount%", String.valueOf(factoryitem.getItemStack().getAmount())));
+					ItemStack[] temp = { (factoryitem.getItemStack()) };
+					items.add(temp);
 					p.getInventory().addItem(items.get(i));
 				}
 				PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), (Sheep) e.getEntity(), items);
 				Bukkit.getPluginManager().callEvent(pde);
-		        if(items.size() == 0 && otheritems == 0){
-		        	p.sendMessage(Utils.colorRawMessage("Pinata.Drop.No-Drops"));  
-		        }
+				if(items.size() == 0 && otheritems == 0){
+					p.sendMessage(Utils.colorRawMessage("Pinata.Drop.No-Drops"));  
+				}
 				plugin.getCommands().getPinatas().remove(e.getEntity());
 				itemstogive.clear();
 			}

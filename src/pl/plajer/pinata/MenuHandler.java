@@ -14,14 +14,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 
 public class MenuHandler implements Listener {
-	
+
 	private Main plugin;
-	
+
 	public MenuHandler(Main plugin) {
 		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
-	
+
 	@EventHandler
 	public void onMenuInteract(final InventoryClickEvent e){
 		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"))){

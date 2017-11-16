@@ -16,40 +16,40 @@ public class PinataCreateEvent extends Event implements Cancellable {
 	private static final HandlerList HANDLERS = new HandlerList();
 	private boolean isCancelled;
 
-    @Override
+	@Override
 	public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+		return HANDLERS;
+	}
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-    
-    public boolean isCancelled() {
-        return this.isCancelled;
-    }
+	public static HandlerList getHandlerList() {
+		return HANDLERS;
+	}
 
-    public void setCancelled(boolean isCancelled) {
-        this.isCancelled = isCancelled;
-    }
-    
-    public PinataCreateEvent(Player creator, Sheep pinata) {
-        this.creator = creator;
-        this.pinata = pinata;
-    }
-    
-    /**
-     * @return creator of pinata.
-     */
-    public Player getCreator() {
-        return this.creator;
-    }
-    
-    /**
-     * @return event pinata.
-     */
-    public Sheep getPinata() {
-    	return this.pinata;
-    }
-	
+	public boolean isCancelled() {
+		return this.isCancelled;
+	}
+
+	public void setCancelled(boolean isCancelled) {
+		this.isCancelled = isCancelled;
+	}
+
+	public PinataCreateEvent(Player creator, Sheep pinata) {
+		this.creator = creator;
+		this.pinata = pinata;
+	}
+
+	/**
+	 * @return creator of pinata.
+	 */
+	public Player getCreator() {
+		return this.creator;
+	}
+
+	/**
+	 * @return event pinata.
+	 */
+	public Sheep getPinata() {
+		return this.pinata;
+	}
+
 }

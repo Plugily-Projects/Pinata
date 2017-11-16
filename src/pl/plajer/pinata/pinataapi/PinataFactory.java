@@ -19,7 +19,7 @@ import pl.plajer.pinata.Utils;
  * Class with pinata creation methods.
  */
 public class PinataFactory implements Listener {
-	
+
 	/**
 	 * Creates pinata at specified location for target player using already spawned sheep, name of pinata required.
 	 * <strike>This type of creation will cause graphical glitch (invisible hitch) on versions above 1.9, use createFixedHitchPinata to avoid this.</strike>
@@ -46,10 +46,10 @@ public class PinataFactory implements Listener {
 		Main.getInstance().getCommands().getUsers().add(player);
 		//Max height check is to avoid problems with different server specifications
 		final Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);
-	    final Location safestone = new Location(player.getWorld(), 4, player.getWorld().getMaxHeight() - 1, 2);
-	    Material blocksafe = safefence.getBlock().getType();
-	    safefence.getBlock().setType(Material.FENCE);
-	    safestone.getBlock().setType(Material.STONE);
+		final Location safestone = new Location(player.getWorld(), 4, player.getWorld().getMaxHeight() - 1, 2);
+		Material blocksafe = safefence.getBlock().getType();
+		safefence.getBlock().setType(Material.FENCE);
+		safestone.getBlock().setType(Material.STONE);
 		final LeashHitch hitch = (LeashHitch) safefence.getWorld().spawnEntity(safefence, EntityType.LEASH_HITCH);
 		safestone.getBlock().setType(Material.AIR);  
 		fenceloc.getBlock().setType(Material.FENCE);
