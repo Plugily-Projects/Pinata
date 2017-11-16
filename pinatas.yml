@@ -1,0 +1,40 @@
+#          Pinatas configuration file
+#
+#  To create new pinata please use this example:
+#
+# pinatas: //don't edit this line
+#   name_of_pinata: //set any name of your pinata
+#     timer: <seconds> //item display time on ground after breaking pinata
+#     color: <black/blue/brown/cyan/gray/green/light_blue/lime/magenta/orange/pink/purple/red/silver/white/yellow> //select one of these vaild dye colors of pinata
+#     permission: <string> //type here any permission you want (using-permissions in config.yml must be "true"!)
+#     cost: <number> //cost of pinata in "/pinata buy" command. Avaiable only when Vault is installed. Use "-1" value to disable pinata buying
+#     type: <public/private> //set type of pinata. Setting "public" type allows ANY player break pinata and get its drops. Value "private" allows break pinata only CREATOR
+#     crate-time: <seconds> //how long can pinata hang above crate when it's created (to avoid trolls that can buy pinata and don't break it)
+#     drops: //don't edit this line
+#       //Valid item types (color codes '&' supported) ('%player%' placeholoder supported)
+#       - item;<name of item>;<amount>;<name of item and hologram>/<lore>/<next lore>...;<chance of drop>
+#       - command;<command string>;<name of hologram>;<chance of drop>
+#       (Vault required) - money;<amount of money>;<name of hologram>;<chance of drop>
+#       (CrackShot required) - gun;<name of valid gun>;<name of hologram>;<change of drop>
+#
+#     Now you know how to create new pinata! Good luck and have fun with this plugin :)
+#
+#  Short FAQ:
+#  Q: My item doesn't work!
+#  A: Please check if item name isn't item ID and check if your item contains all values from example section
+#
+
+pinatas:
+  default:
+    timer: 5
+    color: red
+    permission: pinata.use.default
+    cost: -1
+    type: private
+    crate-time: 10
+    drops:
+      - item;grass;2;&aGrass block/&aIt contains lore!/&3&lEven more lines!!!;20
+      - item;bread;1;&aBread;80
+      - command;pinata create default %player%;&e&lFree pinata!;30
+
+#Crack this pinata!

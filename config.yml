@@ -1,0 +1,42 @@
+#Pinatas configuration file
+
+#Should we use permission for each pinata?
+using-permissions: true
+
+#Notify about plugin updates?
+update-notify: true
+
+#Requires Holographic Displays
+#Crate hologram refresh time.
+#Warning! Do not set this value to big because destroying crate cause hologram update in this refresh time
+#Time in seconds.
+hologram-refresh: 2
+
+#Crate particle refresh time.
+#Time in seconds.
+particle-refresh: 2
+
+#Should player get blindness effect when pinata is created?
+blindness-effect: false
+
+#Enable full blindness effect? Blindness + night vision combination
+#'blindness-effect' must be true!
+full-blindness-effect: false
+
+#Duration in seconds of blindness effect after pinata is created
+#'blindness-effect' must be true!
+blindness-duration: 10
+
+#Because you can't set command item, you need to use configured item.
+command-item: paper
+
+#Because you can't set money item, you need to use configured item.
+money-item: diamond
+
+#Because you can't set gun item, you need to use configured item.
+gun-item: iron_barding
+
+#Enable halloween special pinata effects?
+halloween-mode: false
+
+File-Version-Do-Not-Edit: "1"

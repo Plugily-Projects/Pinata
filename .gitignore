@@ -1,0 +1,7 @@
+/bin/
+/doc/
+.project
+.classpath
+/.settings/
+whatsnew.yml
+javadoc.xml

@@ -1,0 +1,41 @@
+name: Pinata
+version: 2.2.8.1
+author: Plajer
+main: pl.plajer.pinata.Main
+softdepend: [HolographicDisplays, Vault, CrackShot]
+loadbefore: [HolographicDisplays, Vault, CrackShot]
+
+commands:
+  pinata:
+    aliases: [pin]
+    description: Command for pinata plugin.
+    usage: /<command> buy/list/preview/create/reloadconfig/setcrate
+
+permissions:
+  pinata.player.*:
+    description: Gives you all permissions for player commands etc.
+    children:
+      pinata.command: true
+      pinata.command.list: true
+      pinata.command.buy: true
+      pinata.command.preview: true
+      pinata.player.crate: true
+  pinata.command.*:
+    description: Gives you all permissions for commands.
+    children:
+      pinata.command: true
+      pinata.command.list: true
+      pinata.command.buy: true
+      pinata.command.preview: true
+  pinata.admin.*:
+    description: Gives you all permissions for admin commands.
+    default: op
+    children:
+      pinata.admin.create: true
+      pinata.admin.create.others: true
+      pinata.admin.reload: true
+      pinata.admin.notify: true
+      pinata.admin.freeall: true
+      pinata.admin.crate.destory: true
+      pinata.admin.crate.list: true
+      pinata.admin.crate.set: true
