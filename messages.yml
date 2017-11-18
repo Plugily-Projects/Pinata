@@ -13,7 +13,7 @@ Pinata:
         No-Permission: "&6&lPinata &a>> &cYou don't have permission to use this pinata!"
     Command:
         No-Permission: "&6&lPinata &a>> &cYou don't have permission to use this command!"
-        Only-Player: "&6&lPinata &a>> &cYou can only execute this command as player!"
+        Only-Player: "&6&lPinata &a>> &cYou can only execute this command as a player!"
         Player-Specify-Name: "&6&lPinata &a>> &cPlease specify pinata name!"
         Player-Not-Found: "&6&lPinata &a>> &cThat player isn't online!"
         Console-Specify-Player: "&cPlease specify player name!"
@@ -77,13 +77,13 @@ Hologram:
     Crate-Hologram: "&aCrate &e%name%"
 
 #Validator console messages.
-#You don't need to translate it because it don't show to your players :)
+#You don't need to translate them because they don't show to your players :)
 Validator:
     Invalid-Configuration: "Pinata %name% isn't properly configured!"
-    Invalid-Item: "Item %number% of pinata %name% isn't properly configured!"
-    Invalid-Item-Type: "Item %number% of pinata %name% neither item nor command!"
-    Invalid-Chance: "Item %number%  of pinata %name%'s item will never drop!"
-    Invalid-Money-Drop: "Item %number% of pinata %name%'s money item has amount 0!"
+    Invalid-Item: "Item of pinata %name% isn't properly configured!"
+    Invalid-Item-Type: "Item of pinata %name% neither item nor command!"
+    Invalid-Chance: "One of pinata %name%'s item will never drop!"
+    Invalid-Money-Drop: "One of pinata %name%'s money item has amount 0!"
     Invalid-Permission: "Permission of pinata %name% isn't set!"
     Invalid-Timer: "Timer of pinata %name% isn't set!"
     Invalid-Type: "Type of pinata %name% is neither public nor private!"
