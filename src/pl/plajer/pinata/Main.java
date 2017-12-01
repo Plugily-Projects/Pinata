@@ -28,15 +28,13 @@ public class Main extends JavaPlugin {
 	private Boolean usevault;
 	private Boolean usecrackshot;
 	private Boolean useholograms;
-	private String currentVersion;
-	private String latestVersion;
-	private int messagesFileVersion = 4;
-	private int configFileVersion = 1;
+	private final int messagesFileVersion = 4;
+	private final int configFileVersion = 1;
 	private static Main instance;
 
 	@Override
 	public void onEnable() {
-		this.getLogger().log(Level.INFO, "Happy Halloween!");
+		this.getLogger().log(Level.INFO, "Crack this pinata!");
 		instance = this;
 		new MetricsLite(this);
 		crateManager = new CrateManager(this);
@@ -62,18 +60,18 @@ public class Main extends JavaPlugin {
 			getConfig().set("File-Version-Do-Not-Edit", configFileVersion);
 			saveConfig();
 			getLogger().info("File successfully updated!");
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Warning! Your config.yml file was updated and all comments were removed! If you want to get comments back please generate new config.yml file!");
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&c[Pinata] Warning! Your config.yml file was updated and all comments were removed! If you want to get comments back please generate new config.yml file!"));
 		}
 		getFileManager().saveDefaultPinataConfig();
 		getFileManager().reloadPinataConfig();
 		getFileManager().reloadMessagesConfig();
 		getPinataManager().loadPinatas();
 		getCrateManager().particleScheduler();
-		currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
+		String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
 		if (this.getConfig().getBoolean("update-notify")){
 			try {
 				UpdateChecker.checkUpdate(currentVersion);
-				latestVersion = UpdateChecker.getLatestVersion();
+				String latestVersion = UpdateChecker.getLatestVersion();
 				if (latestVersion != null) {
 					latestVersion = "v" + latestVersion;
 					Bukkit.getConsoleSender().sendMessage(Utils.colorRawMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
@@ -89,13 +87,13 @@ public class Main extends JavaPlugin {
 		for(World world : Bukkit.getServer().getWorlds()){
 			for(Entity entity : Bukkit.getServer().getWorld(world.getName()).getEntities()){
 				if(entity instanceof Sheep){
-					if(getCommands().getPinatas().containsKey(entity)){
-						getCommands().getPinatas().get(entity).sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Removed"));
-						getCommands().getBuilder().get(entity).getBlock().setType(Material.AIR);
-						getCommands().getPinatas().remove(entity);
-						getCommands().getLeash().get(entity).remove();
-						getCommands().getLeash().remove(entity);
-						((Sheep) entity).remove();
+					if(getCommands().getPinata().containsKey(entity)){
+						getCommands().getPinata().get(entity).getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Removed"));
+						getCommands().getPinata().get(entity).getBuilder().getBlock().setType(Material.AIR);
+						//getCommands().getPinatas().remove(entity);
+						getCommands().getPinata().get(entity).getLeash().remove();
+						entity.remove();
+						getCommands().getPinata().remove(entity);
 					}
 				}
 			}
@@ -157,26 +155,26 @@ public class Main extends JavaPlugin {
 	
 	private void setupDependencies() {
 		if(setupCrackshot()) {
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Detected CrackShot plugin!");
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Enabling CrackShot support.");
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&a[Pinata] Detected CrackShot plugin!"));
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&a[Pinata] Enabling CrackShot support."));
 		} else {
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] CrackShot plugin isn't installed!");
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Disabling CrackShot support.");
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&7[Pinata] CrackShot plugin isn't installed!"));
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&7[Pinata] Disabling CrackShot support."));
 		}
 		if(!setupEconomy()) {
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Vault plugin isn't installed!");
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Disabling Vault support.");
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&7[Pinata] Vault plugin isn't installed!"));
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&7[Pinata] Disabling Vault support."));
 		} else {
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Detected Vault plugin!");
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Enabling economy support.");
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&a[Pinata] Detected Vault plugin!"));
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&a[Pinata] Enabling economy support."));
 		}
 		if(!setupHolographicDisplays()) {
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Holographic Displays plugin isn't installed!");
-			Bukkit.getConsoleSender().sendMessage("§c[Pinata] Disabling holograms support.");
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&7[Pinata] Holographic Displays plugin isn't installed!"));
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&7[Pinata] Disabling holograms support."));
 		} else {
 			getCrateManager().hologramScheduler();
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Detected Holographic Displays plugin!");
-			Bukkit.getConsoleSender().sendMessage("§a[Pinata] Enabling holograms support.");
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&a[Pinata] Detected Holographic Displays plugin!"));
+			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&a[Pinata] Enabling holograms support."));
 		}
 	}
 
@@ -186,7 +184,7 @@ public class Main extends JavaPlugin {
 			return false;
 		}
 		usecrackshot = true;
-		return usecrackshot != null;
+		return true;
 	}
 
 	private boolean setupHolographicDisplays() {
@@ -195,7 +193,7 @@ public class Main extends JavaPlugin {
 			return false;
 		}
 		useholograms = true;
-		return useholograms != null;
+		return true;
 	}
 
 	private boolean setupEconomy() {

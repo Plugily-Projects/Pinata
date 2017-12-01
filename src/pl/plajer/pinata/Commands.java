@@ -3,6 +3,7 @@ package pl.plajer.pinata;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -16,7 +17,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.Inventory;
@@ -27,10 +27,11 @@ import pl.plajer.pinata.pinataapi.PinataFactory;
 
 public class Commands implements CommandExecutor{
 
-	private HashMap<Sheep, Player> pinatas = new HashMap<Sheep, Player>();
-	private HashMap<Sheep, Location> builder = new HashMap<Sheep, Location>();
-	private HashMap<Sheep, Entity> leash = new HashMap<Sheep, Entity>();
-	private ArrayList<Player> users = new ArrayList<Player>();
+	//private HashMap<Sheep, Player> pinatas = new HashMap<Sheep, Player>();
+	//private HashMap<Sheep, Location> builder = new HashMap<Sheep, Location>();
+	//private HashMap<Sheep, LeashHitch> leash = new HashMap<Sheep, LeashHitch>();
+	private Map<Sheep, PinataData> pinata = new HashMap<>();
+	private List<Player> users = new ArrayList<>();
 	private Main plugin;
 
 	public Commands(Main plugin) {
@@ -89,7 +90,7 @@ public class Commands implements CommandExecutor{
 						final String[] parts = drop.split(";");
 						ItemStack item = null;
 						ItemMeta meta = null;
-						ArrayList<String> lore = new ArrayList<String>();
+						ArrayList<String> lore = new ArrayList<>();
 						String droplore = Utils.colorRawMessage("Menus.Preview-Menu.Drop-Chance");
 						switch(parts[0]) {
 							case "item":
@@ -228,7 +229,7 @@ public class Commands implements CommandExecutor{
 							sender.sendMessage(Utils.colorRawMessage("Pinata.Specify-Name"));
 							return true;
 						}
-						Player user = null;
+						Player user;
 						if(sender instanceof ConsoleCommandSender){
 							if(!(args.length == 3)){
 								sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Console-Specify-Player"));
@@ -284,7 +285,7 @@ public class Commands implements CommandExecutor{
 						return true;
 					}
 					Player p = (Player) sender;
-					Block l = p.getTargetBlock((Set<Material>) null, 20);
+					Block l = p.getTargetBlock(null, 20);
 					if(l.getType().equals(Material.CHEST)){
 						ConfigurationSection pinata = plugin.getFileManager().getCratesConfig().getConfigurationSection("crates");
 						if(pinata != null) {
@@ -310,7 +311,7 @@ public class Commands implements CommandExecutor{
 							plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".x", l.getLocation().getX());
 							plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".y", l.getLocation().getY());
 							plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".z", l.getLocation().getZ());
-							plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".name", args[2]);
+							plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".name", args[1]);
 							plugin.getFileManager().saveCratesConfig();
 							String string = Utils.colorRawMessage("Pinata.Crate-Creation.Create-Success");
 							p.sendMessage(string.replaceAll("%name%", args[1]));
@@ -331,7 +332,7 @@ public class Commands implements CommandExecutor{
 						int num = 0;
 						sender.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.List"));
 						for(String key : pinata.getKeys(false)) {
-							sender.sendMessage("§a" + key + " - X: " + plugin.getFileManager().getCratesConfig().get("crates." + key + ".x") + " Y: " + plugin.getFileManager().getCratesConfig().get("crates." + key + ".y") + " Z: "  + plugin.getFileManager().getCratesConfig().get("crates." + key + ".z"));
+							sender.sendMessage(Utils.colorMessage("&a" + key + " - X: " + plugin.getFileManager().getCratesConfig().get("crates." + key + ".x") + " Y: " + plugin.getFileManager().getCratesConfig().get("crates." + key + ".y") + " Z: "  + plugin.getFileManager().getCratesConfig().get("crates." + key + ".z")));
 							num++;
 						}
 						if(num == 0){
@@ -368,7 +369,7 @@ public class Commands implements CommandExecutor{
 						ItemStack item = new ItemStack(Material.WOOL, 1,  DyeColor.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase()).getDyeData());
 						ItemStack item = new ItemStack(Material.NAME_TAG, 1);
 						ItemMeta meta = item.getItemMeta();
-						meta.setDisplayName("§6" + pinata);
+						meta.setDisplayName("ï¿½6" + pinata);
 						ArrayList<String> lore = new ArrayList<String>();
 						if(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".type").equals("private")){
 							lore.add(ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Menus.List-Menu.Pinata-Types.Type-Private").toString()));
@@ -398,7 +399,11 @@ public class Commands implements CommandExecutor{
 		return false;
 	}
 
-	public HashMap<Sheep, Player> getPinatas() {
+	public Map<Sheep, PinataData> getPinata(){
+		return pinata;
+	}
+	
+	/*public HashMap<Sheep, Player> getPinatas() {
 		return pinatas;
 	}
 
@@ -406,9 +411,9 @@ public class Commands implements CommandExecutor{
 		return builder;
 	}
 
-	public HashMap<Sheep, Entity> getLeash() {
+	public HashMap<Sheep, LeashHitch> getLeash() {
 		return leash;
-	}
+	}*/
 
 	public List<Player> getUsers() {
 		return users;

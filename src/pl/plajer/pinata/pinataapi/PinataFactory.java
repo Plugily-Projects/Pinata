@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.PinataData;
 import pl.plajer.pinata.Utils;
 
 /**
@@ -45,8 +46,8 @@ public class PinataFactory implements Listener {
 		player.sendMessage(Utils.colorRawMessage("Pinata.Create.Success").replaceAll("%name%", pinataname));
 		Main.getInstance().getCommands().getUsers().add(player);
 		//Max height check is to avoid problems with different server specifications
-		final Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);
-		final Location safestone = new Location(player.getWorld(), 4, player.getWorld().getMaxHeight() - 1, 2);
+		Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);
+		Location safestone = new Location(player.getWorld(), 4, player.getWorld().getMaxHeight() - 1, 2);
 		Material blocksafe = safefence.getBlock().getType();
 		safefence.getBlock().setType(Material.FENCE);
 		safestone.getBlock().setType(Material.STONE);
@@ -55,9 +56,10 @@ public class PinataFactory implements Listener {
 		fenceloc.getBlock().setType(Material.FENCE);
 		hitch.teleport(fenceloc);
 		safefence.getBlock().setType(blocksafe);
-		Main.getInstance().getCommands().getPinatas().put(sheep, player);
-		Main.getInstance().getCommands().getBuilder().put(sheep, fenceloc);
-		Main.getInstance().getCommands().getLeash().put(sheep, hitch);
+		Main.getInstance().getCommands().getPinata().put(sheep, new PinataData(player, fenceloc, hitch));
+		//Main.getInstance().getCommands().getPinatas().put(sheep, player);
+		//Main.getInstance().getCommands().getBuilder().put(sheep, fenceloc);
+		//Main.getInstance().getCommands().getLeash().put(sheep, hitch);
 		sheep.setHealth(5);
 		sheep.setCustomName(pinataname);
 		sheep.setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataname + ".color").toString().toUpperCase()));

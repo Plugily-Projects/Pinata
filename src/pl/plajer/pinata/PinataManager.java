@@ -3,6 +3,7 @@ package pl.plajer.pinata;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.DyeColor;
@@ -11,8 +12,8 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class PinataManager {
 
-	private ArrayList<String> pinatalist = new ArrayList<String>();
-	private HashMap<String, ArrayList<String>> pinatadrops = new HashMap<String, ArrayList<String>>();
+	private List<String> pinatalist = new ArrayList<>();
+	private Map<String, ArrayList<String>> pinatadrops = new HashMap<>();
 	private Main plugin;
 
 	public PinataManager(Main plugin) {
@@ -29,7 +30,7 @@ public class PinataManager {
 				}
 				System.out.println(Utils.colorRawMessage("Pinata.Validate.Success").replaceAll("%name%", key));
 				pinatalist.add(key);
-				final ArrayList<String> list = new ArrayList<String>();
+				final ArrayList<String> list = new ArrayList<>();
 				final List<String> drops = plugin.getFileManager().getPinataConfig().getStringList("pinatas." + key + ".drops");
 				for(int i = 0; i < drops.size(); i++)
 					list.add(drops.get(i));
@@ -44,7 +45,7 @@ public class PinataManager {
 			return false;
 		}
 		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".cost")){
-			if(plugin.getVaultUse() == true){
+			if(plugin.getVaultUse()){
 				plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Vault-Abandoned").replaceAll("%name%", pinata));
 				return false;
 			}
@@ -130,11 +131,11 @@ public class PinataManager {
 		return true;
 	}
 
-	public ArrayList<String> getPinatalist() {
+	public List<String> getPinatalist() {
 		return pinatalist;
 	}
 
-	public HashMap<String, ArrayList<String>> getPinataDrop() {
+	public Map<String, ArrayList<String>> getPinataDrop() {
 		return pinatadrops;
 	}
 }

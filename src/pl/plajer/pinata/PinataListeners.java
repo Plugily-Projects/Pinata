@@ -46,13 +46,12 @@ public class PinataListeners implements Listener {
 	public void onQuit(PlayerQuitEvent e){
 		for(Entity en : Bukkit.getServer().getWorld(e.getPlayer().getWorld().getName()).getEntities()){
 			if(en instanceof Sheep){
-				if(plugin.getCommands().getPinatas().containsKey(en)){
-					if(plugin.getCommands().getPinatas().get(en).equals(e.getPlayer())){
-						plugin.getCommands().getBuilder().get(en).getBlock().setType(Material.AIR);
-						plugin.getCommands().getPinatas().remove(en);
-						plugin.getCommands().getLeash().get(en).remove();
-						plugin.getCommands().getLeash().remove(en);
-						((Sheep) en).remove();
+				if(plugin.getCommands().getPinata().containsKey(en)){
+					if(plugin.getCommands().getPinata().get(en).getPlayer().equals(e.getPlayer())){
+						plugin.getCommands().getPinata().get(en).getBuilder().getBlock().setType(Material.AIR);
+						plugin.getCommands().getPinata().get(en).getLeash().remove();
+						en.remove();
+						plugin.getCommands().getPinata().remove(en);
 						if(plugin.getCommands().getUsers().contains(e.getPlayer())) {
 							plugin.getCommands().getUsers().remove(e.getPlayer());
 						}
@@ -86,12 +85,12 @@ public class PinataListeners implements Listener {
 	public void onPinataDamage(EntityDamageByEntityEvent e){
 		if(e.getEntityType().equals(EntityType.SHEEP)){
 			if(plugin.getPinataManager().getPinatalist().contains(e.getEntity().getCustomName())) {
-				if(plugin.getCommands().getPinatas().get(e.getEntity()) != null){
+				if(plugin.getCommands().getPinata().get(e.getEntity()) != null){
 					if(plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".type").equals("public")){
 						e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
 						e.setCancelled(false);
 					} else{
-						if(plugin.getCommands().getPinatas().get(e.getEntity()).equals(e.getDamager())){
+						if(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager())){
 							if(plugin.getConfig().getBoolean("halloween-mode")) {
 								if(!Bukkit.getServer().getVersion().contains("1.8")) {
 									e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_GHAST_HURT, 1, 1);
@@ -111,7 +110,7 @@ public class PinataListeners implements Listener {
 
 	@EventHandler
 	public void onBatDamage(EntityDamageEvent e) {
-		if(e.getEntityType().equals(EntityType.BAT) || (e.getEntity().getCustomName() != null && e.getEntity().getCustomName().equals("§6Halloween!"))) {
+		if(e.getEntityType().equals(EntityType.BAT) || (e.getEntity().getCustomName() != null && e.getEntity().getCustomName().equals(Utils.colorMessage("&6Halloween!")))) {
 			e.setCancelled(true);
 		}
 	}
@@ -119,9 +118,9 @@ public class PinataListeners implements Listener {
 	@EventHandler
 	public void onPinataDeath(final EntityDeathEvent e){
 		if(e.getEntityType().equals(EntityType.SHEEP)){
-			if(plugin.getCommands().getPinatas().get(e.getEntity()) != null){
-				if(plugin.getCommands().getUsers().contains(plugin.getCommands().getPinatas().get(e.getEntity()))) {
-					plugin.getCommands().getUsers().remove(plugin.getCommands().getPinatas().get(e.getEntity()));
+			if(plugin.getCommands().getPinata().get(e.getEntity()) != null){
+				if(plugin.getCommands().getUsers().contains(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer())) {
+					plugin.getCommands().getUsers().remove(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer());
 				}
 				if(plugin.getConfig().getBoolean("halloween-mode")) {
 					e.getEntity().getWorld().strikeLightningEffect(e.getEntity().getLocation());
@@ -146,10 +145,10 @@ public class PinataListeners implements Listener {
 							default: break;
 						}
 					}
-					final ArrayList<Entity> bats = new ArrayList<Entity>();
+					final ArrayList<Entity> bats = new ArrayList<>();
 					for(int i = 0; i < 5; i++) {
 						final Entity bat = e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), EntityType.BAT);
-						bat.setCustomName("§6Halloween!");
+						bat.setCustomName(Utils.colorMessage("&6Halloween!"));
 						bats.add(bat);
 					}
 					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
@@ -166,15 +165,14 @@ public class PinataListeners implements Listener {
 				e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.POTION_BREAK, 10);
 				e.getDrops().clear();
 				e.setDroppedExp(0);
-				plugin.getCommands().getBuilder().get(e.getEntity()).getBlock().setType(Material.AIR);
-				plugin.getCommands().getLeash().get(e.getEntity()).remove();
-				plugin.getCommands().getLeash().remove(e.getEntity());
-				final ArrayList<Item> itemstogive = new ArrayList<Item>();
+				plugin.getCommands().getPinata().get(e.getEntity()).getBuilder().getBlock().setType(Material.AIR);
+				plugin.getCommands().getPinata().get(e.getEntity()).getLeash().remove();
+				final ArrayList<Item> itemstogive = new ArrayList<>();
 				Player preplr;
 				if(e.getEntity().getKiller() instanceof Player){
 					preplr = e.getEntity().getKiller();
 				} else{
-					preplr = plugin.getCommands().getPinatas().get(e.getEntity());
+					preplr = plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
 				}
 				final Player p = preplr;
 				if(plugin.getConfig().getBoolean("blindness-effect")) {
@@ -188,7 +186,7 @@ public class PinataListeners implements Listener {
 					}
 				}
 				final int timer = plugin.getFileManager().getPinataConfig().getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
-				final ArrayList<ItemStack[]> items = new ArrayList<ItemStack[]>();
+				final ArrayList<ItemStack[]> items = new ArrayList<>();
 				int otheritems = 0;
 				for(int i = 0; i < plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName()).size(); i++){
 					String drop = plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName()).get(i);
@@ -225,7 +223,7 @@ public class PinataListeners implements Listener {
 							}
 							ItemMeta itemMeta = item.getItemStack().getItemMeta();
 							itemMeta.setDisplayName(Utils.colorMessage(nameandlore[0]));
-							List<String> lore = new ArrayList<String>();
+							List<String> lore = new ArrayList<>();
 							for(String s : nameandlore) {
 								String colorful = Utils.colorMessage(s);
 								lore.add(colorful);
@@ -297,7 +295,7 @@ public class PinataListeners implements Listener {
 				if(items.size() == 0 && otheritems == 0){
 					p.sendMessage(Utils.colorRawMessage("Pinata.Drop.No-Drops"));  
 				}
-				plugin.getCommands().getPinatas().remove(e.getEntity());
+				plugin.getCommands().getPinata().remove(e.getEntity());
 				itemstogive.clear();
 			}
 		}

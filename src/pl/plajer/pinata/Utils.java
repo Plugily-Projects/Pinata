@@ -1,6 +1,7 @@
 package pl.plajer.pinata;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,8 +34,8 @@ public class Utils {
 			String pinata = Main.getInstance().getPinataManager().getPinatalist().get(i).toString();
 			ItemStack item = new ItemStack(Material.WOOL, 1, DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase()).getDyeData());
 			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName("§6" + pinata);
-			ArrayList<String> lore = new ArrayList<String>();
+			meta.setDisplayName(Utils.colorMessage("&6") + pinata);
+			List<String> lore = new ArrayList<>();
 			if(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinata + ".type").equals("private")){
 				lore.add(colorRawMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
 			} else{

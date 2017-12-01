@@ -1,6 +1,7 @@
 package pl.plajer.pinata;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -21,7 +22,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 public class CrateManager implements Listener {
 
-	private HashMap<Player, Location> crateuse = new HashMap<Player, Location>();
+	private Map<Player, Location> crateuse = new HashMap<>();
 	private Main plugin;
 
 	public CrateManager(Main plugin) {
@@ -122,7 +123,7 @@ public class CrateManager implements Listener {
 		}
 	}
 
-	public HashMap<Player, Location> getCrateuse() {
+	public Map<Player, Location> getCrateuse() {
 		return crateuse;
 	}
 

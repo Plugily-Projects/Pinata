@@ -31,7 +31,7 @@ public class MenuHandler implements Listener {
 			e.setCancelled(true);
 		}
 		final ItemMeta item = e.getCurrentItem().getItemMeta();
-		final String pinata = item.getDisplayName().replaceAll("§6", "");
+		final String pinata = item.getDisplayName().replaceAll(Utils.colorMessage("&6"), "");
 		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.List-Menu.Inventory-Name"))){
 			if(e.getClick() == ClickType.LEFT){
 				e.getWhoClicked().closeInventory();
@@ -53,7 +53,7 @@ public class MenuHandler implements Listener {
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
 					@Override
 					public void run(){
-						Bukkit.dispatchCommand(e.getWhoClicked(), "pinata buy " + item.getDisplayName().replaceAll("§6", ""));
+						Bukkit.dispatchCommand(e.getWhoClicked(), Utils.colorMessage("pinata buy " + item.getDisplayName().replaceAll("&6", "")));
 					}
 				}, 1);
 			}
