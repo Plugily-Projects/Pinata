@@ -116,7 +116,7 @@ public class PinataListeners implements Listener {
 		if(e.getEntityType().equals(EntityType.BAT) || (e.getEntity().getCustomName() != null && e.getEntity().getCustomName().equals(Utils.colorMessage("&6Halloween!")))) {
 			e.setCancelled(true);
 		}
-	}
+	} 
 
 	@EventHandler
 	public void onPinataDeath(final EntityDeathEvent e) {
