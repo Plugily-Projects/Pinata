@@ -24,13 +24,13 @@ public class PinataManager {
 		ConfigurationSection pinata = plugin.getFileManager().getPinataConfig().getConfigurationSection("pinatas");
 		if (pinata != null) {
 			for(String key : pinata.getKeys(false)) {
-				if(plugin.getPinataManager().vaildatePinata(key) == false){
+				if(!plugin.getPinataManager().vaildatePinata(key)){
 					System.out.println(Utils.colorRawMessage("Pinata.Validate.Fail").replaceAll("%name%", key));
 					continue;
 				}
 				System.out.println(Utils.colorRawMessage("Pinata.Validate.Success").replaceAll("%name%", key));
 				pinatalist.add(key);
-				final ArrayList<String> list = new ArrayList<>();
+				ArrayList<String> list = new ArrayList<>();
 				final List<String> drops = plugin.getFileManager().getPinataConfig().getStringList("pinatas." + key + ".drops");
 				for(int i = 0; i < drops.size(); i++)
 					list.add(drops.get(i));

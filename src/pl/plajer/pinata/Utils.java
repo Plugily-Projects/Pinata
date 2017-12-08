@@ -29,7 +29,7 @@ public class Utils {
 		}
 		Inventory pinatasMenu = Bukkit.createInventory(null, rows*9, Utils.colorRawMessage(name));
 		for(int i = 0; i < Main.getInstance().getPinataManager().getPinatalist().size(); i++){
-			String pinata = Main.getInstance().getPinataManager().getPinatalist().get(i).toString();
+			String pinata = Main.getInstance().getPinataManager().getPinatalist().get(i);
 			ItemStack item = new ItemStack(Material.WOOL, 1);
 			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName(Utils.colorMessage("&6") + pinata);

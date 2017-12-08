@@ -20,8 +20,6 @@ public class Main extends JavaPlugin {
 	private CrateManager crateManager;
 	private Commands commands;
 	private FileManager fileManager;
-	private MenuHandler menuHandler;
-	private PinataListeners pinataListeners;
 	private PinataManager pinataManager;
 
 	private Economy econ = null;
@@ -40,8 +38,8 @@ public class Main extends JavaPlugin {
 		crateManager = new CrateManager(this);
 		commands = new Commands(this);
 		fileManager = new FileManager(this);
-		menuHandler = new MenuHandler(this);
-		pinataListeners = new PinataListeners(this);
+		new MenuHandler(this);
+		new PinataListeners(this);
 		pinataManager = new PinataManager(this);
 		setupDependencies();
 		saveDefaultConfig();
@@ -63,6 +61,7 @@ public class Main extends JavaPlugin {
 			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&c[Pinata] Warning! Your config.yml file was updated and all comments were removed! If you want to get comments back please generate new config.yml file!"));
 		}
 		getFileManager().saveDefaultPinataConfig();
+		getFileManager().saveDefaultCratesConfig();
 		getFileManager().reloadPinataConfig();
 		getFileManager().reloadMessagesConfig();
 		getPinataManager().loadPinatas();
@@ -116,14 +115,6 @@ public class Main extends JavaPlugin {
 		return fileManager;
 	}
 
-	public MenuHandler getMenuHandler() {
-		return menuHandler;
-	}
-
-	public PinataListeners getPinataListeners() {
-		return pinataListeners;
-	}
-
 	public PinataManager getPinataManager() {
 		return pinataManager;
 	}
@@ -142,10 +133,6 @@ public class Main extends JavaPlugin {
 
 	public Boolean getHologramsUse(){
 		return useholograms;
-	}
-
-	public int getMessagesFileVersion() {
-		return MESSAGES_FILE_VERSION;
 	}
 
 	public static Main getInstance() {
