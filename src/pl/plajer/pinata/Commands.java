@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,9 +26,6 @@ import pl.plajer.pinata.pinataapi.PinataFactory;
 
 public class Commands implements CommandExecutor{
 
-	//private HashMap<Sheep, Player> pinatas = new HashMap<Sheep, Player>();
-	//private HashMap<Sheep, Location> builder = new HashMap<Sheep, Location>();
-	//private HashMap<Sheep, LeashHitch> leash = new HashMap<Sheep, LeashHitch>();
 	private Map<Sheep, PinataData> pinata = new HashMap<>();
 	private List<Player> users = new ArrayList<>();
 	private Main plugin;
@@ -341,56 +337,6 @@ public class Commands implements CommandExecutor{
 					}
 					return true;
 				}
-				/*if(args[0].equalsIgnoreCase("guicreator")){
-					if(!(args.length == 2)){
-						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Pinata.Specify-Name").toString()));
-						return true;
-					}
-					ConfigurationSection pinata = plugin.getFileManager().getPinataConfig().getConfigurationSection("pinatas");
-					for(String key : pinata.getKeys(false)) {
-				    	if(key.equals(args[1])){
-				    		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Pinata.Creator.Already-Exists").toString()));
-							return true;
-				    	}
-					}
-					plugin.getFileManager().getPinataConfig().set("pinatas." + args[1] + ".Timer", 5);
-					plugin.getFileManager().getPinataConfig().set("pinatas." + args[1] + ".Permission", "pinata.use." + args[1]);
-					plugin.getFileManager().getPinataConfig().set("pinatas." + args[1] + ".Color", "white");
-					plugin.getFileManager().getPinataConfig().set("pinatas." + args[1] + ".Cost", "-1");
-					plugin.getFileManager().getPinataConfig().set("pinatas." + args[1] + ".Type", "private");
-					plugin.getFileManager().getPinataConfig().set("pinatas." + args[1] + ".Crate-Display-Time", 10);
-					plugin.getFileManager().getPinataConfig().set("pinatas." + args[1] + ".Drops", null);
-					String string = ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Pinata.Crate-Creation.Create-Success").toString());
-				    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', string.replaceAll("%name%", args[1])));
-				    Inventory pinatasMenu = Bukkit.createInventory(null, 3, ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Menus.Creator-Menu.Inventory-Name").toString()));
-					ItemStack item = new ItemStack()
-				    for(int i = 0; i < pinatas.size(); i++){
-						//String pinata = pinatas.get(i);
-						ItemStack item = new ItemStack(Material.WOOL, 1,  DyeColor.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase()).getDyeData());
-						ItemStack item = new ItemStack(Material.NAME_TAG, 1);
-						ItemMeta meta = item.getItemMeta();
-						meta.setDisplayName("�6" + pinata);
-						ArrayList<String> lore = new ArrayList<String>();
-						if(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".type").equals("private")){
-							lore.add(ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Menus.List-Menu.Pinata-Types.Type-Private").toString()));
-						} else{
-							lore.add(ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Menus.List-Menu.Pinata-Types.Type-Public").toString()));
-						}
-						if(Integer.parseInt(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) == -1){
-							lore.add(ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Menus.List-Menu.Pinata-Cost-Not-For-Sale").toString()));
-						} else{
-							String cost = ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Menus.List-Menu.Pinata-Cost").toString());
-							lore.add(cost.replaceAll("%money%", plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) + "$");
-							lore.add(ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Menus.List-Menu.Click-Selection.Right-Click").toString()));
-						}
-						lore.add(ChatColor.translateAlternateColorCodes('&', plugin.getFileManager().getMessagesConfig().get("Menus.List-Menu.Click-Selection.Left-Click").toString()));
-						meta.setLore(lore);
-			        	item.setItemMeta(meta);
-						pinatasMenu.setItem(i, item);
-					}
-					((Player) sender).openInventory(pinatasMenu);
-					return true;
-				}*/
 			} else{
 				sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
 				return true;
@@ -402,18 +348,6 @@ public class Commands implements CommandExecutor{
 	public Map<Sheep, PinataData> getPinata(){
 		return pinata;
 	}
-	
-	/*public HashMap<Sheep, Player> getPinatas() {
-		return pinatas;
-	}
-
-	public HashMap<Sheep, Location> getBuilder() {
-		return builder;
-	}
-
-	public HashMap<Sheep, LeashHitch> getLeash() {
-		return leash;
-	}*/
 
 	public List<Player> getUsers() {
 		return users;
