@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -21,8 +20,7 @@ public class Utils {
 	public static String colorMessage(String message) {
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	public static void createPinatasGUI(String name, Player p) {
 		int rows = 1;
 		float trick = Main.getInstance().getPinataManager().getPinatalist().size() / 9;
@@ -32,7 +30,7 @@ public class Utils {
 		Inventory pinatasMenu = Bukkit.createInventory(null, rows*9, Utils.colorRawMessage(name));
 		for(int i = 0; i < Main.getInstance().getPinataManager().getPinatalist().size(); i++){
 			String pinata = Main.getInstance().getPinataManager().getPinatalist().get(i).toString();
-			ItemStack item = new ItemStack(Material.WOOL, 1, DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase()).getDyeData());
+			ItemStack item = new ItemStack(Material.WOOL, 1);
 			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName(Utils.colorMessage("&6") + pinata);
 			List<String> lore = new ArrayList<>();

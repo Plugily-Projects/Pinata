@@ -28,8 +28,8 @@ public class Main extends JavaPlugin {
 	private Boolean usevault;
 	private Boolean usecrackshot;
 	private Boolean useholograms;
-	private final int messagesFileVersion = 4;
-	private final int configFileVersion = 1;
+	private final int MESSAGES_FILE_VERSION = 4;
+	private final int CONFIG_FILE_VERSION = 1;
 	private static Main instance;
 
 	@Override
@@ -47,17 +47,17 @@ public class Main extends JavaPlugin {
 		saveDefaultConfig();
 		getFileManager().saveDefaultMessagesConfig();
 		getFileManager().reloadMessagesConfig();
-		if(!getFileManager().getMessagesConfig().isSet("File-Version-Do-Not-Edit") || !getFileManager().getMessagesConfig().get("File-Version-Do-Not-Edit").equals(messagesFileVersion)) {
+		if(!getFileManager().getMessagesConfig().isSet("File-Version-Do-Not-Edit") || !getFileManager().getMessagesConfig().get("File-Version-Do-Not-Edit").equals(MESSAGES_FILE_VERSION)) {
 			getLogger().info("Your messages file is outdated! Updating...");
 			getFileManager().updateConfig("messages.yml");
-			getFileManager().getMessagesConfig().set("File-Version-Do-Not-Edit", messagesFileVersion);
+			getFileManager().getMessagesConfig().set("File-Version-Do-Not-Edit", MESSAGES_FILE_VERSION);
 			getFileManager().saveMessagesConfig();
 			getLogger().info("File successfully updated!");
 		}
-		if(!getConfig().isSet("File-Version-Do-Not-Edit") || !getConfig().get("File-Version-Do-Not-Edit").equals(configFileVersion)) {
+		if(!getConfig().isSet("File-Version-Do-Not-Edit") || !getConfig().get("File-Version-Do-Not-Edit").equals(CONFIG_FILE_VERSION)) {
 			getLogger().info("Your config file is outdated! Updating...");
 			getFileManager().updateConfig("config.yml");
-			getConfig().set("File-Version-Do-Not-Edit", configFileVersion);
+			getConfig().set("File-Version-Do-Not-Edit", CONFIG_FILE_VERSION);
 			saveConfig();
 			getLogger().info("File successfully updated!");
 			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&c[Pinata] Warning! Your config.yml file was updated and all comments were removed! If you want to get comments back please generate new config.yml file!"));
@@ -145,7 +145,7 @@ public class Main extends JavaPlugin {
 	}
 
 	public int getMessagesFileVersion() {
-		return messagesFileVersion;
+		return MESSAGES_FILE_VERSION;
 	}
 
 	public static Main getInstance() {

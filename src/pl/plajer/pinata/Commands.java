@@ -93,6 +93,13 @@ public class Commands implements CommandExecutor{
 								item = new ItemStack(Material.getMaterial(parts[1].toUpperCase()), Integer.parseInt(parts[2]));
 								meta = item.getItemMeta();
 								meta.setDisplayName(Utils.colorMessage(parts[3]));
+								String[] nameandlore = parts[3].split("/");
+								for(String s : nameandlore) {
+									String colorful = Utils.colorMessage(s);
+									lore.add(colorful);
+								}
+								//we're getting only lore not item name :)
+								lore.remove(0);
 								lore.add(droplore.replaceAll("%chance%", parts[4]));
 								break;
 							case "command":

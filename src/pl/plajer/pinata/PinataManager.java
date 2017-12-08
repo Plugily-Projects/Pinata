@@ -44,11 +44,9 @@ public class PinataManager {
 			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Permission").replaceAll("%name%", pinata));
 			return false;
 		}
-		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".cost")){
-			if(plugin.getVaultUse()){
-				plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Vault-Abandoned").replaceAll("%name%", pinata));
-				return false;
-			}
+		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".cost") && plugin.getVaultUse()){
+			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Vault-Abandoned").replaceAll("%name%", pinata));
+			return false;
 		}
 		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".timer")){
 			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Timer").replaceAll("%name%", pinata));
@@ -60,6 +58,10 @@ public class PinataManager {
 		}
 		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".crate-time")){
 			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Crate-Time").replaceAll("%name%", pinata));
+			return false;
+		}
+		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".name")){
+			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Name").replaceAll("%name%", pinata));
 			return false;
 		}
 		try{

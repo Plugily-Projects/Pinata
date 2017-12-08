@@ -23,8 +23,6 @@ public class PinataFactory implements Listener {
 
 	/**
 	 * Creates pinata at specified location for target player using already spawned sheep, name of pinata required.
-	 * <strike>This type of creation will cause graphical glitch (invisible hitch) on versions above 1.9, use createFixedHitchPinata to avoid this.</strike>
-	 * <b>This method finally (in 2.2.0) creates pinata with fixed hitch!</b>
 	 * 
 	 * @param location location where to spawn pinata
 	 * @param player player who will be owner of pinata
@@ -57,9 +55,6 @@ public class PinataFactory implements Listener {
 		hitch.teleport(fenceloc);
 		safefence.getBlock().setType(blocksafe);
 		Main.getInstance().getCommands().getPinata().put(sheep, new PinataData(player, fenceloc, hitch));
-		//Main.getInstance().getCommands().getPinatas().put(sheep, player);
-		//Main.getInstance().getCommands().getBuilder().put(sheep, fenceloc);
-		//Main.getInstance().getCommands().getLeash().put(sheep, hitch);
 		sheep.setHealth(5);
 		sheep.setCustomName(pinataname);
 		sheep.setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataname + ".color").toString().toUpperCase()));
