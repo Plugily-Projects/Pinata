@@ -92,8 +92,8 @@ public class Commands implements CommandExecutor{
 							case "item":
 								item = new ItemStack(Material.getMaterial(parts[1].toUpperCase()), Integer.parseInt(parts[2]));
 								meta = item.getItemMeta();
-								meta.setDisplayName(Utils.colorMessage(parts[3]));
 								String[] nameandlore = parts[3].split("/");
+								meta.setDisplayName(Utils.colorMessage(nameandlore[0]));
 								for(String s : nameandlore) {
 									String colorful = Utils.colorMessage(s);
 									lore.add(colorful);

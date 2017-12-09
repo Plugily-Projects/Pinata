@@ -24,15 +24,16 @@ public class MenuHandler implements Listener {
 
 	@EventHandler
 	public void onMenuInteract(final InventoryClickEvent e){
-		if(e.getCurrentItem() == null || !e.getCurrentItem().getType().equals(Material.WOOL)){
-			return;
-		}
 		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"))){
 			e.setCancelled(true);
+		}
+		if(e.getCurrentItem() == null || !e.getCurrentItem().getType().equals(Material.WOOL)){
+			return;
 		}
 		final ItemMeta item = e.getCurrentItem().getItemMeta();
 		final String pinata = item.getDisplayName().replaceAll(Utils.colorMessage("&6"), "");
 		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.List-Menu.Inventory-Name"))){
+			e.setCancelled(true);
 			if(e.getClick() == ClickType.LEFT){
 				e.getWhoClicked().closeInventory();
 				//Scheduler to prevent bugged GUI
@@ -59,6 +60,7 @@ public class MenuHandler implements Listener {
 			}
 		}
 		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Crate-Menu.Inventory-Name"))){
+			e.setCancelled(true);
 			if(e.getClick() == ClickType.LEFT){
 				e.getWhoClicked().closeInventory();
 				//Scheduler to prevent bugged GUI

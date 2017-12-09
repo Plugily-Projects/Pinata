@@ -60,10 +60,6 @@ public class PinataManager {
 			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Crate-Time").replaceAll("%name%", pinata));
 			return false;
 		}
-		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".name")){
-			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Name").replaceAll("%name%", pinata));
-			return false;
-		}
 		try{
 			DyeColor.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase());
 		} catch (Exception e){
