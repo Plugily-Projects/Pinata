@@ -24,7 +24,7 @@ public class PinataFactory implements Listener {
 	/**
 	 * Creates pinata at specified location for target player using already spawned sheep, name of pinata required.
 	 * 
-	 * @param location location where to spawn pinata
+	 * @param fenceloc location where to spawn pinata
 	 * @param player player who will be owner of pinata
 	 * @param sheep sheep that will be transformed to pinata
 	 * @param pinataname name of pinata from pinatas.yml
