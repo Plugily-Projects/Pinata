@@ -24,7 +24,7 @@ public class PinataManager {
 		ConfigurationSection pinata = plugin.getFileManager().getPinataConfig().getConfigurationSection("pinatas");
 		if (pinata != null) {
 			for(String key : pinata.getKeys(false)) {
-				if(!plugin.getPinataManager().vaildatePinata(key)){
+				if(!plugin.getPinataManager().validatePinata(key)){
 					System.out.println(Utils.colorRawMessage("Pinata.Validate.Fail").replaceAll("%name%", key));
 					continue;
 				}
@@ -39,7 +39,7 @@ public class PinataManager {
 		}
 	}
 
-	public boolean vaildatePinata(String pinata){
+	public boolean validatePinata(String pinata){
 		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".permission")){
 			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Permission").replaceAll("%name%", pinata));
 			return false;

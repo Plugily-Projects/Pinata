@@ -135,34 +135,37 @@ public class Commands implements CommandExecutor{
 					if(sender instanceof Player){
 						final Player p = (Player) sender;
 						if(!plugin.getVaultUse()){
-							sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
+							p.sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
 							return true;
 						}
 						if(!p.hasPermission("pinata.command.buy")){
-							sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
+							p.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
 							return true;
 						}
 						if(!users.isEmpty()){
 							if(users.contains(p)) {
-								sender.sendMessage(Utils.colorRawMessage("Pinata.Create.Already-Created"));
+								p.sendMessage(Utils.colorRawMessage("Pinata.Create.Already-Created"));
 								return true;
 							}
+						}
+						if(plugin.getDisabledWorlds().contains(p.getWorld().getName())){
+							p.sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
+							return true;
 						}
 						if(args.length == 1){
 							Utils.createPinatasGUI("Menus.List-Menu.Inventory-Name", p);
 							return true;
 						}
 						if(!plugin.getPinataManager().getPinatalist().contains(args[1])) {
-							sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
+							p.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
 							return true;
 						}
-						final String pname = args[1];
-						if(plugin.getFileManager().getPinataConfig().getInt("pinatas." + pname + ".cost") == -1){
+						if(plugin.getFileManager().getPinataConfig().getInt("pinatas." + args[1] + ".cost") == -1){
 							p.sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
 							return true;
 						}
 						if(plugin.getConfig().getBoolean("using-permissions")){
-							final String pperm = plugin.getFileManager().getPinataConfig().get("pinatas." + pname + ".permission").toString();
+							final String pperm = plugin.getFileManager().getPinataConfig().get("pinatas." + args[1] + ".permission").toString();
 							if(!p.hasPermission(pperm)){
 								p.sendMessage(Utils.colorRawMessage("Pinata.Create.No-Permission"));
 								return true;
@@ -171,14 +174,14 @@ public class Commands implements CommandExecutor{
 						if(p.hasPermission("pinata.admin.freeall")){
 							Location loc = p.getLocation().add(0, 7, 0);
 							Sheep sheep = p.getWorld().spawn(p.getLocation().add(0, 2, 0), Sheep.class);
-							PinataFactory.createPinata(loc, p, sheep, pname);
+							PinataFactory.createPinata(loc, p, sheep, args[1]);
 							return true;
-						} else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getInt("pinatas." + pname + ".cost")){
+						} else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getInt("pinatas." + args[1] + ".cost")){
 							Location loc = p.getLocation().add(0, 7, 0);
 							Sheep sheep = p.getWorld().spawn(p.getLocation().add(0, 2, 0), Sheep.class);
-							if(PinataFactory.createPinata(loc, p, sheep, pname)){
+							if(PinataFactory.createPinata(loc, p, sheep, args[1])){
 								//Pinata created successfully, now we can withdraw $ from player.
-								plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getInt("pinatas." + pname + ".cost"));
+								plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getInt("pinatas." + args[1] + ".cost"));
 							}
 							return true;
 						} else{

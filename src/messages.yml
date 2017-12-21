@@ -11,6 +11,7 @@ Pinata:
         By-Console: "&6&lPinata &a>> &aYour pinata was created by console!"
         Already-Created: "&6&lPinata &a>> &cYou've already bought pinata!"
         No-Permission: "&6&lPinata &a>> &cYou don't have permission to use this pinata!"
+        Disabled-World: "&6&lPinata &a>> &cYou can't create pinatas in this world!"
     Command:
         No-Permission: "&6&lPinata &a>> &cYou don't have permission to use this command!"
         Only-Player: "&6&lPinata &a>> &cYou can only execute this command as a player!"
@@ -95,4 +96,4 @@ Other:
     Plugin-Up-To-Date: "&e[Pinata] There is plugin update! Your version: %old%, new version: %new%"
     Plugin-Update-Check-Fail: "&c[Pinata] Failed to check for update: %error%"
 
-File-Version-Do-Not-Edit: "4"
+File-Version-Do-Not-Edit: "5"

@@ -1,6 +1,8 @@
 name: Pinata
-version: 2.2.9
+version: 2.2.10
 author: Plajer
+description: Awesome pinata sheep mobs for your server!
+website: https://www.spigotmc.org/resources/pi%C3%B1ata-1-8-1-12.46655/
 main: pl.plajer.pinata.Main
 softdepend: [HolographicDisplays, Vault, CrackShot]
 loadbefore: [HolographicDisplays, Vault, CrackShot]
@@ -9,7 +11,7 @@ commands:
   pinata:
     aliases: [pin]
     description: Command for pinata plugin.
-    usage: /<command> buy/list/preview/create/reloadconfig/setcrate
+    usage: "§cCorrect usage: /<command> buy/list/preview/create/reloadconfig/setcrate"
 
 permissions:
   pinata.player.*:
@@ -39,3 +41,9 @@ permissions:
       pinata.admin.crate.destory: true
       pinata.admin.crate.list: true
       pinata.admin.crate.set: true
+  pinata.*:
+    description: Gives you all permissions for every pinata command.
+    children:
+      pinata.player.*: true
+      pinata.command.*: true
+      pinata.admin.*: true

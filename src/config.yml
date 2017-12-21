@@ -6,6 +6,10 @@ using-permissions: true
 #Notify about plugin updates?
 update-notify: true
 
+#In this worlds you can create pinata only by console or '/pinata create' admin command.
+disabled-worlds:
+- 'cASe SenSItIve wORLD namE'
+
 #Requires Holographic Displays
 #Crate hologram refresh time.
 #Warning! Do not set this value to big because destroying crate cause hologram update in this refresh time
@@ -39,4 +43,4 @@ gun-item: iron_barding
 #Enable halloween special pinata effects?
 halloween-mode: false
 
-File-Version-Do-Not-Edit: "1"
+File-Version-Do-Not-Edit: "2"

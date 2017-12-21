@@ -170,7 +170,12 @@ public class FileManager {
 
 	public void updateConfig(String file) {
 		HashMap<String, Object> newConfig = getConfigVals(file);
-		FileConfiguration c = getMessagesConfig();
+		FileConfiguration c;
+		if(file.equals("config.yml")) {
+			c = plugin.getConfig();
+		} else{
+			c = getMessagesConfig();
+		}
 		for (String var : c.getKeys(false)) {
 			newConfig.remove(var);
 		}

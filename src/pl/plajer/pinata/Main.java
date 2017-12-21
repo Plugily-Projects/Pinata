@@ -1,5 +1,7 @@
 package pl.plajer.pinata;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -22,12 +24,13 @@ public class Main extends JavaPlugin {
 	private FileManager fileManager;
 	private PinataManager pinataManager;
 
+	private List<String> disabledWorlds = new ArrayList<>();
 	private Economy econ = null;
 	private Boolean usevault;
 	private Boolean usecrackshot;
 	private Boolean useholograms;
-	private final int MESSAGES_FILE_VERSION = 4;
-	private final int CONFIG_FILE_VERSION = 1;
+	private final int MESSAGES_FILE_VERSION = 5;
+	private final int CONFIG_FILE_VERSION = 2;
 	private static Main instance;
 
 	@Override
@@ -59,6 +62,10 @@ public class Main extends JavaPlugin {
 			saveConfig();
 			getLogger().info("File successfully updated!");
 			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&c[Pinata] Warning! Your config.yml file was updated and all comments were removed! If you want to get comments back please generate new config.yml file!"));
+		}
+		for(String world : getConfig().getStringList("disabled-worlds")){
+			disabledWorlds.add(world);
+			getLogger().info("Pinata creation blocked at world " + world + "!");
 		}
 		getFileManager().saveDefaultPinataConfig();
 		getFileManager().saveDefaultCratesConfig();
@@ -137,6 +144,10 @@ public class Main extends JavaPlugin {
 
 	public static Main getInstance() {
 		return instance;
+	}
+
+	public List<String> getDisabledWorlds() {
+		return disabledWorlds;
 	}
 	
 	private void setupDependencies() {

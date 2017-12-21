@@ -77,8 +77,8 @@ public class MenuHandler implements Listener {
 					e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
 					return;
 				}
-				if(plugin.getCrateManager().getCrateuse().containsKey(e.getWhoClicked())){
-					Location chest = plugin.getCrateManager().getCrateuse().get(e.getWhoClicked());
+				if(plugin.getCrateManager().getCrateUsage().containsKey(e.getWhoClicked())){
+					Location chest = plugin.getCrateManager().getCrateUsage().get(e.getWhoClicked());
 					if(plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".cost") == -1){
 						e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
 						e.getWhoClicked().closeInventory();

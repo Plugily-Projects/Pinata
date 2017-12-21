@@ -92,6 +92,10 @@ public class CrateManager implements Listener {
 							e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
 							return;
 						}
+						if(plugin.getDisabledWorlds().contains(e.getPlayer().getWorld().getName())){
+							e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
+							return;
+						}
 						crateuse.put(e.getPlayer(), e.getClickedBlock().getLocation());
 						Utils.createPinatasGUI("Menus.Crate-Menu.Inventory-Name", e.getPlayer());
 						return;
@@ -123,7 +127,7 @@ public class CrateManager implements Listener {
 		}
 	}
 
-	public Map<Player, Location> getCrateuse() {
+	public Map<Player, Location> getCrateUsage() {
 		return crateuse;
 	}
 
