@@ -80,11 +80,11 @@ Hologram:
 #Validator console messages.
 #You don't need to translate them because they don't show to your players :)
 Validator:
-    Invalid-Configuration: "Pinata %name% isn't properly configured!"
-    Invalid-Item: "Item of pinata %name% isn't properly configured!"
-    Invalid-Item-Type: "Item of pinata %name% neither item nor command!"
-    Invalid-Chance: "One of pinata %name%'s item will never drop!"
-    Invalid-Money-Drop: "One of pinata %name%'s money item has amount 0!"
+    Invalid-Configuration: "Pinata %name% isn't properly configured! Invalid item line: %number%"
+    Invalid-Item: "Item of pinata %name% isn't properly configured! Invalid item line: %number%"
+    Invalid-Item-Type: "Item of pinata %name% neither item nor command! Invalid item line: %number%"
+    Invalid-Chance: "Item of pinata %name% will never drop! Invalid item line: %number%"
+    Invalid-Money-Drop: "Money item of pinata %name% has amount 0! Invalid item line: %number%"
     Invalid-Permission: "Permission of pinata %name% isn't set!"
     Invalid-Timer: "Timer of pinata %name% isn't set!"
     Invalid-Type: "Type of pinata %name% is neither public nor private!"
