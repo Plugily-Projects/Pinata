@@ -199,7 +199,7 @@ public class PinataListeners implements Listener {
 						item.setPickupDelay(1000);
 						if(plugin.getHologramsUse()) {
 							final Hologram hologram = HologramsAPI.createHologram(plugin, item.getLocation().add(0.0, 1.5, 0.0));
-							hologram.appendTextLine(Utils.colorMessage(parts[3]) + " x" + parts[2]).toString().replaceAll("%player%", p.getName());
+							hologram.appendTextLine(Utils.colorMessage(nameandlore[0]) + " x" + parts[2]).toString().replaceAll("%player%", p.getName());
 							new BukkitRunnable() {
 								int ticksRun;
 

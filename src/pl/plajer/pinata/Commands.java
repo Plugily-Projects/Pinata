@@ -209,6 +209,11 @@ public class Commands implements CommandExecutor{
 							sender.sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Fail"));
 							return true;
 						}
+						plugin.getDisabledWorlds().clear();
+						for(String world : plugin.getConfig().getStringList("disabled-worlds")){
+							plugin.getDisabledWorlds().add(world);
+							plugin.getLogger().info("Pinata creation blocked at world " + world + "!");
+						}
 						String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
 						if (plugin.getConfig().getBoolean("update-notify")){
 							try {
