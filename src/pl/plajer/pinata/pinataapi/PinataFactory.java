@@ -24,24 +24,27 @@ public class PinataFactory implements Listener {
 	/**
 	 * Creates pinata at specified location for target player using already spawned sheep, name of pinata required.
 	 * 
-	 * @param fenceloc location where to spawn pinata
+	 * @param fenceLocation location where to spawn pinata
 	 * @param player player who will be owner of pinata
 	 * @param sheep sheep that will be transformed to pinata
-	 * @param pinataname name of pinata from pinatas.yml
+	 * @param pinataName name of pinata from pinatas.yml
 	 * @return <b>true</b> if creation succeed, <b>false</b> if creation couldn't be completed
 	 */
-	public static boolean createPinata(final Location fenceloc, final Player player, final Sheep sheep, final String pinataname){
-		PinataCreateEvent pce = new PinataCreateEvent(player, sheep);
+	public static boolean createPinata(final Location fenceLocation, final Player player, final Sheep sheep, final String pinataName){
+		PinataCreateEvent pce = new PinataCreateEvent(player, sheep, pinataName);
 		Bukkit.getPluginManager().callEvent(pce);
 		if(pce.isCancelled()) {
 			sheep.remove();
+			if(fenceLocation.getBlock().getType().equals(Material.FENCE)){
+				fenceLocation.getBlock().setType(Material.AIR);
+			}
 			return false;
 		}
-		if(!(fenceloc.getBlock().getType().equals(Material.AIR))){
+		if(!(fenceLocation.getBlock().getType().equals(Material.AIR))){
 			player.sendMessage(Utils.colorRawMessage("Pinata.Create.Fail"));
 			pce.setCancelled(true);
 		}
-		player.sendMessage(Utils.colorRawMessage("Pinata.Create.Success").replaceAll("%name%", pinataname));
+		player.sendMessage(Utils.colorRawMessage("Pinata.Create.Success").replaceAll("%name%", pinataName));
 		Main.getInstance().getCommands().getUsers().add(player);
 		//Max height check is to avoid problems with different server specifications
 		Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);
@@ -51,13 +54,13 @@ public class PinataFactory implements Listener {
 		safestone.getBlock().setType(Material.STONE);
 		final LeashHitch hitch = (LeashHitch) safefence.getWorld().spawnEntity(safefence, EntityType.LEASH_HITCH);
 		safestone.getBlock().setType(Material.AIR);  
-		fenceloc.getBlock().setType(Material.FENCE);
-		hitch.teleport(fenceloc);
+		fenceLocation.getBlock().setType(Material.FENCE);
+		hitch.teleport(fenceLocation);
 		safefence.getBlock().setType(blocksafe);
-		Main.getInstance().getCommands().getPinata().put(sheep, new PinataData(player, fenceloc, hitch));
+		Main.getInstance().getCommands().getPinata().put(sheep, new PinataData(player, fenceLocation, hitch));
 		sheep.setHealth(5);
-		sheep.setCustomName(pinataname);
-		sheep.setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataname + ".color").toString().toUpperCase()));
+		sheep.setCustomName(pinataName);
+		sheep.setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataName + ".color").toString().toUpperCase()));
 		sheep.setLeashHolder(hitch);
 		if(Main.getInstance().getConfig().getBoolean("blindness-effect")) {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Main.getInstance().getConfig().getInt("blindness-duration") * 20, 1));

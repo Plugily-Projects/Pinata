@@ -13,6 +13,7 @@ public class PinataCreateEvent extends Event implements Cancellable {
 
 	private final Player creator;
 	private final Sheep pinata;
+	private final String name;
 	private static final HandlerList HANDLERS = new HandlerList();
 	private boolean isCancelled;
 
@@ -33,9 +34,10 @@ public class PinataCreateEvent extends Event implements Cancellable {
 		this.isCancelled = isCancelled;
 	}
 
-	public PinataCreateEvent(Player creator, Sheep pinata) {
+	public PinataCreateEvent(Player creator, Sheep pinata, String pinataName) {
 		this.creator = creator;
 		this.pinata = pinata;
+		this.name = pinataName;
 	}
 
 	/**
@@ -50,6 +52,13 @@ public class PinataCreateEvent extends Event implements Cancellable {
 	 */
 	public Sheep getPinata() {
 		return this.pinata;
+	}
+
+	/**
+	 * @return event pinata name.
+	 */
+	public String getPinataName() {
+		return this.name;
 	}
 
 }

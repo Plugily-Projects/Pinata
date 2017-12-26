@@ -15,6 +15,7 @@ public class PinataDeathEvent extends Event {
 
 	private final Player killer;
 	private final Sheep pinata;
+	private final String name;
 	private final ArrayList<ItemStack[]> drops;
 	private static final HandlerList HANDLERS = new HandlerList();
 
@@ -27,9 +28,10 @@ public class PinataDeathEvent extends Event {
 		return HANDLERS;
 	}
 
-	public PinataDeathEvent(Player killer, Sheep pinata, ArrayList<ItemStack[]> drops) {
+	public PinataDeathEvent(Player killer, Sheep pinata, String name, ArrayList<ItemStack[]> drops) {
 		this.killer = killer;
 		this.pinata = pinata;
+		this.name = name;
 		this.drops = drops;
 	}
 
@@ -45,6 +47,13 @@ public class PinataDeathEvent extends Event {
 	 */
 	public Sheep getPinata() {
 		return this.pinata;
+	}
+
+	/**
+	 * @return killed pinata name.
+	 */
+	public String getPinataName() {
+		return this.name;
 	}
 
 	/**
