@@ -290,7 +290,7 @@ public class PinataListeners implements Listener {
 				items.add(temp);
 				p.getInventory().addItem(items.get(i));
 			}
-			PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), (Sheep) e.getEntity(), items);
+			PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), (Sheep) e.getEntity(), e.getEntity().getCustomName(), items);
 			Bukkit.getPluginManager().callEvent(pde);
 			if(items.size() == 0 && otheritems == 0) {
 				p.sendMessage(Utils.colorRawMessage("Pinata.Drop.No-Drops"));
