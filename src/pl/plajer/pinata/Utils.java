@@ -23,13 +23,13 @@ public class Utils {
 
 	public static void createPinatasGUI(String name, Player p) {
 		int rows = 1;
-		float trick = Main.getInstance().getPinataManager().getPinatalist().size() / 9;
+		float trick = Main.getInstance().getPinataManager().getPinataList().size() / 9;
 		if(!((int) trick % 9 == 0)){
 			rows++;
 		}
 		Inventory pinatasMenu = Bukkit.createInventory(null, rows*9, Utils.colorRawMessage(name));
-		for(int i = 0; i < Main.getInstance().getPinataManager().getPinatalist().size(); i++){
-			String pinata = Main.getInstance().getPinataManager().getPinatalist().get(i);
+		for(int i = 0; i < Main.getInstance().getPinataManager().getPinataList().size(); i++){
+			String pinata = Main.getInstance().getPinataManager().getPinataList().get(i);
 			ItemStack item = new ItemStack(Material.WOOL, 1);
 			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName(Utils.colorMessage("&6") + pinata);

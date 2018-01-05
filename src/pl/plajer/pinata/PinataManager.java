@@ -1,9 +1,6 @@
 package pl.plajer.pinata;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 import org.bukkit.DyeColor;
@@ -12,8 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class PinataManager {
 
-	private List<String> pinatalist = new ArrayList<>();
-	private Map<String, ArrayList<String>> pinatadrops = new HashMap<>();
+	private List<String> pinataList = new ArrayList<>();
+	private Map<String, ArrayList<String>> pinataDrops = new HashMap<>();
 	private Main plugin;
 
 	public PinataManager(Main plugin) {
@@ -29,12 +26,12 @@ public class PinataManager {
 					continue;
 				}
 				System.out.println(Utils.colorRawMessage("Pinata.Validate.Success").replaceAll("%name%", key));
-				pinatalist.add(key);
+				pinataList.add(key);
 				ArrayList<String> list = new ArrayList<>();
 				final List<String> drops = plugin.getFileManager().getPinataConfig().getStringList("pinatas." + key + ".drops");
 				for(int i = 0; i < drops.size(); i++)
 					list.add(drops.get(i));
-				pinatadrops.put(key, list);
+				pinataDrops.put(key, list);
 			}
 		}
 	}
@@ -111,7 +108,7 @@ public class PinataManager {
 					return false;
 				}
 			} else if(partsvaild[0].equals("gun")){
-				if(plugin.getCrackshotUse()){
+				if(plugin.getCrackShotUse()){
 					if(partsvaild.length < 3){
 						plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Configuration").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
 						return false;
@@ -129,11 +126,11 @@ public class PinataManager {
 		return true;
 	}
 
-	public List<String> getPinatalist() {
-		return pinatalist;
+	public List<String> getPinataList() {
+		return pinataList;
 	}
 
 	public Map<String, ArrayList<String>> getPinataDrop() {
-		return pinatadrops;
+		return pinataDrops;
 	}
 }

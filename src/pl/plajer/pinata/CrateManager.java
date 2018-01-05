@@ -2,6 +2,7 @@ package pl.plajer.pinata;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -22,12 +23,27 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 public class CrateManager implements Listener {
 
-	private Map<Player, Location> crateuse = new HashMap<>();
+	private Map<Location, String> cratesLocations = new HashMap<>();
+	private Map<Player, Location> crateUsage = new HashMap<>();
 	private Main plugin;
 
 	public CrateManager(Main plugin) {
 		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	}
+
+	public void loadCrates(){
+		ConfigurationSection pinata = plugin.getFileManager().getCratesConfig().getConfigurationSection("crates");
+		if(pinata != null) {
+			FileConfiguration config = plugin.getFileManager().getCratesConfig();
+			for(String crate : pinata.getKeys(false)) {
+				Location crateLoc = new Location(Bukkit.getWorld(config.getString("crates." + crate + ".world")), config.getDouble("crates." + crate + ".x"), config.getDouble("crates." + crate + ".y"), config.getDouble("crates." + crate + ".z"));
+				if(crateLoc.getBlock().getType().equals(Material.CHEST)){
+					cratesLocations.put(crateLoc, crate);
+					plugin.getLogger().log(Level.INFO, "Loaded crate at location " + config.getString("crates." + crate + ".world") + " " + config.getDouble("crates." + crate + ".x") + " " + config.getDouble("crates." + crate + ".y") + " " + config.getDouble("crates." + crate + ".z"));
+				}
+			}
+		}
 	}
 
 	/**
@@ -37,19 +53,16 @@ public class CrateManager implements Listener {
 		Bukkit.getScheduler().runTaskTimer(plugin, new Runnable(){
 			@Override
 			public void run(){
-				for(String holo : plugin.getFileManager().getCratesConfig().getConfigurationSection("crates").getKeys(false)){
-					FileConfiguration config = plugin.getFileManager().getCratesConfig();
-					Location loc = new Location(Bukkit.getWorld(config.getString("crates." + holo + ".world")), config.getDouble("crates." + holo + ".x") + 0.5, config.getDouble("crates." + holo + ".y"), config.getDouble("crates." + holo + ".z") + 0.5);
-					final Hologram hologram = HologramsAPI.createHologram(plugin, loc.add(0, 1.5, 0));
-					String holoname = Utils.colorRawMessage("Hologram.Crate-Hologram");
-					hologram.appendTextLine(holoname.replaceAll("%name%", plugin.getFileManager().getCratesConfig().getString("crates." + holo + ".name")));
+				for(Location l : cratesLocations.keySet()){
+					final Hologram holo = HologramsAPI.createHologram(plugin, l.add(0, 1.5, 0));
+					holo.appendTextLine(Utils.colorRawMessage("Hologram.Crate-Hologram").replaceAll("%name%", cratesLocations.get(l)));
 					new BukkitRunnable() {
 						int ticksRun;
 						@Override
 						public void run() {
 							ticksRun++;
-							if (ticksRun > plugin.getConfig().getDouble("hologram-refresh") * 20) {
-								hologram.delete();
+							if(ticksRun > plugin.getConfig().getDouble("hologram-refresh") * 20){
+								holo.delete();
 								cancel();
 							}
 						}
@@ -66,10 +79,8 @@ public class CrateManager implements Listener {
 		Bukkit.getScheduler().runTaskTimer(plugin, new Runnable(){
 			@Override
 			public void run(){
-				for(String holo : plugin.getFileManager().getCratesConfig().getConfigurationSection("crates").getKeys(false)){
-					FileConfiguration config = plugin.getFileManager().getCratesConfig();
-					Location loc = new Location(Bukkit.getWorld(config.getString("crates." + holo + ".world")), config.getDouble("crates." + holo + ".x") + 0.5, config.getDouble("crates." + holo + ".y"), config.getDouble("crates." + holo + ".z") + 0.5);
-					loc.getWorld().playEffect(loc, Effect.MOBSPAWNER_FLAMES, 1);
+				for(Location l : cratesLocations.keySet()){
+					l.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 1);
 				}
 			}
 		}, (long) plugin.getConfig().getDouble("particle-refresh") * 20, (long) plugin.getConfig().getDouble("particle-refresh") * 20);
@@ -81,8 +92,7 @@ public class CrateManager implements Listener {
 			ConfigurationSection csp = plugin.getFileManager().getCratesConfig().getConfigurationSection("crates");
 			if (csp != null) {
 				for(String key : csp.getKeys(false)) {
-					FileConfiguration config = plugin.getFileManager().getCratesConfig();
-					if(e.getClickedBlock().getLocation().equals(new Location(Bukkit.getWorld(config.getString("crates." + key + ".world")), config.getDouble("crates." + key + ".x"), config.getDouble("crates." + key + ".y"), config.getDouble("crates." + key + ".z")))){
+					if(cratesLocations.containsKey(e.getClickedBlock().getLocation())){
 						e.setCancelled(true);
 						if(!plugin.getVaultUse()){
 							e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
@@ -96,7 +106,7 @@ public class CrateManager implements Listener {
 							e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
 							return;
 						}
-						crateuse.put(e.getPlayer(), e.getClickedBlock().getLocation());
+						crateUsage.put(e.getPlayer(), e.getClickedBlock().getLocation());
 						Utils.createPinatasGUI("Menus.Crate-Menu.Inventory-Name", e.getPlayer());
 						return;
 					}
@@ -111,14 +121,14 @@ public class CrateManager implements Listener {
 			ConfigurationSection pinata = plugin.getFileManager().getCratesConfig().getConfigurationSection("crates");
 			if (pinata != null) {
 				for(String key : pinata.getKeys(false)) {
-					FileConfiguration config = plugin.getFileManager().getCratesConfig();
-					if(e.getBlock().getLocation().equals(new Location(e.getPlayer().getWorld(), config.getInt("crates." + key + ".x"), config.getInt("crates." + key + ".y"), config.getInt("crates." + key + ".z")))){
+					if(cratesLocations.containsKey(e.getBlock().getLocation())){
 						if(!e.getPlayer().hasPermission("pinata.admin.crate.destroy")){
 							e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
 							e.setCancelled(true);
 						}
 						plugin.getFileManager().getCratesConfig().set("crates." + key, null);
 						plugin.getFileManager().saveCratesConfig();
+						cratesLocations.remove(e.getBlock().getLocation());
 						String message = Utils.colorRawMessage("Pinata.Crate-Creation.Destroyed");
 						e.getPlayer().sendMessage(message.replaceAll("%name%", key));
 					}
@@ -128,7 +138,11 @@ public class CrateManager implements Listener {
 	}
 
 	public Map<Player, Location> getCrateUsage() {
-		return crateuse;
+		return crateUsage;
+	}
+
+	public Map<Location, String> getCratesLocations() {
+		return cratesLocations;
 	}
 
 }

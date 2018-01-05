@@ -26,9 +26,9 @@ public class Main extends JavaPlugin {
 
 	private List<String> disabledWorlds = new ArrayList<>();
 	private Economy econ = null;
-	private Boolean usevault;
-	private Boolean usecrackshot;
-	private Boolean useholograms;
+	private Boolean usingVault;
+	private Boolean usingCrackShot;
+	private Boolean usingHolograms;
 	private final int MESSAGES_FILE_VERSION = 5;
 	private final int CONFIG_FILE_VERSION = 2;
 	private static Main instance;
@@ -46,18 +46,18 @@ public class Main extends JavaPlugin {
 		pinataManager = new PinataManager(this);
 		setupDependencies();
 		saveDefaultConfig();
-		getFileManager().saveDefaultMessagesConfig();
-		getFileManager().reloadMessagesConfig();
-		if(!getFileManager().getMessagesConfig().isSet("File-Version-Do-Not-Edit") || !getFileManager().getMessagesConfig().get("File-Version-Do-Not-Edit").equals(MESSAGES_FILE_VERSION)) {
+		fileManager.saveDefaultMessagesConfig();
+		fileManager.reloadMessagesConfig();
+		if(!fileManager.getMessagesConfig().isSet("File-Version-Do-Not-Edit") || !fileManager.getMessagesConfig().get("File-Version-Do-Not-Edit").equals(MESSAGES_FILE_VERSION)) {
 			getLogger().info("Your messages file is outdated! Updating...");
-			getFileManager().updateConfig("messages.yml");
-			getFileManager().getMessagesConfig().set("File-Version-Do-Not-Edit", MESSAGES_FILE_VERSION);
-			getFileManager().saveMessagesConfig();
+			fileManager.updateConfig("messages.yml");
+			fileManager.getMessagesConfig().set("File-Version-Do-Not-Edit", MESSAGES_FILE_VERSION);
+			fileManager.saveMessagesConfig();
 			getLogger().info("File successfully updated!");
 		}
 		if(!getConfig().isSet("File-Version-Do-Not-Edit") || !getConfig().get("File-Version-Do-Not-Edit").equals(CONFIG_FILE_VERSION)) {
 			getLogger().info("Your config file is outdated! Updating...");
-			getFileManager().updateConfig("config.yml");
+			fileManager.updateConfig("config.yml");
 			getConfig().set("File-Version-Do-Not-Edit", CONFIG_FILE_VERSION);
 			saveConfig();
 			getLogger().info("File successfully updated!");
@@ -67,12 +67,13 @@ public class Main extends JavaPlugin {
 			disabledWorlds.add(world);
 			getLogger().info("Pinata creation blocked at world " + world + "!");
 		}
-		getFileManager().saveDefaultPinataConfig();
-		getFileManager().saveDefaultCratesConfig();
-		getFileManager().reloadPinataConfig();
-		getFileManager().reloadMessagesConfig();
-		getPinataManager().loadPinatas();
-		getCrateManager().particleScheduler();
+		fileManager.saveDefaultPinataConfig();
+		fileManager.saveDefaultCratesConfig();
+		fileManager.reloadPinataConfig();
+		fileManager.reloadMessagesConfig();
+		pinataManager.loadPinatas();
+		crateManager.loadCrates();
+		crateManager.particleScheduler();
 		String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
 		if (this.getConfig().getBoolean("update-notify")){
 			try {
@@ -93,17 +94,17 @@ public class Main extends JavaPlugin {
 		for(World world : Bukkit.getServer().getWorlds()){
 			for(Entity entity : Bukkit.getServer().getWorld(world.getName()).getEntities()){
 				if(entity instanceof Sheep){
-					if(getCommands().getPinata().containsKey(entity)){
-						getCommands().getPinata().get(entity).getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Removed"));
-						getCommands().getPinata().get(entity).getBuilder().getBlock().setType(Material.AIR);
-						getCommands().getPinata().get(entity).getLeash().remove();
+					if(commands.getPinata().containsKey(entity)){
+						commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Removed"));
+						commands.getPinata().get(entity).getBuilder().getBlock().setType(Material.AIR);
+						commands.getPinata().get(entity).getLeash().remove();
 						entity.remove();
-						getCommands().getPinata().remove(entity);
+						commands.getPinata().remove(entity);
 					}
 				}
 			}
 		}
-		if(useholograms) {
+		if(usingHolograms) {
 			for(Hologram holo : HologramsAPI.getHolograms(this)){
 				holo.delete();
 			}
@@ -131,15 +132,15 @@ public class Main extends JavaPlugin {
 	}
 
 	public Boolean getVaultUse(){
-		return usevault;
+		return usingVault;
 	}
 
-	public Boolean getCrackshotUse(){
-		return usecrackshot;
+	public Boolean getCrackShotUse(){
+		return usingCrackShot;
 	}
 
 	public Boolean getHologramsUse(){
-		return useholograms;
+		return usingHolograms;
 	}
 
 	public static Main getInstance() {
@@ -151,7 +152,7 @@ public class Main extends JavaPlugin {
 	}
 	
 	private void setupDependencies() {
-		if(setupCrackshot()) {
+		if(setupCrackShot()) {
 			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&a[Pinata] Detected CrackShot plugin!"));
 			Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("&a[Pinata] Enabling CrackShot support."));
 		} else {
@@ -175,36 +176,36 @@ public class Main extends JavaPlugin {
 		}
 	}
 
-	private boolean setupCrackshot() {
+	private boolean setupCrackShot() {
 		if (getServer().getPluginManager().getPlugin("CrackShot") == null) {
-			usecrackshot = false;
+			usingCrackShot = false;
 			return false;
 		}
-		usecrackshot = true;
+		usingCrackShot = true;
 		return true;
 	}
 
 	private boolean setupHolographicDisplays() {
 		if (getServer().getPluginManager().getPlugin("HolographicDisplays") == null) {
-			useholograms = false;
+			usingHolograms = false;
 			return false;
 		}
-		useholograms = true;
+		usingHolograms = true;
 		return true;
 	}
 
 	private boolean setupEconomy() {
 		if (getServer().getPluginManager().getPlugin("Vault") == null) {
-			usevault = false;
+			usingVault = false;
 			return false;
 		}
 		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
 		if (rsp == null) {
-			usevault = false;
+			usingVault = false;
 			return false;
 		}
 		econ = rsp.getProvider();
-		usevault = true;
+		usingVault = true;
 		return econ != null;
 	}
 
