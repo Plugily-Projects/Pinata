@@ -50,7 +50,7 @@ public class CrateManager implements Listener {
 	public void hologramScheduler(){
 		Bukkit.getScheduler().runTaskTimer(plugin, () -> {
 			for(Location l : cratesLocations.keySet()) {
-				Hologram holo = HologramsAPI.createHologram(plugin, l.clone().add(0, 1.5, 0));
+				Hologram holo = HologramsAPI.createHologram(plugin, l.clone().add(0.5, 1.5, 0.5));
 				holo.appendTextLine(Utils.colorRawMessage("Hologram.Crate-Hologram").replaceAll("%name%", cratesLocations.get(l)));
 				Bukkit.getScheduler().runTaskLater(plugin, () -> holo.delete(), (long) plugin.getConfig().getDouble("hologram-refresh") * 20);
 			}
@@ -101,18 +101,21 @@ public class CrateManager implements Listener {
 	public void onCrateDestroy(BlockBreakEvent e){
 		if(e.getBlock().getType().equals(Material.CHEST)){
 			ConfigurationSection pinata = plugin.getFileManager().getCratesConfig().getConfigurationSection("crates");
-			if (pinata != null) {
-				for(String key : pinata.getKeys(false)) {
-					if(cratesLocations.containsKey(e.getBlock().getLocation())){
-						if(!e.getPlayer().hasPermission("pinata.admin.crate.destroy")){
-							e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
-							e.setCancelled(true);
+			if(pinata != null) {
+				if(cratesLocations.containsKey(e.getBlock().getLocation())) {
+					for(String key : pinata.getKeys(false)) {
+						if(cratesLocations.get(e.getBlock().getLocation()).equals(key)) {
+							if(!e.getPlayer().hasPermission("pinata.admin.crate.destroy")) {
+								e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
+								e.setCancelled(true);
+							}
+							plugin.getFileManager().getCratesConfig().set("crates." + key, null);
+							plugin.getFileManager().saveCratesConfig();
+							cratesLocations.remove(e.getBlock().getLocation());
+							String message = Utils.colorRawMessage("Pinata.Crate-Creation.Destroyed");
+							e.getPlayer().sendMessage(message.replaceAll("%name%", key));
+							return;
 						}
-						plugin.getFileManager().getCratesConfig().set("crates." + key, null);
-						plugin.getFileManager().saveCratesConfig();
-						cratesLocations.remove(e.getBlock().getLocation());
-						String message = Utils.colorRawMessage("Pinata.Crate-Creation.Destroyed");
-						e.getPlayer().sendMessage(message.replaceAll("%name%", key));
 					}
 				}
 			}

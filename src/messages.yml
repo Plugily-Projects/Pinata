@@ -43,6 +43,7 @@ Pinata:
     Crate-Creation:
         Specify-Name: "&6&lPinata &a>> &cPlease specify crate name!"
         Is-Set-Here:  "&6&lPinata &a>> &cCrate at this location is set!"
+        Already-Exists: "&6&lPinata &a>> &cCrate with this name already exists!"
         Create-Success: "&6&lPinata &a>> &aCrate %name% created successfully!"
         Destroyed: "&6&lPinata &a>> &aCrate %name% destroyed!"
         Target-Block-Not-Chest: "&6&lPinata &a>> &cTarget block isn't chest!"

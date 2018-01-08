@@ -40,12 +40,7 @@ public class MenuHandler implements Listener {
 			if(e.getClick() == ClickType.LEFT){
 				e.getWhoClicked().closeInventory();
 				//Scheduler to prevent bugged GUI
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
-					@Override
-					public void run(){
-						Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinata);
-					}
-				}, 1);
+				Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinata), 1);
 			}
 			if(e.getClick() == ClickType.RIGHT){
 				if(item.getLore().get(1).equals(Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"))){
@@ -54,12 +49,7 @@ public class MenuHandler implements Listener {
 					return;
 				}
 				e.getWhoClicked().closeInventory();
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
-					@Override
-					public void run(){
-						Bukkit.dispatchCommand(e.getWhoClicked(), Utils.colorMessage("pinata buy " + item.getDisplayName().replaceAll("&6", "")));
-					}
-				}, 1);
+				Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), Utils.colorMessage("pinata buy " + item.getDisplayName().replaceAll("&6", ""))), 1);
 			}
 		}
 		if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Crate-Menu.Inventory-Name"))){
@@ -67,12 +57,7 @@ public class MenuHandler implements Listener {
 			if(e.getClick() == ClickType.LEFT){
 				e.getWhoClicked().closeInventory();
 				//Scheduler to prevent bugged GUI
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
-					@Override
-					public void run(){
-						Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinata);
-					}
-				}, 1);
+				Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinata), 1);
 			}
 			if(e.getClick() == ClickType.RIGHT){
 				if(item.getLore().get(1).equals(Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"))){
@@ -101,12 +86,9 @@ public class MenuHandler implements Listener {
 						final LivingEntity entity = (LivingEntity) chest.getWorld().spawnEntity(entityLoc, EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + pinata + ".mob-type").toUpperCase()));
 						entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + pinata + ".health"));
 						if(PinataFactory.createPinata(loc, (Player) e.getWhoClicked(), entity, pinata)){
-							Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
-								@Override
-								public void run(){
-									if(!(entity.isDead())){
-										entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-									}
+							Bukkit.getScheduler().runTaskLater(plugin, () -> {
+								if(!(entity.isDead())){
+									entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 								}
 							}, plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".crate-time") * 20);
 						}
@@ -118,12 +100,9 @@ public class MenuHandler implements Listener {
 						if(PinataFactory.createPinata(loc, (Player) e.getWhoClicked(), entity, pinata)){
 							//Pinata created successfully, now we can withdraw $ from player.
 							plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId()), plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".cost"));
-							Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
-								@Override
-								public void run(){
-									if(!(entity.isDead())){
-										entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-									}
+							Bukkit.getScheduler().runTaskLater(plugin, () -> {
+								if(!(entity.isDead())){
+									entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 								}
 							}, plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".crate-time") * 20);
 						}

@@ -302,12 +302,17 @@ public class Commands implements CommandExecutor{
 							p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Is-Set-Here"));
 							return true;
 						}
+						if(plugin.getFileManager().getCratesConfig().isSet("crates." + args[1])) {
+							p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Already-Exists"));
+							return true;
+						}
 						plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".world", l.getWorld().getName());
-						plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".x", l.getLocation().getX());
-						plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".y", l.getLocation().getY());
-						plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".z", l.getLocation().getZ());
+						plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".x", l.getX());
+						plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".y", l.getY());
+						plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".z", l.getZ());
 						plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".name", args[1]);
 						plugin.getFileManager().saveCratesConfig();
+						plugin.getCrateManager().getCratesLocations().put(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ()), args[1]);
 						p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Create-Success").replaceAll("%name%", args[1]));
 						return true;
 					} else{
