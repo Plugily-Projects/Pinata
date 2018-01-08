@@ -3,6 +3,9 @@ package pl.plajer.pinata;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
@@ -94,30 +97,32 @@ public class MenuHandler implements Listener {
 					}
 					if(e.getWhoClicked().hasPermission("pinata.admin.freeall")){
 						Location loc = chest.clone().add(0, 7, 0);
-						Location sheeploc = chest.clone().add(0, 2, 0);
-						final Sheep sheep = chest.getWorld().spawn(sheeploc, Sheep.class);
-						if(PinataFactory.createPinata(loc, (Player) e.getWhoClicked(), sheep, pinata)){
+						Location entityLoc = chest.clone().add(0, 2, 0);
+						final LivingEntity entity = (LivingEntity) chest.getWorld().spawnEntity(entityLoc, EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + pinata + ".mob-type").toUpperCase()));
+						entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + pinata + ".health"));
+						if(PinataFactory.createPinata(loc, (Player) e.getWhoClicked(), entity, pinata)){
 							Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
 								@Override
 								public void run(){
-									if(!(sheep.isDead())){
-										sheep.damage(10000);
+									if(!(entity.isDead())){
+										entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 									}
 								}
 							}, plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".crate-time") * 20);
 						}
 					} else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId())) >= plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".cost")){
 						Location loc = chest.clone().add(0, 7, 0);
-						Location sheeploc = chest.clone().add(0, 2, 0);
-						final Sheep sheep = chest.getWorld().spawn(sheeploc, Sheep.class);
-						if(PinataFactory.createPinata(loc, (Player) e.getWhoClicked(), sheep, pinata)){
+						Location entityLoc = chest.clone().add(0, 2, 0);
+						final LivingEntity entity = (LivingEntity) chest.getWorld().spawnEntity(entityLoc, EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + pinata + ".mob-type").toUpperCase()));
+						entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + pinata + ".health"));
+						if(PinataFactory.createPinata(loc, (Player) e.getWhoClicked(), entity, pinata)){
 							//Pinata created successfully, now we can withdraw $ from player.
 							plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId()), plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".cost"));
 							Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
 								@Override
 								public void run(){
-									if(!(sheep.isDead())){
-										sheep.damage(10000);
+									if(!(entity.isDead())){
+										entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 									}
 								}
 							}, plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".crate-time") * 20);

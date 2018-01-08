@@ -10,5 +10,8 @@
     <orderEntry type="library" name="spigot-api-1.12.2-R0.1-SNAPSHOT-b1409" level="project" />
     <orderEntry type="library" name="spigot-1.12.1-R0.1-SNAPSHOT-b1405" level="project" />
     <orderEntry type="library" name="other dependencies" level="project" />
+    <orderEntry type="library" name="spigot-1.8.8-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="spigot-1.8-R0.1-SNAPSHOT-latest" level="project" />
+    <orderEntry type="library" name="spigot-1.8.3-R0.1-SNAPSHOT" level="project" />
   </component>
 </module>

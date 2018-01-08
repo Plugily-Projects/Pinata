@@ -2,6 +2,7 @@ package pl.plajer.pinata.pinataapi;
 
 import java.util.ArrayList;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.Event;
@@ -14,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 public class PinataDeathEvent extends Event {
 
 	private final Player killer;
-	private final Sheep pinata;
+	private final Entity pinata;
 	private final String name;
 	private final ArrayList<ItemStack[]> drops;
 	private static final HandlerList HANDLERS = new HandlerList();
@@ -28,7 +29,7 @@ public class PinataDeathEvent extends Event {
 		return HANDLERS;
 	}
 
-	public PinataDeathEvent(Player killer, Sheep pinata, String name, ArrayList<ItemStack[]> drops) {
+	public PinataDeathEvent(Player killer, Entity pinata, String name, ArrayList<ItemStack[]> drops) {
 		this.killer = killer;
 		this.pinata = pinata;
 		this.name = name;
@@ -45,7 +46,7 @@ public class PinataDeathEvent extends Event {
 	/**
 	 * @return killed pinata.
 	 */
-	public Sheep getPinata() {
+	public Entity getPinata() {
 		return this.pinata;
 	}
 

@@ -1,5 +1,6 @@
 package pl.plajer.pinata.pinataapi;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.Cancellable;
@@ -12,7 +13,7 @@ import org.bukkit.event.HandlerList;
 public class PinataCreateEvent extends Event implements Cancellable {
 
 	private final Player creator;
-	private final Sheep pinata;
+	private final Entity pinata;
 	private final String name;
 	private static final HandlerList HANDLERS = new HandlerList();
 	private boolean isCancelled;
@@ -34,7 +35,7 @@ public class PinataCreateEvent extends Event implements Cancellable {
 		this.isCancelled = isCancelled;
 	}
 
-	public PinataCreateEvent(Player creator, Sheep pinata, String pinataName) {
+	public PinataCreateEvent(Player creator, Entity pinata, String pinataName) {
 		this.creator = creator;
 		this.pinata = pinata;
 		this.name = pinataName;
@@ -50,7 +51,7 @@ public class PinataCreateEvent extends Event implements Cancellable {
 	/**
 	 * @return event pinata.
 	 */
-	public Sheep getPinata() {
+	public Entity getPinata() {
 		return this.pinata;
 	}
 

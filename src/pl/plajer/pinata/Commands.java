@@ -8,13 +8,13 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -23,7 +23,7 @@ import pl.plajer.pinata.pinataapi.PinataFactory;
 
 public class Commands implements CommandExecutor{
 
-	private Map<Sheep, PinataData> pinata = new HashMap<>();
+	private Map<Entity, PinataData> pinata = new HashMap<>();
 	private List<Player> users = new ArrayList<>();
 	private Main plugin;
 
@@ -170,15 +170,17 @@ public class Commands implements CommandExecutor{
 						}
 						if(p.hasPermission("pinata.admin.freeall")){
 							Location loc = p.getLocation().add(0, 7, 0);
-							Sheep sheep = p.getWorld().spawn(p.getLocation().add(0, 2, 0), Sheep.class);
-							PinataFactory.createPinata(loc, p, sheep, args[1]);
+							LivingEntity entity = (LivingEntity) p.getWorld().spawnEntity(p.getLocation().add(0, 2, 0), EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + args[1] + ".mob-type").toUpperCase()));
+							entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
+							PinataFactory.createPinata(loc, p, entity, args[1]);
 							return true;
-						} else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getInt("pinatas." + args[1] + ".cost")){
+						} else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost")){
 							Location loc = p.getLocation().add(0, 7, 0);
-							Sheep sheep = p.getWorld().spawn(p.getLocation().add(0, 2, 0), Sheep.class);
-							if(PinataFactory.createPinata(loc, p, sheep, args[1])){
+							LivingEntity entity = (LivingEntity) p.getWorld().spawnEntity(p.getLocation().add(0, 2, 0), EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + args[1] + ".mob-type").toUpperCase()));
+							entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
+							if(PinataFactory.createPinata(loc, p, entity, args[1])){
 								//Pinata created successfully, now we can withdraw $ from player.
-								plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getInt("pinatas." + args[1] + ".cost"));
+								plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost"));
 							}
 							return true;
 						} else{
@@ -271,8 +273,9 @@ public class Commands implements CommandExecutor{
 							return true;
 						}
 						Location loc = user.getLocation().add(0, 7, 0);
-						Sheep sheep = user.getWorld().spawn(user.getLocation().add(0, 2, 0), Sheep.class);
-						PinataFactory.createPinata(loc, user, sheep, args[1]);
+						LivingEntity entity = (LivingEntity) user.getWorld().spawnEntity(user.getLocation().add(0, 2, 0), EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + args[1] + ".mob-type").toUpperCase()));
+						entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
+						PinataFactory.createPinata(loc, user, entity, args[1]);
 						return true;
 					} else{
 						sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
@@ -336,7 +339,7 @@ public class Commands implements CommandExecutor{
 		return false;
 	}
 
-	public Map<Sheep, PinataData> getPinata(){
+	public Map<Entity, PinataData> getPinata(){
 		return pinata;
 	}
 

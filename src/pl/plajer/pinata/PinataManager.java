@@ -6,6 +6,8 @@ import java.util.logging.Level;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 
 public class PinataManager {
 
@@ -57,10 +59,24 @@ public class PinataManager {
 			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Crate-Time").replaceAll("%name%", pinata));
 			return false;
 		}
+		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".health")){
+			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Health").replaceAll("%name%", pinata));
+			return false;
+		}
 		try{
 			DyeColor.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase());
 		} catch (Exception e){
 			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator-Invalid-Color").replaceAll("%name%", pinata));
+			return false;
+		}
+		try{
+			EntityType e = EntityType.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".mob-type").toString().toUpperCase());
+			if(!e.isSpawnable()){
+				plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator-Invalid-Mob-Type").replaceAll("%name%", pinata));
+				return false;
+			}
+		} catch (Exception e){
+			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator-Invalid-Mob-Type").replaceAll("%name%", pinata));
 			return false;
 		}
 		final List<String> drops = plugin.getFileManager().getPinataConfig().getStringList("pinatas." + pinata + ".drops");

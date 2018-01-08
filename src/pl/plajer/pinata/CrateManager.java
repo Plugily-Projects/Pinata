@@ -38,10 +38,8 @@ public class CrateManager implements Listener {
 			FileConfiguration config = plugin.getFileManager().getCratesConfig();
 			for(String crate : pinata.getKeys(false)) {
 				Location crateLoc = new Location(Bukkit.getWorld(config.getString("crates." + crate + ".world")), config.getDouble("crates." + crate + ".x"), config.getDouble("crates." + crate + ".y"), config.getDouble("crates." + crate + ".z"));
-				if(crateLoc.getBlock().getType().equals(Material.CHEST)){
-					cratesLocations.put(crateLoc, crate);
-					plugin.getLogger().log(Level.INFO, "Loaded crate at location " + config.getString("crates." + crate + ".world") + " " + config.getDouble("crates." + crate + ".x") + " " + config.getDouble("crates." + crate + ".y") + " " + config.getDouble("crates." + crate + ".z"));
-				}
+				cratesLocations.put(crateLoc, crate);
+				plugin.getLogger().log(Level.INFO, "Loaded crate " + crate + " at location " + config.getString("crates." + crate + ".world") + " " + config.getDouble("crates." + crate + ".x") + " " + config.getDouble("crates." + crate + ".y") + " " + config.getDouble("crates." + crate + ".z"));
 			}
 		}
 	}
@@ -50,24 +48,11 @@ public class CrateManager implements Listener {
 	 * Holograms at crates locations
 	 */
 	public void hologramScheduler(){
-		Bukkit.getScheduler().runTaskTimer(plugin, new Runnable(){
-			@Override
-			public void run(){
-				for(Location l : cratesLocations.keySet()){
-					final Hologram holo = HologramsAPI.createHologram(plugin, l.add(0, 1.5, 0));
-					holo.appendTextLine(Utils.colorRawMessage("Hologram.Crate-Hologram").replaceAll("%name%", cratesLocations.get(l)));
-					new BukkitRunnable() {
-						int ticksRun;
-						@Override
-						public void run() {
-							ticksRun++;
-							if(ticksRun > plugin.getConfig().getDouble("hologram-refresh") * 20){
-								holo.delete();
-								cancel();
-							}
-						}
-					}.runTaskTimer(plugin, 1, 1);
-				}
+		Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+			for(Location l : cratesLocations.keySet()) {
+				Hologram holo = HologramsAPI.createHologram(plugin, l.clone().add(0, 1.5, 0));
+				holo.appendTextLine(Utils.colorRawMessage("Hologram.Crate-Hologram").replaceAll("%name%", cratesLocations.get(l)));
+				Bukkit.getScheduler().runTaskLater(plugin, () -> holo.delete(), (long) plugin.getConfig().getDouble("hologram-refresh") * 20);
 			}
 		}, (long) plugin.getConfig().getDouble("hologram-refresh") * 20, (long) plugin.getConfig().getDouble("hologram-refresh") * 20);
 	}
@@ -76,12 +61,9 @@ public class CrateManager implements Listener {
 	 * Particles at crates locations
 	 */
 	public void particleScheduler(){
-		Bukkit.getScheduler().runTaskTimer(plugin, new Runnable(){
-			@Override
-			public void run(){
-				for(Location l : cratesLocations.keySet()){
-					l.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 1);
-				}
+		Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+			for(Location l : cratesLocations.keySet()){
+				l.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 1);
 			}
 		}, (long) plugin.getConfig().getDouble("particle-refresh") * 20, (long) plugin.getConfig().getDouble("particle-refresh") * 20);
 	}
