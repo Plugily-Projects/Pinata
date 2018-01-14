@@ -171,13 +171,15 @@ public class Commands implements CommandExecutor{
 						if(p.hasPermission("pinata.admin.freeall")){
 							Location loc = p.getLocation().add(0, 7, 0);
 							LivingEntity entity = (LivingEntity) p.getWorld().spawnEntity(p.getLocation().add(0, 2, 0), EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + args[1] + ".mob-type").toUpperCase()));
-							entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
+							entity.setMaxHealth(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
+							entity.setHealth(entity.getMaxHealth());
 							PinataFactory.createPinata(loc, p, entity, args[1]);
 							return true;
 						} else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost")){
 							Location loc = p.getLocation().add(0, 7, 0);
 							LivingEntity entity = (LivingEntity) p.getWorld().spawnEntity(p.getLocation().add(0, 2, 0), EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + args[1] + ".mob-type").toUpperCase()));
-							entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
+							entity.setMaxHealth(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
+							entity.setHealth(entity.getMaxHealth());
 							if(PinataFactory.createPinata(loc, p, entity, args[1])){
 								//Pinata created successfully, now we can withdraw $ from player.
 								plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost"));
@@ -274,7 +276,8 @@ public class Commands implements CommandExecutor{
 						}
 						Location loc = user.getLocation().add(0, 7, 0);
 						LivingEntity entity = (LivingEntity) user.getWorld().spawnEntity(user.getLocation().add(0, 2, 0), EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + args[1] + ".mob-type").toUpperCase()));
-						entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
+						entity.setMaxHealth(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
+						entity.setHealth(entity.getMaxHealth());
 						PinataFactory.createPinata(loc, user, entity, args[1]);
 						return true;
 					} else{
