@@ -1,5 +1,5 @@
 name: Pinata
-version: 2.3.0.1
+version: 2.4.0
 author: Plajer
 description: Awesome pinata sheep mobs for your server!
 website: https://www.spigotmc.org/resources/pi%C3%B1ata-1-8-1-12.46655/
@@ -22,6 +22,7 @@ permissions:
       pinata.command.buy: true
       pinata.command.preview: true
       pinata.player.crate: true
+      pinata.player.sign: true
   pinata.command.*:
     description: Gives you all permissions for commands.
     children:
@@ -41,6 +42,8 @@ permissions:
       pinata.admin.crate.destory: true
       pinata.admin.crate.list: true
       pinata.admin.crate.set: true
+      pinata.admin.sign.set: true
+      pinata.admin.sign.destroy: true
   pinata.*:
     description: Gives you all permissions for every pinata command.
     children:

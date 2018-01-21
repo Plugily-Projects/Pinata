@@ -84,9 +84,11 @@ public class CrateManager implements Listener {
 							e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
 							return;
 						}
-						if(plugin.getDisabledWorlds().contains(e.getPlayer().getWorld().getName())){
-							e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
-							return;
+						if(!plugin.getConfig().getBoolean("disabled-worlds-exclusions.crates")) {
+							if(plugin.getDisabledWorlds().contains(e.getPlayer().getWorld().getName())) {
+								e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
+								return;
+							}
 						}
 						crateUsage.put(e.getPlayer(), e.getClickedBlock().getLocation());
 						Utils.createPinatasGUI("Menus.Crate-Menu.Inventory-Name", e.getPlayer());

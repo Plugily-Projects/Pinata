@@ -32,7 +32,7 @@ public class Commands implements CommandExecutor{
 		plugin.getCommand("pinata").setExecutor(this);
 	}
 
-	@Override
+    @Override
 	public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
 		if(command.getName().equalsIgnoreCase("pinata")){
 			if(sender.hasPermission("pinata.command")){
@@ -354,4 +354,8 @@ public class Commands implements CommandExecutor{
 	public List<Player> getUsers() {
 		return users;
 	}
+
+    public void setUsers(List<Player> users) {
+        this.users = users;
+    }
 }

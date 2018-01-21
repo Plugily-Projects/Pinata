@@ -1,5 +1,6 @@
 package pl.plajer.pinata;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -114,7 +115,11 @@ public class PinataListeners implements Listener {
 	public void onPinataDeath(final EntityDeathEvent e) {
 		if(plugin.getCommands().getPinata().get(e.getEntity()) != null) {
 			if(plugin.getCommands().getUsers().contains(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer())) {
-				plugin.getCommands().getUsers().remove(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer());
+                List<Player> users = new ArrayList<>();
+                users.addAll(plugin.getCommands().getUsers());
+                users.remove(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer());
+                plugin.getCommands().setUsers(users);
+				users.clear();
 			}
 			if(plugin.getConfig().getBoolean("halloween-mode")) {
 				e.getEntity().getWorld().strikeLightningEffect(e.getEntity().getLocation());

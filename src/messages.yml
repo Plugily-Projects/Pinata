@@ -5,6 +5,7 @@ Pinata:
     Specify-Name: "&6&lPinata &a>> &cPlease specify pinata name!"
     Not-Found: "&6&lPinata &a>> &cPinata not found!"
     Not-Own: "&6&lPinata &a>> &cThat's not your pinata!"
+    Buy-Error: "&6&lPinata &a>> &cAn error occurred! Please try again!"
     Create:
         Success: "&6&lPinata &a>> &aPinata &e%name% &asuccessfully created!"
         Fail: "&6&lPinata &a>> &cYou can't use pinata here!"
@@ -47,7 +48,6 @@ Pinata:
         Create-Success: "&6&lPinata &a>> &aCrate %name% created successfully!"
         Destroyed: "&6&lPinata &a>> &aCrate %name% destroyed!"
         Target-Block-Not-Chest: "&6&lPinata &a>> &cTarget block isn't chest!"
-        Buy-Error: "&6&lPinata &a>> &cAn error occurred! Please try again!"
         No-Permission: "&6&lPinata &a>> &cYou don't have permission to do this!"
         List: "&6&lPinata &a>> List of all available crates:"
         List-Empty: "&6&lPinata &a>> &cThere are no crates!"
@@ -75,8 +75,22 @@ Menus:
     Creator-Menu:
         Inventory-Name: "&lCreator menu"
 
+#Hologram above pinata crate
 Hologram:
     Crate-Hologram: "&aCrate &e%name%"
+
+#Signs module. Sign can be created starting with '[pinata]' at first line and 'all' or 'gui' or existing pinata name at second line
+Signs:
+    Invalid-Pinata: "&6&lPinata &a>> &cPinata at second line is invalid! Please use 'all' or 'gui' name to make it every pinata GUI sign"
+    Sign-Created: "&6&lPinata &a>> &aPinata sign successfully created!"
+    Sign-Destroyed: "&6&lPinata &a>> &aPinata sign destroyed!"
+    No-Permission: "&6&lPinata &a>> &cYou don't have permission to do that!"
+    Inventory-Name: "&lPinata signs menu"
+    Lines:
+        First: "&6Buy pinata"
+        Second-Specific-Pinata-Color: "&e"
+        Second-Every-Pinata: "&aClick for GUI"
+
 
 #Validator console messages.
 #You don't need to translate them because they don't show to your players :)
@@ -99,4 +113,4 @@ Other:
     Plugin-Up-To-Date: "&e[Pinata] There is plugin update! Your version: %old%, new version: %new%"
     Plugin-Update-Check-Fail: "&c[Pinata] Failed to check for update: %error%"
 
-File-Version-Do-Not-Edit: "6"
+File-Version-Do-Not-Edit: "7"

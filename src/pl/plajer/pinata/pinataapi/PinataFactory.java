@@ -39,7 +39,11 @@ public class PinataFactory implements Listener {
 		}
 		if(!(fenceLocation.getBlock().getType().equals(Material.AIR))){
 			player.sendMessage(Utils.colorRawMessage("Pinata.Create.Fail"));
-			pce.setCancelled(true);
+			entity.remove();
+			if(fenceLocation.getBlock().getType().equals(Material.FENCE)){
+				fenceLocation.getBlock().setType(Material.AIR);
+			}
+			return false;
 		}
 		player.sendMessage(Utils.colorRawMessage("Pinata.Create.Success").replaceAll("%name%", pinataName));
 		Main.getInstance().getCommands().getUsers().add(player);

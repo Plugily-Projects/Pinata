@@ -10,6 +10,12 @@ update-notify: true
 disabled-worlds:
 - 'cASe SenSItIve wORLD namE'
 
+#Exclusions of creating pinatas using crates or signs in disabled worlds
+#false = blocked, true = unlocked
+disabled-worlds-exclusions:
+  crates: false
+  signs: false
+
 #Requires Holographic Displays
 #Crate hologram refresh time.
 #Warning! Do not set this value to big because destroying crate cause hologram update in this refresh time
@@ -43,4 +49,4 @@ gun-item: iron_barding
 #Enable halloween special pinata effects?
 halloween-mode: false
 
-File-Version-Do-Not-Edit: "2"
+File-Version-Do-Not-Edit: "3"

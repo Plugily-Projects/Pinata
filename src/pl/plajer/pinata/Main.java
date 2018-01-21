@@ -24,14 +24,15 @@ public class Main extends JavaPlugin {
 	private Commands commands;
 	private FileManager fileManager;
 	private PinataManager pinataManager;
+	private SignManager signManager;
 
 	private List<String> disabledWorlds = new ArrayList<>();
 	private Economy econ = null;
 	private Boolean usingVault;
 	private Boolean usingCrackShot;
 	private Boolean usingHolograms;
-	private final int MESSAGES_FILE_VERSION = 6;
-	private final int CONFIG_FILE_VERSION = 2;
+	private final int MESSAGES_FILE_VERSION = 7;
+	private final int CONFIG_FILE_VERSION = 3;
 	private static Main instance;
 
 	@Override
@@ -45,6 +46,7 @@ public class Main extends JavaPlugin {
 		new MenuHandler(this);
 		new PinataListeners(this);
 		pinataManager = new PinataManager(this);
+		signManager = new SignManager(this);
 		saveDefaultConfig();
 		fileManager.saveDefaultMessagesConfig();
 		fileManager.reloadMessagesConfig();
@@ -129,6 +131,10 @@ public class Main extends JavaPlugin {
 
 	public PinataManager getPinataManager() {
 		return pinataManager;
+	}
+
+	public SignManager getSignManager() {
+		return signManager;
 	}
 
 	public Economy getEco() {
