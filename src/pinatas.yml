@@ -12,6 +12,7 @@
 #     crate-time: <seconds> //how long can pinata hang above crate when it's created (to avoid trolls that can buy pinata and don't break it)
 #     health: <number> //how many hearts pinata will have
 #     mob-type: <entity> //all valid entities are here: https://minecraft.gamepedia.com/Mob
+#     drop-type: <death/punch> //when we should drop pinata drops defined below?
 #     drops: //don't edit this line
 #       //Valid item types (color codes '&' supported) ('%player%' placeholder supported)
 #       - item;<name of item>;<amount>;<name of item and hologram>/<lore>/<next lore>...;<chance of drop>
@@ -36,6 +37,7 @@ pinatas:
     crate-time: 10
     health: 2.5
     mob-type: sheep
+    drop-type: death
     drops:
       - item;grass;2;&aGrass block/&aIt contains lore!/&3&lEven more lines!!!;20
       - item;bread;1;&aBread;80

@@ -7,7 +7,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 
 public class PinataManager {
 
@@ -31,14 +30,13 @@ public class PinataManager {
 				pinataList.add(key);
 				ArrayList<String> list = new ArrayList<>();
 				final List<String> drops = plugin.getFileManager().getPinataConfig().getStringList("pinatas." + key + ".drops");
-				for(int i = 0; i < drops.size(); i++)
-					list.add(drops.get(i));
+                for(String drop : drops) list.add(drop);
 				pinataDrops.put(key, list);
 			}
 		}
 	}
 
-	public boolean validatePinata(String pinata){
+	private boolean validatePinata(String pinata){
 		if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".permission")){
 			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Permission").replaceAll("%name%", pinata));
 			return false;
@@ -63,6 +61,10 @@ public class PinataManager {
 			plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Health").replaceAll("%name%", pinata));
 			return false;
 		}
+        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".drop-type")){
+            plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Drop-Type").replaceAll("%name%", pinata));
+            return false;
+        }
 		try{
 			DyeColor.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase());
 		} catch (Exception e){

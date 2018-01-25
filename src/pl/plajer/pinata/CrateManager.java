@@ -16,10 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 public class CrateManager implements Listener {
 
@@ -42,19 +38,6 @@ public class CrateManager implements Listener {
 				plugin.getLogger().log(Level.INFO, "Loaded crate " + crate + " at location " + config.getString("crates." + crate + ".world") + " " + config.getDouble("crates." + crate + ".x") + " " + config.getDouble("crates." + crate + ".y") + " " + config.getDouble("crates." + crate + ".z"));
 			}
 		}
-	}
-
-	/**
-	 * Holograms at crates locations
-	 */
-	public void hologramScheduler(){
-		Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-			for(Location l : cratesLocations.keySet()) {
-				Hologram holo = HologramsAPI.createHologram(plugin, l.clone().add(0.5, 1.5, 0.5));
-				holo.appendTextLine(Utils.colorRawMessage("Hologram.Crate-Hologram").replaceAll("%name%", cratesLocations.get(l)));
-				Bukkit.getScheduler().runTaskLater(plugin, () -> holo.delete(), (long) plugin.getConfig().getDouble("hologram-refresh") * 20);
-			}
-		}, (long) plugin.getConfig().getDouble("hologram-refresh") * 20, (long) plugin.getConfig().getDouble("hologram-refresh") * 20);
 	}
 
 	/**

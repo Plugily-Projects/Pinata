@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.plajer.pinata.pinataapi.PinataFactory;
 
-public class MenuHandler implements Listener {
+class MenuHandler implements Listener {
 
 	private Main plugin;
 

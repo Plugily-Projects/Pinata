@@ -16,9 +16,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SignManager implements Listener {
@@ -46,7 +44,6 @@ public class SignManager implements Listener {
 					e.setLine(1, Utils.colorRawMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
 				} else{
 					e.getPlayer().sendMessage(Utils.colorRawMessage("Signs.Invalid-Pinata"));
-					return;
 				}
 			}
 		}

@@ -185,16 +185,16 @@ public class FileManager {
 			}
 			try {
 				c.save(new File(plugin.getDataFolder(), file));
-			} catch (IOException e) {}
+			} catch (IOException ignored) {}
 		}
 	}
 
-	public HashMap<String, Object> getConfigVals(String file) {
+	private HashMap<String, Object> getConfigVals(String file) {
 		HashMap<String, Object> var = new HashMap<>();
 		YamlConfiguration config = new YamlConfiguration();
 		try {
 			config.loadFromString(stringFromInputStream(Main.class.getResourceAsStream("/" + file)));
-		} catch (InvalidConfigurationException e) {}
+		} catch (InvalidConfigurationException ignored) {}
 		for (String key : config.getKeys(false)) {
 			var.put(key, config.get(key));
 		}
@@ -202,7 +202,7 @@ public class FileManager {
 	}
 
 	@SuppressWarnings("resource")
-	public String stringFromInputStream(InputStream in) {
+    private String stringFromInputStream(InputStream in) {
 		return new Scanner(in).useDelimiter("\\A").next();
 	}
 

@@ -17,7 +17,7 @@ public class UpdateChecker {
 		return current.compareTo(newVers) < 0;
 	}
 
-	public static void checkUpdate(String currentVersion) throws Exception {
+	public static void checkUpdate(String currentVersion) {
 		String version = getVersion(46655);
 		if (checkHigher(currentVersion, version))
 			latestVersion = version;

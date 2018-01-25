@@ -106,6 +106,7 @@ Validator:
     Invalid-Color: "Color of pinata %name% isn't valid!"
     Invalid-Crate-Time: "Crate time of pinata %name% isn't set!"
     Invalid-Health: "Health of pinata %name% is invalid!"
+    Invalid-Drop-Type: "Drop type of pinata %name% is invalid!"
     Invalid-Mob-Type: "Mob of pinata %name% is invalid!"
     Vault-Abandoned: "Pinata %name% doesn't use Vault! (use value -1 to prevent pinata from buying)"
 
@@ -113,4 +114,4 @@ Other:
     Plugin-Up-To-Date: "&e[Pinata] There is plugin update! Your version: %old%, new version: %new%"
     Plugin-Update-Check-Fail: "&c[Pinata] Failed to check for update: %error%"
 
-File-Version-Do-Not-Edit: "7"
+File-Version-Do-Not-Edit: "8"

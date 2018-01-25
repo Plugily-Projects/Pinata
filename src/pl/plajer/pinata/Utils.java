@@ -5,11 +5,15 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.plajer.pinata.pinataapi.PinataFactory;
 
 public class Utils {
 
@@ -20,6 +24,14 @@ public class Utils {
 	public static String colorMessage(String message) {
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}
+
+	public static boolean createPinataAtPlayer(Player p, Location l, String pinataName){
+        Location loc = l.clone().add(0, 7, 0);
+        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + pinataName + ".mob-type").toUpperCase()));
+        entity.setMaxHealth(Main.getInstance().getFileManager().getPinataConfig().getDouble("pinatas." + pinataName + ".health"));
+        entity.setHealth(entity.getMaxHealth());
+        return PinataFactory.createPinata(loc, p, entity, pinataName);
+    }
 
 	public static void createPinatasGUI(String name, Player p) {
 		int rows = 1;

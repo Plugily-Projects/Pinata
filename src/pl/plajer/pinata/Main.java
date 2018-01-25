@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -31,7 +28,7 @@ public class Main extends JavaPlugin {
 	private Boolean usingVault;
 	private Boolean usingCrackShot;
 	private Boolean usingHolograms;
-	private final int MESSAGES_FILE_VERSION = 7;
+	private final int MESSAGES_FILE_VERSION = 8;
 	private final int CONFIG_FILE_VERSION = 3;
 	private static Main instance;
 
@@ -50,6 +47,7 @@ public class Main extends JavaPlugin {
 		saveDefaultConfig();
 		fileManager.saveDefaultMessagesConfig();
 		fileManager.reloadMessagesConfig();
+        setupDependencies();
 		if(!fileManager.getMessagesConfig().isSet("File-Version-Do-Not-Edit") || !fileManager.getMessagesConfig().get("File-Version-Do-Not-Edit").equals(MESSAGES_FILE_VERSION)) {
 			getLogger().info("Your messages file is outdated! Updating...");
 			fileManager.updateConfig("messages.yml");
@@ -74,11 +72,10 @@ public class Main extends JavaPlugin {
 		fileManager.reloadPinataConfig();
 		fileManager.reloadMessagesConfig();
 		crateManager.loadCrates();
-		setupDependencies();
 		pinataManager.loadPinatas();
 		crateManager.particleScheduler();
 		if(usingHolograms){
-			crateManager.hologramScheduler();
+			hologramScheduler();
 		}
 		String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
 		if (this.getConfig().getBoolean("update-notify")){
@@ -184,6 +181,20 @@ public class Main extends JavaPlugin {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Enabling holograms support.");
 		}
 	}
+
+    /**
+     * Holograms at crates locations
+     * Moved to Main class because it throws an error with registering events in CrateManager class
+     */
+    private void hologramScheduler(){
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            for(Location l : crateManager.getCratesLocations().keySet()) {
+                Hologram holo = HologramsAPI.createHologram(this, l.clone().add(0.5, 1.5, 0.5));
+                holo.appendTextLine(Utils.colorRawMessage("Hologram.Crate-Hologram").replaceAll("%name%", crateManager.getCratesLocations().get(l)));
+                Bukkit.getScheduler().runTaskLater(this, () -> holo.delete(), (long) getConfig().getDouble("hologram-refresh") * 20);
+            }
+        }, (long) this.getConfig().getDouble("hologram-refresh") * 20, (long) this.getConfig().getDouble("hologram-refresh") * 20);
+    }
 
 	private boolean setupCrackShot() {
 		if (getServer().getPluginManager().getPlugin("CrackShot") == null) {

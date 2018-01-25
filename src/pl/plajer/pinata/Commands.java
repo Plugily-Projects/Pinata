@@ -8,7 +8,6 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,8 +17,6 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import pl.plajer.pinata.pinataapi.PinataFactory;
 
 public class Commands implements CommandExecutor{
 
@@ -169,21 +166,12 @@ public class Commands implements CommandExecutor{
 							}
 						}
 						if(p.hasPermission("pinata.admin.freeall")){
-							Location loc = p.getLocation().add(0, 7, 0);
-							LivingEntity entity = (LivingEntity) p.getWorld().spawnEntity(p.getLocation().add(0, 2, 0), EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + args[1] + ".mob-type").toUpperCase()));
-							entity.setMaxHealth(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
-							entity.setHealth(entity.getMaxHealth());
-							PinataFactory.createPinata(loc, p, entity, args[1]);
+							Utils.createPinataAtPlayer(p, p.getLocation(), args[1]);
 							return true;
 						} else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost")){
-							Location loc = p.getLocation().add(0, 7, 0);
-							LivingEntity entity = (LivingEntity) p.getWorld().spawnEntity(p.getLocation().add(0, 2, 0), EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + args[1] + ".mob-type").toUpperCase()));
-							entity.setMaxHealth(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
-							entity.setHealth(entity.getMaxHealth());
-							if(PinataFactory.createPinata(loc, p, entity, args[1])){
-								//Pinata created successfully, now we can withdraw $ from player.
-								plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost"));
-							}
+							if(Utils.createPinataAtPlayer(p, p.getLocation(), args[1])){
+                                plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost"));
+                            }
 							return true;
 						} else{
 							sender.sendMessage(Utils.colorRawMessage("Pinata.Selling.Cannot-Afford"));
@@ -274,11 +262,7 @@ public class Commands implements CommandExecutor{
 							sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
 							return true;
 						}
-						Location loc = user.getLocation().add(0, 7, 0);
-						LivingEntity entity = (LivingEntity) user.getWorld().spawnEntity(user.getLocation().add(0, 2, 0), EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + args[1] + ".mob-type").toUpperCase()));
-						entity.setMaxHealth(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".health"));
-						entity.setHealth(entity.getMaxHealth());
-						PinataFactory.createPinata(loc, user, entity, args[1]);
+                        Utils.createPinataAtPlayer(user, user.getLocation(), args[1]);
 						return true;
 					} else{
 						sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
