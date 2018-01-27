@@ -118,6 +118,10 @@ class PinataListeners implements Listener {
         if(!plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".drop-type").toString().toLowerCase().equals("punch")) {
             return;
         }
+        if(!plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager()) && plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".type").equals("private")) {
+            e.setCancelled(true);
+            return;
+        }
         final int timer = plugin.getFileManager().getPinataConfig().getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
         Random rand = new Random();
         Player p = (Player) e.getDamager();
