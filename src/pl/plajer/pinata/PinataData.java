@@ -6,31 +6,31 @@ import org.bukkit.entity.Player;
 
 /**
  * @author Plajer
- *
+ * <p>
  * Created at 28 lis 2017
  */
 public class PinataData {
-	
-	private Player player;
-	private Location fence;
-	private LeashHitch leash;
 
-	public PinataData(Player p, Location f, LeashHitch l) {
-		player = p;
-		fence = f;
-		leash = l;
-	}
+    private Player player;
+    private Location fence;
+    private LeashHitch leash;
 
-	public Player getPlayer() {
-		return player;
-	}
-	
-	public Location getBuilder() {
-		return fence;
-	}
-	
-	public LeashHitch getLeash() {
-		return leash;
-	}
+    public PinataData(Player p, Location f, LeashHitch l) {
+        player = p;
+        fence = f;
+        leash = l;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Location getBuilder() {
+        return fence;
+    }
+
+    public LeashHitch getLeash() {
+        return leash;
+    }
 
 }

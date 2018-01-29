@@ -13,55 +13,56 @@ import org.bukkit.inventory.ItemStack;
  */
 public class PinataDeathEvent extends Event {
 
-	private final Player killer;
-	private final Entity pinata;
-	private final String name;
-	private final ArrayList<ItemStack[]> drops;
-	private static final HandlerList HANDLERS = new HandlerList();
+    private final Player killer;
+    private final Entity pinata;
+    private final String name;
+    private final ArrayList<ItemStack[]> drops;
+    private static final HandlerList HANDLERS = new HandlerList();
 
-	@Override
-	public HandlerList getHandlers() {
-		return HANDLERS;
-	}
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLERS;
+    }
 
-	public static HandlerList getHandlerList() {
-		return HANDLERS;
-	}
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
 
-	public PinataDeathEvent(Player killer, Entity pinata, String name, ArrayList<ItemStack[]> drops) {
-		this.killer = killer;
-		this.pinata = pinata;
-		this.name = name;
-		this.drops = drops;
-	}
+    public PinataDeathEvent(Player killer, Entity pinata, String name, ArrayList<ItemStack[]> drops) {
+        this.killer = killer;
+        this.pinata = pinata;
+        this.name = name;
+        this.drops = drops;
+    }
 
-	/**
-	 * @return killer of pinata.
-	 */
-	public Player getKiller() {
-		return this.killer;
-	}
+    /**
+     * @return killer of pinata.
+     */
+    public Player getKiller() {
+        return this.killer;
+    }
 
-	/**
-	 * @return killed pinata.
-	 */
-	public Entity getPinata() {
-		return this.pinata;
-	}
+    /**
+     * @return killed pinata.
+     */
+    public Entity getPinata() {
+        return this.pinata;
+    }
 
-	/**
-	 * @return killed pinata name.
-	 */
-	public String getPinataName() {
-		return this.name;
-	}
+    /**
+     * @return killed pinata name.
+     */
+    public String getPinataName() {
+        return this.name;
+    }
 
-	/**
-	 * <b>Warning! getDrops() doesn't return command, gun, money drops! TODO in future versions.</b>
-	 * @return drops from pinata.
-	 * @since 2.1.3
-	 */
-	public ArrayList<ItemStack[]> getDrops(){
-		return this.drops;
-	}
+    /**
+     * <b>Warning! getDrops() doesn't return command, gun, money drops! TODO in future versions.</b>
+     *
+     * @return drops from pinata.
+     * @since 2.1.3
+     */
+    public ArrayList<ItemStack[]> getDrops() {
+        return this.drops;
+    }
 }

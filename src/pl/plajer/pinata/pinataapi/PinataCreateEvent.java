@@ -11,54 +11,54 @@ import org.bukkit.event.HandlerList;
  */
 public class PinataCreateEvent extends Event implements Cancellable {
 
-	private final Player creator;
-	private final Entity pinata;
-	private final String name;
-	private static final HandlerList HANDLERS = new HandlerList();
-	private boolean isCancelled;
+    private final Player creator;
+    private final Entity pinata;
+    private final String name;
+    private static final HandlerList HANDLERS = new HandlerList();
+    private boolean isCancelled;
 
-	@Override
-	public HandlerList getHandlers() {
-		return HANDLERS;
-	}
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLERS;
+    }
 
-	public static HandlerList getHandlerList() {
-		return HANDLERS;
-	}
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
 
-	public boolean isCancelled() {
-		return this.isCancelled;
-	}
+    public boolean isCancelled() {
+        return this.isCancelled;
+    }
 
-	public void setCancelled(boolean isCancelled) {
-		this.isCancelled = isCancelled;
-	}
+    public void setCancelled(boolean isCancelled) {
+        this.isCancelled = isCancelled;
+    }
 
-	public PinataCreateEvent(Player creator, Entity pinata, String pinataName) {
-		this.creator = creator;
-		this.pinata = pinata;
-		this.name = pinataName;
-	}
+    public PinataCreateEvent(Player creator, Entity pinata, String pinataName) {
+        this.creator = creator;
+        this.pinata = pinata;
+        this.name = pinataName;
+    }
 
-	/**
-	 * @return creator of pinata.
-	 */
-	public Player getCreator() {
-		return this.creator;
-	}
+    /**
+     * @return creator of pinata.
+     */
+    public Player getCreator() {
+        return this.creator;
+    }
 
-	/**
-	 * @return event pinata.
-	 */
-	public Entity getPinata() {
-		return this.pinata;
-	}
+    /**
+     * @return event pinata.
+     */
+    public Entity getPinata() {
+        return this.pinata;
+    }
 
-	/**
-	 * @return event pinata name.
-	 */
-	public String getPinataName() {
-		return this.name;
-	}
+    /**
+     * @return event pinata name.
+     */
+    public String getPinataName() {
+        return this.name;
+    }
 
 }

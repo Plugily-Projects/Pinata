@@ -28,6 +28,8 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.shampaggon.crackshot.CSUtility;
 
 import pl.plajer.pinata.pinataapi.PinataDeathEvent;
+import pl.plajer.pinata.utils.UpdateChecker;
+import pl.plajer.pinata.utils.Utils;
 
 class PinataListeners implements Listener {
 
@@ -59,7 +61,7 @@ class PinataListeners implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if(! e.getPlayer().hasPermission("pinata.admin.notify")) {
+        if(!e.getPlayer().hasPermission("pinata.admin.notify")) {
             return;
         }
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
@@ -88,7 +90,7 @@ class PinataListeners implements Listener {
                 } else /* the type is private */ {
                     if(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager())) {
                         if(plugin.getConfig().getBoolean("halloween-mode")) {
-                            if(! Bukkit.getServer().getVersion().contains("1.8")) {
+                            if(!Bukkit.getServer().getVersion().contains("1.8")) {
                                 e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_GHAST_HURT, 1, 1);
                             }
                         }
@@ -182,7 +184,8 @@ class PinataListeners implements Listener {
                             shot.giveWeapon(p, parts[1], 1);
                             item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(plugin.getConfig().getString("gun-item").toUpperCase())));
                             break;
-                        default: break;
+                        default:
+                            break;
                     }
                     item.setPickupDelay(1000);
                     final Item finalItem = item;
@@ -333,7 +336,8 @@ class PinataListeners implements Listener {
                             shot.giveWeapon(p, parts[1], 1);
                             item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(plugin.getConfig().getString("gun-item").toUpperCase())));
                             break;
-                        default:  break;
+                        default:
+                            break;
                     }
                     item.setPickupDelay(1000);
                     final Item finalItem = item;
