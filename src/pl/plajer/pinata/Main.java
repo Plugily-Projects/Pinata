@@ -14,6 +14,7 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import net.milkbowl.vault.economy.Economy;
+import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
 
