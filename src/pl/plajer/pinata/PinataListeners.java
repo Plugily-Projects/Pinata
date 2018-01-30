@@ -1,9 +1,8 @@
 package pl.plajer.pinata;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.shampaggon.crackshot.CSUtility;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -22,14 +21,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.shampaggon.crackshot.CSUtility;
-
 import pl.plajer.pinata.pinataapi.PinataDeathEvent;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 class PinataListeners implements Listener {
 

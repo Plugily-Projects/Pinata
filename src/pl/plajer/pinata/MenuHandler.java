@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.Utils;
 

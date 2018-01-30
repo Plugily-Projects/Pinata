@@ -1,9 +1,5 @@
 package pl.plajer.pinata;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -17,6 +13,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.plajer.pinata.utils.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
 
 public class CrateManager implements Listener {
 
@@ -54,31 +54,25 @@ public class CrateManager implements Listener {
 
     @EventHandler
     public void onCrateClick(PlayerInteractEvent e) {
-        if(!(e.getClickedBlock() == null) && !(e.getClickedBlock().getType() == null) && e.getClickedBlock().getType().equals(Material.CHEST) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            ConfigurationSection csp = plugin.getFileManager().getCratesConfig().getConfigurationSection("crates");
-            if(csp != null) {
-                for(String key : csp.getKeys(false)) {
-                    if(cratesLocations.containsKey(e.getClickedBlock().getLocation())) {
-                        e.setCancelled(true);
-                        if(!plugin.getVaultUse()) {
-                            e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
-                            return;
-                        }
-                        if(!e.getPlayer().hasPermission("pinata.player.crate")) {
-                            e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
-                            return;
-                        }
-                        if(!plugin.getConfig().getBoolean("disabled-worlds-exclusions.crates")) {
-                            if(plugin.getDisabledWorlds().contains(e.getPlayer().getWorld().getName())) {
-                                e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
-                                return;
-                            }
-                        }
-                        crateUsage.put(e.getPlayer(), e.getClickedBlock().getLocation());
-                        Utils.createPinatasGUI("Menus.Crate-Menu.Inventory-Name", e.getPlayer());
+        if(e.getClickedBlock() != null && e.getClickedBlock().getType() != null && e.getClickedBlock().getType().equals(Material.CHEST) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if(cratesLocations.containsKey(e.getClickedBlock().getLocation())) {
+                e.setCancelled(true);
+                if(!plugin.getVaultUse()) {
+                    e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
+                    return;
+                }
+                if(!e.getPlayer().hasPermission("pinata.player.crate")) {
+                    e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
+                    return;
+                }
+                if(!plugin.getConfig().getBoolean("disabled-worlds-exclusions.crates")) {
+                    if(plugin.getDisabledWorlds().contains(e.getPlayer().getWorld().getName())) {
+                        e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
                         return;
                     }
                 }
+                crateUsage.put(e.getPlayer(), e.getClickedBlock().getLocation());
+                Utils.createPinatasGUI("Menus.Crate-Menu.Inventory-Name", e.getPlayer());
             }
         }
     }

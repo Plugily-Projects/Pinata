@@ -1,10 +1,5 @@
 package pl.plajer.pinata;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,12 +8,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Commands implements CommandExecutor {
 
@@ -73,7 +74,7 @@ public class Commands implements CommandExecutor {
                     float trick = plugin.getPinataManager().getPinataDrop().get(args[1]).size() / 9;
                     //Using this little "trick" with casting you lose numbers after decimal point
                     //and modulo will check if rows are enough to hold drops :>
-                    if(!((int) trick % 9 == 0)) {
+                    if((int) trick % 9 != 0) {
                         rows++;
                     }
                     Inventory previewMenu = Bukkit.createInventory(null, rows * 9, Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"));
@@ -234,7 +235,7 @@ public class Commands implements CommandExecutor {
                         }
                         Player user;
                         if(sender instanceof ConsoleCommandSender) {
-                            if(!(args.length == 3)) {
+                            if(args.length != 3) {
                                 sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Console-Specify-Player"));
                                 return true;
                             }
@@ -250,7 +251,7 @@ public class Commands implements CommandExecutor {
                                 sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
                                 return true;
                             }
-                            if(!(args.length == 3)) {
+                            if(args.length != 3) {
                                 user = (Player) sender;
                             } else {
                                 if(Bukkit.getPlayer(args[2]) != null) {
@@ -277,7 +278,7 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
                         return true;
                     }
-                    if(!(args.length == 2)) {
+                    if(args.length != 2) {
                         sender.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Specify-Name"));
                         return true;
                     }

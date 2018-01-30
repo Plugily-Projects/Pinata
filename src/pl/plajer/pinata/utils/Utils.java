@@ -1,8 +1,5 @@
 package pl.plajer.pinata.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -15,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinataapi.PinataFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
@@ -37,7 +37,7 @@ public class Utils {
     public static void createPinatasGUI(String name, Player p) {
         int rows = 1;
         float trick = Main.getInstance().getPinataManager().getPinataList().size() / 9;
-        if(!((int) trick % 9 == 0)) {
+        if((int) trick % 9 != 0) {
             rows++;
         }
         Inventory pinatasMenu = Bukkit.createInventory(null, rows * 9, Utils.colorRawMessage(name));

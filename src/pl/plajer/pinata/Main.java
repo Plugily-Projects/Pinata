@@ -1,22 +1,20 @@
 package pl.plajer.pinata;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-
-import net.milkbowl.vault.economy.Economy;
 import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 

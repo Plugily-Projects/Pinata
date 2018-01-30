@@ -112,6 +112,6 @@ Validator:
 
 Other:
     Plugin-Up-To-Date: "&e[Pinata] There is plugin update! Your version: %old%, new version: %new%"
-    Plugin-Update-Check-Fail: "&c[Pinata] Failed to check for update: %error%"
+    Plugin-Update-Check-Failed: "&c[Pinata] Failed to check for update: %error%"
 
 File-Version-Do-Not-Edit: "8"

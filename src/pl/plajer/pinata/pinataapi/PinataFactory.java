@@ -8,7 +8,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.PinataData;
 import pl.plajer.pinata.utils.Utils;
