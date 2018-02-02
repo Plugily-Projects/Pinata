@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  */
 public class PinataCreateEvent extends Event implements Cancellable {
 
-    private final Player creator;
+    private Player creator = null;
     private final Entity pinata;
     private final String name;
     private static final HandlerList HANDLERS = new HandlerList();
@@ -40,8 +40,14 @@ public class PinataCreateEvent extends Event implements Cancellable {
         this.name = pinataName;
     }
 
+    public PinataCreateEvent(Entity pinata, String pinataName) {
+        this.pinata = pinata;
+        this.name = pinataName;
+    }
+
     /**
      * @return creator of pinata.
+     * @throws NullPointerException when pinata is created without player participation.
      */
     public Player getCreator() {
         return this.creator;

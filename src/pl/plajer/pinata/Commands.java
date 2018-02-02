@@ -3,23 +3,24 @@ package pl.plajer.pinata;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Commands implements CommandExecutor {
 
@@ -229,6 +230,49 @@ public class Commands implements CommandExecutor {
                 }
                 if(args[0].equalsIgnoreCase("create")) {
                     if(sender.hasPermission("pinata.admin.create")) {
+                        if(args.length == 6) {
+                            //custom location is used
+                            try {
+                                Random r = new Random();
+                                World world = Bukkit.getWorld(args[1]);
+                                int x, y, z;
+                                if(args[2].contains("~")) {
+                                    String[] rand = args[2].split("~");
+                                    Integer randomNum = r.nextInt(Integer.parseInt(rand[1]) - Integer.parseInt(rand[0]));
+                                    x = Integer.parseInt(rand[0] + randomNum);
+                                } else {
+                                    x = Integer.parseInt(args[2]);
+                                }
+                                if(args[3].contains("~")) {
+                                    String[] rand = args[3].split("~");
+                                    Integer randomNum = r.nextInt(Integer.parseInt(rand[1]) - Integer.parseInt(rand[0]));
+                                    y = Integer.parseInt(rand[0] + randomNum);
+                                } else {
+                                    y = Integer.parseInt(args[3]);
+                                }
+                                if(args[4].contains("~")) {
+                                    String[] rand = args[4].split("~");
+                                    Integer randomNum = r.nextInt(Integer.parseInt(rand[1]) - Integer.parseInt(rand[0]));
+                                    z = Integer.parseInt(rand[0] + randomNum);
+                                } else {
+                                    z = Integer.parseInt(args[4]);
+                                }
+                                if(!plugin.getPinataManager().getPinataList().contains(args[5])) {
+                                    sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
+                                    return true;
+                                }
+                                Location l = new Location(world, x, y, z);
+                                LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + args[5] + ".mob-type").toUpperCase()));
+                                entity.setMaxHealth(Main.getInstance().getFileManager().getPinataConfig().getDouble("pinatas." + args[5] + ".health"));
+                                entity.setHealth(entity.getMaxHealth());
+                                PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, args[5]);
+                                sender.sendMessage(Utils.colorRawMessage("Pinata.Create.Success").replaceAll("%name%", args[5]));
+                                return true;
+                            } catch(Exception e) {
+                                sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Custom-Location-Create-Error"));
+                                return true;
+                            }
+                        }
                         if(args.length == 1) {
                             sender.sendMessage(Utils.colorRawMessage("Pinata.Specify-Name"));
                             return true;

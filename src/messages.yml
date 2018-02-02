@@ -20,6 +20,7 @@ Pinata:
         Player-Not-Found: "&6&lPinata &a>> &cThat player isn't online!"
         Console-Specify-Player: "&cPlease specify player name!"
         Vault-Not-Detected: "&6&lPinata &a>> &cVault not detected! Aborting!"
+        Custom-Location-Create-Error: "&6&lPinata &a>> &cSomething went wrong! Make sure you've set valid values: &eworld, x, y, z, pinata name&c!"
         Help-Command:
             Header: "&8&m===========[&r &9&lP&a&li&c&ln&e&la&3&lt&b&la&5&ls &8&m]==========="
             Description: " &a/pinata create &6- Create existing pinata (admin command)\n
@@ -114,4 +115,4 @@ Other:
     Plugin-Up-To-Date: "&e[Pinata] There is plugin update! Your version: %old%, new version: %new%"
     Plugin-Update-Check-Failed: "&c[Pinata] Failed to check for update: %error%"
 
-File-Version-Do-Not-Edit: "8"
+File-Version-Do-Not-Edit: 9

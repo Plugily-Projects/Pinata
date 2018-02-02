@@ -74,4 +74,51 @@ public class PinataFactory implements Listener {
         return true;
     }
 
+    /**
+     * Creates pinata at specified location using already spawned entity, name of pinata required.
+     *
+     * @param fenceLocation location where to spawn pinata
+     * @param entity        entity that will be transformed to pinata
+     * @param pinataName    name of pinata from pinatas.yml
+     * @return <b>true</b> if creation succeed, <b>false</b> if creation couldn't be completed
+     */
+    public static boolean createPinata(final Location fenceLocation, final LivingEntity entity, final String pinataName) {
+        PinataCreateEvent pce = new PinataCreateEvent(entity, pinataName);
+        Bukkit.getPluginManager().callEvent(pce);
+        if(pce.isCancelled()) {
+            entity.remove();
+            if(fenceLocation.getBlock().getType().equals(Material.FENCE)) {
+                fenceLocation.getBlock().setType(Material.AIR);
+            }
+            return false;
+        }
+        if(!(fenceLocation.getBlock().getType().equals(Material.AIR))) {
+            entity.remove();
+            if(fenceLocation.getBlock().getType().equals(Material.FENCE)) {
+                fenceLocation.getBlock().setType(Material.AIR);
+            }
+            return false;
+        }
+        //Max height check is to avoid problems with different server specifications
+        Location safefence = new Location(fenceLocation.getWorld(), 3, fenceLocation.getWorld().getMaxHeight() - 1, 2);
+        Location safestone = new Location(fenceLocation.getWorld(), 4, fenceLocation.getWorld().getMaxHeight() - 1, 2);
+        Material blocksafe = safefence.getBlock().getType();
+        safefence.getBlock().setType(Material.FENCE);
+        safestone.getBlock().setType(Material.STONE);
+        final LeashHitch hitch = (LeashHitch) safefence.getWorld().spawnEntity(safefence, EntityType.LEASH_HITCH);
+        safestone.getBlock().setType(Material.AIR);
+        fenceLocation.getBlock().setType(Material.FENCE);
+        hitch.teleport(fenceLocation);
+        safefence.getBlock().setType(blocksafe);
+        Main.getInstance().getCommands().getPinata().put(entity, new PinataData(fenceLocation, hitch));
+        entity.setCustomName(pinataName);
+        if(entity instanceof Sheep) {
+            ((Sheep) entity).setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataName + ".color").toString().toUpperCase()));
+        }
+        entity.setLeashHolder(hitch);
+        //Scheduler to avoid graphical glitch
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> entity.setLeashHolder(hitch), 20);
+        return true;
+    }
+
 }

@@ -81,6 +81,12 @@ class PinataListeners implements Listener {
     public void onPinataDamage(EntityDamageByEntityEvent e) {
         if(plugin.getPinataManager().getPinataList().contains(e.getEntity().getCustomName())) {
             if(plugin.getCommands().getPinata().get(e.getEntity()) != null) {
+                if(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() == null) {
+                    //the type MUST be public, because pinata creator is not assigned
+                    e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
+                    e.setCancelled(false);
+                    return;
+                }
                 if(plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".type").equals("public")) {
                     e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
                     //override World Guard blocking
@@ -118,9 +124,12 @@ class PinataListeners implements Listener {
         if(!plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".drop-type").toString().toLowerCase().equals("punch")) {
             return;
         }
-        if(!plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager()) && plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".type").equals("private")) {
-            e.setCancelled(true);
-            return;
+        if(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() != null) {
+            //MUST be public is player is not assigned
+            if(!plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager()) && plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".type").equals("private")) {
+                e.setCancelled(true);
+                return;
+            }
         }
         final int timer = plugin.getFileManager().getPinataConfig().getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
         Random rand = new Random();
@@ -220,11 +229,13 @@ class PinataListeners implements Listener {
         if(plugin.getCommands().getPinata().get(e.getEntity()) == null) {
             return;
         }
-        if(plugin.getCommands().getUsers().contains(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer())) {
-            List<Player> users = new ArrayList<>(plugin.getCommands().getUsers());
-            users.remove(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer());
-            plugin.getCommands().setUsers(users);
-            users.clear();
+        if(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() != null) {
+            if(plugin.getCommands().getUsers().contains(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer())) {
+                List<Player> users = new ArrayList<>(plugin.getCommands().getUsers());
+                users.remove(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer());
+                plugin.getCommands().setUsers(users);
+                users.clear();
+            }
         }
         if(plugin.getConfig().getBoolean("halloween-mode")) {
             e.getEntity().getWorld().strikeLightningEffect(e.getEntity().getLocation());
@@ -263,7 +274,9 @@ class PinataListeners implements Listener {
         plugin.getCommands().getPinata().get(e.getEntity()).getBuilder().getBlock().setType(Material.AIR);
         plugin.getCommands().getPinata().get(e.getEntity()).getLeash().remove();
         final ArrayList<Item> itemsToGive = new ArrayList<>();
-        final Player p = e.getEntity() instanceof Player ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
+        final Player p = e.getEntity().getKiller() instanceof Player ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
+        //drops won't show if killer is environment and pinata player is not assigned. This pinata will be always in our hearts [*]
+        if(p == null) return;
         if(plugin.getConfig().getBoolean("blindness-effect")) {
             if(p.hasPotionEffect(PotionEffectType.BLINDNESS)) {
                 p.removePotionEffect(PotionEffectType.BLINDNESS);

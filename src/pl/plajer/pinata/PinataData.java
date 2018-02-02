@@ -21,6 +21,11 @@ public class PinataData {
         leash = l;
     }
 
+    public PinataData(Location f, LeashHitch l) {
+        fence = f;
+        leash = l;
+    }
+
     public Player getPlayer() {
         return player;
     }

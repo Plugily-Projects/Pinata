@@ -26,10 +26,10 @@ public class Main extends JavaPlugin {
 
     private List<String> disabledWorlds = new ArrayList<>();
     private Economy econ = null;
-    private Boolean usingVault;
-    private Boolean usingCrackShot;
-    private Boolean usingHolograms;
-    private final int MESSAGES_FILE_VERSION = 8;
+    private boolean usingVault;
+    private boolean usingCrackShot;
+    private boolean usingHolograms;
+    private final int MESSAGES_FILE_VERSION = 9;
     private final int CONFIG_FILE_VERSION = 3;
     private static Main instance;
 
@@ -99,7 +99,9 @@ public class Main extends JavaPlugin {
             for(Entity entity : Bukkit.getServer().getWorld(world.getName()).getEntities()) {
                 if(entity instanceof Sheep) {
                     if(commands.getPinata().containsKey(entity)) {
-                        commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Removed"));
+                        if(commands.getPinata().get(entity).getPlayer() != null) {
+                            commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Removed"));
+                        }
                         commands.getPinata().get(entity).getBuilder().getBlock().setType(Material.AIR);
                         commands.getPinata().get(entity).getLeash().remove();
                         entity.remove();
@@ -109,8 +111,10 @@ public class Main extends JavaPlugin {
             }
         }
         if(usingHolograms) {
-            for(Hologram holo : HologramsAPI.getHolograms(this)) {
-                holo.delete();
+            //check if plugin is already disabled
+            if(!getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) return;
+            for(Hologram h : HologramsAPI.getHolograms(this)) {
+                h.delete();
             }
         }
     }
