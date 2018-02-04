@@ -1,0 +1,118 @@
+#Pinata plugin messages file
+#Language: English (en-GB)
+
+Pinata:
+    Specify-Name: "&6&lPinata &a>> &cSelecteer een &cPinata naam!"
+    Not-Found: "&6&lPinata &a>> &cPinata niet gevonden"
+    Not-Own: "&6&lPinata &a>> &cDat is niet jouw pinata!"
+    Buy-Error: "&6&lPinata &a>> &cError! Probeer opnieuw alstublieft!"
+    Create:
+        Success: "&6&lPinata &a>> &aPinata &e%name% &a succesvol gecreeërd!"
+        Fail: "&6&lPinata &a>> &cJe kan Pinata niet hier gebruiken!"
+        By-Console: "&6&lPinata &a>> &aJouw Pinata was gecreeërd door de console!"
+        Already-Created: "&6&lPinata &a>> &cJij hebt al een Pinata gekocht!"
+        No-Permission: "&6&lPinata &a>> &cJe hebt geen permissie om deze pinata te gebruiken!"
+        Disabled-World: "&6&lPinata &a>> &cJe kan deze Pinata niet in deze wereld gebruiken!"
+    Command:
+        No-Permission: "&6&lPinata &a>> &cJe hebt geen permissie voor dit commando!"
+        Only-Player: "&6&lPinata &a>> &cJe kan dit commando enkel als speler uitvoeren!"
+        Player-Specify-Name: "&6&lPinata &a>> &cSelecteer een Pinata naam alstublieft!"
+        Player-Not-Found: "&6&lPinata &a>> &cDie speler is niet online!"
+        Console-Specify-Player: "&cSelecteer een spelersnaam alstublieft!"
+        Vault-Not-Detected: "&6&lPinata &a>> &cVault niet gedetecteerd! Afbreken..."
+        Custom-Location-Create-Error: "&6&lPinata &a>> &cIets is fout gegaan! Wees zeker om te correcte waarden in te stellen: &wereld, x, y, z, pinata naam&c!"
+        Help-Command:
+            Header: "&8&m===========[&r &9&lP&a&li&c&ln&e&la&3&lt&b&la&5&ls &8&m]==========="
+            Description: " &a/pinata create &6- Creeër een bestaande Pinata (admin commando)\n
+                &a/pinata reloadconfig &6- Herlaad Pinata config (admin commando)\n
+                &a/pinata list &6- Lijst van alle Pinatas\n
+                &a/pinata buy &6- Koop Pinata (Vereiste is Vault)\n
+                &a/pinata preview &6- Voorbeeld Pinata dropt\n
+                &a/pinata setcrate &6- Zet de Pinata crate locatie (admin commando)"
+    Validate:
+        Success: "&6&lPinata &a>> &aPinata %name% geladen!"
+        Fail: "&6&lPinata &a>> &cPinata %name% geladen met errors! Afbreken..."
+    Config:
+        Reload-Success: "&6&lPinata &a>> &eConfiguratie herladen! Check de console voor errors!"
+        Reload-Fail: "&6&lPinata &a>> &cConfiguratie kon niet herladen worden! Alstublieft herlaad de plugin!"
+        Reload-Removed: "&6&lPinata &a>> &cPlugin herlaading heeft je Pinata verwijderd!"
+    Drop:
+        DropMsg: "&6&lPinata &a>> &aJe hebt %item% x%amount%&a gedropt!"
+        No-Drops: "&6&lPinata &a>> &cJe bent weinig geluk vandaag!"
+    Selling:
+        Not-For-Sale: "&6&lPinata &a>> &cDeze Pinata is niet te koop!"
+        Cannot-Afford: "&6&lPinata &a>> &cJe kan dit niet kopen!"
+    Crate-Creation:
+        Specify-Name: "&6&lPinata &a>> &cAlsublieft selecteer een crate naam!"
+        Is-Set-Here:  "&6&lPinata &a>> &cCreate location is gezet!"
+        Already-Exists: "&6&lPinata &a>> &cCrate met deze naam bestaat al!"
+        Create-Success: "&6&lPinata &a>> &aCrate %name% succesvol gecreeërd!"
+        Destroyed: "&6&lPinata &a>> &aCrate %name% kapot gemaakt!"
+        Target-Block-Not-Chest: "&6&lPinata &a>> &cTarget block is geen kist!"
+        No-Permission: "&6&lPinata &a>> &cJe hebt geen permissie om dit te doen!"
+        List: "&6&lPinata &a>> Lijst met alle mogelijke crates:"
+        List-Empty: "&6&lPinata &a>> &cEr zijn geen crates!"
+    Creator:
+        Already-Exists: "&6&lPinata &a>> &cPinata met die naam bestaat al!"
+
+Menus:
+    List-Menu:
+        Inventory-Name: "&Lijst van alle Pinatas"
+        Pinata-Cost: "&Prijs van pinata: &7%money%"
+        Pinata-Cost-Not-For-Sale: "&cDeze Pinata is niet te koop!"
+        Pinata-Types:
+            Type-Public: "&6Type pinata: &aPubliek"
+            Type-Private: "&6Type pinata: &cPrive"
+        Click-Selection:
+            Left-Click: "&c◄ &eLinker muisknop om een voorbeeld (preview) te zien"
+            Right-Click: "&c► &eRechtermuisknop voor te kopen"
+    Preview-Menu:
+        Inventory-Name: "&lPinata voorbeeld (preview) menu"
+        Drop-Chance: "&3CKans op drop &7%chance%%"
+        Command-To-Execute: "&eUitgevoerd commando: &7%command%"
+        Money-Reward: "&eGeld reward: &7%money%"
+    Crate-Menu:
+        Inventory-Name: "&lPinata crate menu"
+    Creator-Menu:
+        Inventory-Name: "&lMaker menu"
+
+#Hologram above pinata crate
+Hologram:
+    Crate-Hologram: "&aCrate &e%name%"
+
+#Signs module. Sign can be created starting with '[pinata]' at first line and 'all' or 'gui' or existing pinata name at second line
+Signs:
+    Invalid-Pinata: "&6&lPinata &a>> &cPinata op tweede lijn is niet goed! Gebruik 'all' of 'gui' naam om het elke Pinata GUI sign te maken"
+    Sign-Created: "&6&lPinata &a>> &aPinata sign succesvol aangemaakt!"
+    Sign-Destroyed: "&6&lPinata &a>> &aPinata sign kapot gemaakt!"
+    No-Permission: "&6&lPinata &a>> &cJe hebt geen permissie om dat te doen!"
+    Inventory-Name: "&lPinata signs menu"
+    Lines:
+        First: "&6Koop pinata"
+        Second-Specific-Pinata-Color: "&e"
+        Second-Every-Pinata: "&aKlik voor GUI"
+
+
+#Validator console messages.
+#You don't need to translate them because they don't show to your players :)
+Validator:
+    Invalid-Configuration: "Pinata %name% is fout geconfigureerd! Fout item lijn: %number%"
+    Invalid-Item: "Item van pinata %name% is fout geconfigureerd! Fout item lijn: %number%"
+    Invalid-Item-Type: "Item van pinata %name% is geen item of commando! Fout item lijn: %number%"
+    Invalid-Chance: "Item van pinata %name% zal nooit vallen! Fout item lijn: %number%"
+    Invalid-Money-Drop: "Prijs van  pinata %name% is 0! Fout item lijn: %number%"
+    Invalid-Permission: "Permissie van pinata %name% is niet geconfigureerd!"
+    Invalid-Timer: "Timer van pinata %name% is niet geconfigureerd!"
+    Invalid-Type: "Type van pinata %name% is niet publiek en ook niet prive!"
+    Invalid-Color: "Kleur van pinata %name% is fout!"
+    Invalid-Crate-Time: "Crate tijd van pinata %name% is niet geconfigureerd!"
+    Invalid-Health: "Leven van Pinata %name% is fout!"
+    Invalid-Drop-Type: "Drop type van pinata %name% is fout!"
+    Invalid-Mob-Type: "Mob van pinata %name% is fout!"
+    Vault-Abandoned: "Pinata %name% gebruikt geen Vault! (gebruik waarde -1 om Pinata te verkopen van kopen)"
+
+Other:
+    Plugin-Up-To-Date: "&e[Pinata] Er is een plugin update! Aanwezige versie: %old%, nieuwe versie: %new%"
+    Plugin-Update-Check-Failed: "&c[Pinata] Checken voor updates niet gelukt: %error%"
+
+File-Version-Do-Not-Edit: 9
