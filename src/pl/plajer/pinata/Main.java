@@ -30,7 +30,7 @@ public class Main extends JavaPlugin {
     private boolean usingCrackShot;
     private boolean usingHolograms;
     private final int MESSAGES_FILE_VERSION = 9;
-    private final int CONFIG_FILE_VERSION = 3;
+    private final int CONFIG_FILE_VERSION = 4;
     private static Main instance;
 
     @Override

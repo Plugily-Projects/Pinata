@@ -105,6 +105,9 @@ class PinataListeners implements Listener {
                         e.setCancelled(true);
                     }
                 }
+                if(plugin.getConfig().getDouble("damage-modifier") != 0.0){
+                    e.setDamage(plugin.getConfig().getDouble("damage-modifier"));
+                }
             }
         }
     }

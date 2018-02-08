@@ -37,6 +37,11 @@ full-blindness-effect: false
 #'blindness-effect' must be true!
 blindness-duration: 10
 
+#How many hearts should EVERY damage of pinata take?
+#0.0 = disabled, 1 = 0.5 heart
+#Useful if you're creating public types, players won't kill pinatas with their OP swords that fast.
+damage-modifier: 0.0
+
 #Because you can't set command item, you need to use configured item.
 command-item: paper
 
@@ -49,4 +54,4 @@ gun-item: iron_barding
 #Enable halloween special pinata effects?
 halloween-mode: false
 
-File-Version-Do-Not-Edit: 3
+File-Version-Do-Not-Edit: 4
