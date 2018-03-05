@@ -72,7 +72,7 @@ public class Commands implements CommandExecutor {
                         return true;
                     }
                     int rows = Utils.serializeInt(plugin.getPinataManager().getPinataDrop().get(args[1]).size());
-                    Inventory previewMenu = Bukkit.createInventory(null, rows * 9, Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"));
+                    Inventory previewMenu = Bukkit.createInventory(null, rows, Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"));
                     for(int i = 0; i < plugin.getPinataManager().getPinataDrop().get(args[1]).size(); i++) {
                         String drop = plugin.getPinataManager().getPinataDrop().get(args[1]).get(i);
                         final String[] parts = drop.split(";");

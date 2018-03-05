@@ -41,7 +41,7 @@ public class Utils {
 
     public static void createPinatasGUI(String name, Player p) {
         int rows = serializeInt(Main.getInstance().getPinataManager().getPinataList().size());
-        Inventory pinatasMenu = Bukkit.createInventory(null, rows * 9, Utils.colorRawMessage(name));
+        Inventory pinatasMenu = Bukkit.createInventory(null, rows, Utils.colorRawMessage(name));
         for(int i = 0; i < Main.getInstance().getPinataManager().getPinataList().size(); i++) {
             String pinata = Main.getInstance().getPinataManager().getPinataList().get(i);
             ItemStack item = new ItemStack(Material.WOOL, 1);
