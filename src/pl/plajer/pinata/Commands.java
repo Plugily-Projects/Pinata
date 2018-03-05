@@ -71,13 +71,7 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
                         return true;
                     }
-                    int rows = 1;
-                    float trick = plugin.getPinataManager().getPinataDrop().get(args[1]).size() / 9;
-                    //Using this little "trick" with casting you lose numbers after decimal point
-                    //and modulo will check if rows are enough to hold drops :>
-                    if((int) trick % 9 != 0) {
-                        rows++;
-                    }
+                    int rows = Utils.serializeInt(plugin.getPinataManager().getPinataDrop().get(args[1]).size());
                     Inventory previewMenu = Bukkit.createInventory(null, rows * 9, Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"));
                     for(int i = 0; i < plugin.getPinataManager().getPinataDrop().get(args[1]).size(); i++) {
                         String drop = plugin.getPinataManager().getPinataDrop().get(args[1]).get(i);

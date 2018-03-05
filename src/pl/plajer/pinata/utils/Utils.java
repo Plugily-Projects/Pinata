@@ -26,6 +26,11 @@ public class Utils {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    public static int serializeInt(Integer i) {
+        if((i % 9) == 0) return i;
+        else return (int) ((Math.ceil(i / 9) * 9) + 9);
+    }
+
     public static boolean createPinataAtPlayer(Player p, Location l, String pinataName) {
         Location loc = l.clone().add(0, 7, 0);
         LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + pinataName + ".mob-type").toUpperCase()));
@@ -35,11 +40,7 @@ public class Utils {
     }
 
     public static void createPinatasGUI(String name, Player p) {
-        int rows = 1;
-        float trick = Main.getInstance().getPinataManager().getPinataList().size() / 9;
-        if((int) trick % 9 != 0) {
-            rows++;
-        }
+        int rows = serializeInt(Main.getInstance().getPinataManager().getPinataList().size());
         Inventory pinatasMenu = Bukkit.createInventory(null, rows * 9, Utils.colorRawMessage(name));
         for(int i = 0; i < Main.getInstance().getPinataManager().getPinataList().size(); i++) {
             String pinata = Main.getInstance().getPinataManager().getPinataList().get(i);
