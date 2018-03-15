@@ -18,20 +18,21 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
+    private static Main instance;
+    private final int MESSAGES_FILE_VERSION = 9;
+    private final int CONFIG_FILE_VERSION = 5;
+    private PinataLocale pinataLocale;
     private CrateManager crateManager;
     private Commands commands;
     private FileManager fileManager;
     private PinataManager pinataManager;
     private SignManager signManager;
-
     private List<String> disabledWorlds = new ArrayList<>();
     private Economy econ = null;
-    private boolean usingVault;
-    private boolean usingCrackShot;
-    private boolean usingHolograms;
-    private final int MESSAGES_FILE_VERSION = 9;
-    private final int CONFIG_FILE_VERSION = 4;
-    private static Main instance;
+
+    public static Main getInstance() {
+        return instance;
+    }
 
     @Override
     public void onEnable() {
@@ -41,6 +42,7 @@ public class Main extends JavaPlugin {
         crateManager = new CrateManager(this);
         commands = new Commands(this);
         fileManager = new FileManager(this);
+        setupLocale();
         new MenuHandler(this);
         new PinataListeners(this);
         pinataManager = new PinataManager(this);
@@ -75,11 +77,9 @@ public class Main extends JavaPlugin {
         crateManager.loadCrates();
         pinataManager.loadPinatas();
         crateManager.particleScheduler();
-        if(usingHolograms) {
-            hologramScheduler();
-        }
+        if(isPluginEnabled("HolographicDisplays")) hologramScheduler();
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
-        if(this.getConfig().getBoolean("update-notify")) {
+        if(getConfig().getBoolean("update-notify")) {
             try {
                 UpdateChecker.checkUpdate(currentVersion);
                 String latestVersion = UpdateChecker.getLatestVersion();
@@ -110,13 +110,61 @@ public class Main extends JavaPlugin {
                 }
             }
         }
-        if(usingHolograms) {
-            //check if plugin is already disabled
-            if(!getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) return;
-            for(Hologram h : HologramsAPI.getHolograms(this)) {
-                h.delete();
-            }
+        //check if plugin is already disabled
+        if(!getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) return;
+        for(Hologram h : HologramsAPI.getHolograms(this)) {
+            h.delete();
         }
+    }
+
+    void setupLocale(){
+        saveResource("messages_de.yml", true);
+        saveResource("messages_pl.yml", true);
+        saveResource("messages_fr.yml", true);
+        saveResource("messages_es.yml", true);
+        saveResource("messages_nl.yml", true);
+        switch(getConfig().getString("locale")){
+            case "en":
+                pinataLocale = PinataLocale.ENGLISH;
+                break;
+            case "pl":
+                pinataLocale = PinataLocale.POLSKI;
+                break;
+            case "nl":
+                pinataLocale = PinataLocale.NEDERLANDS;
+                break;
+            case "fr":
+                pinataLocale = PinataLocale.FRANCAIS;
+                break;
+            case "de":
+                pinataLocale = PinataLocale.DEUTSCH;
+                break;
+            case "es":
+                pinataLocale = PinataLocale.ESPANOL;
+                break;
+            default:
+                pinataLocale = PinataLocale.ENGLISH;
+                break;
+        }
+        validateLocaleVersion();
+    }
+
+    private void validateLocaleVersion(){
+        if(pinataLocale == PinataLocale.ENGLISH) return;
+        if(fileManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(fileManager.getLanguageMessage("File-Version-Do-Not-Edit"))){
+            if(fileManager.getLanguageMessage("File-Version-Do-Not-Edit").equals(fileManager.getLanguageMessage("Language-Version"))){
+                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Loaded locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " without problems!");
+                return;
+            }
+            Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Pinata] Locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " is outdated! Not every message will be translated!");
+            return;
+        }
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " loading failed, it's outdated! Using default instead...");
+        pinataLocale = PinataLocale.ENGLISH;
+    }
+
+    public PinataLocale getLocale() {
+        return pinataLocale;
     }
 
     public CrateManager getCrateManager() {
@@ -143,28 +191,12 @@ public class Main extends JavaPlugin {
         return econ;
     }
 
-    public Boolean getVaultUse() {
-        return usingVault;
-    }
-
-    public Boolean getCrackShotUse() {
-        return usingCrackShot;
-    }
-
-    public Boolean getHologramsUse() {
-        return usingHolograms;
-    }
-
-    public static Main getInstance() {
-        return instance;
-    }
-
     public List<String> getDisabledWorlds() {
         return disabledWorlds;
     }
 
     private void setupDependencies() {
-        if(setupCrackShot()) {
+        if(isPluginEnabled("CrackShot")) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Detected CrackShot plugin!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Enabling CrackShot support.");
         } else {
@@ -178,7 +210,7 @@ public class Main extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Detected Vault plugin!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Enabling economy support.");
         }
-        if(!setupHolographicDisplays()) {
+        if(!isPluginEnabled("HolographicDisplays")) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] Holographic Displays plugin isn't installed!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] Disabling holograms support.");
         } else {
@@ -196,42 +228,51 @@ public class Main extends JavaPlugin {
             for(Location l : crateManager.getCratesLocations().keySet()) {
                 Hologram holo = HologramsAPI.createHologram(this, l.clone().add(0.5, 1.5, 0.5));
                 holo.appendTextLine(Utils.colorRawMessage("Hologram.Crate-Hologram").replaceAll("%name%", crateManager.getCratesLocations().get(l)));
-                Bukkit.getScheduler().runTaskLater(this, () -> holo.delete(), (long) getConfig().getDouble("hologram-refresh") * 20);
+                Bukkit.getScheduler().runTaskLater(this, holo::delete, (long) getConfig().getDouble("hologram-refresh") * 20);
             }
         }, (long) this.getConfig().getDouble("hologram-refresh") * 20, (long) this.getConfig().getDouble("hologram-refresh") * 20);
     }
 
-    private boolean setupCrackShot() {
-        if(getServer().getPluginManager().getPlugin("CrackShot") == null) {
-            usingCrackShot = false;
-            return false;
-        }
-        usingCrackShot = true;
-        return true;
-    }
-
-    private boolean setupHolographicDisplays() {
-        if(getServer().getPluginManager().getPlugin("HolographicDisplays") == null) {
-            usingHolograms = false;
-            return false;
-        }
-        usingHolograms = true;
-        return true;
+    public boolean isPluginEnabled(String plugin) {
+        return getServer().getPluginManager().getPlugin(plugin) != null;
     }
 
     private boolean setupEconomy() {
         if(getServer().getPluginManager().getPlugin("Vault") == null) {
-            usingVault = false;
             return false;
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if(rsp == null) {
-            usingVault = false;
             return false;
         }
         econ = rsp.getProvider();
-        usingVault = true;
         return econ != null;
+    }
+
+    public enum PinataLocale {
+        DEUTSCH("Deutsch", "de", "Elternbrief"), ENGLISH("English", "", "Plajer"), ESPANOL("Español", "es", "Adolfo Garolfo"), FRANCAIS("Français", "fr", "Bol2T"), NEDERLANDS("Nederlands", "nl", "TomTheDeveloper"), POLSKI("Polski", "pl", "Plajer");
+
+        String formattedName;
+        String prefix;
+        String author;
+
+        PinataLocale(String formattedName, String prefix, String author) {
+            this.prefix = prefix;
+            this.formattedName = formattedName;
+            this.author = author;
+        }
+
+        public String getFormattedName() {
+            return formattedName;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public String getPrefix() {
+            return prefix;
+        }
     }
 
 }

@@ -39,8 +39,8 @@ pinatas:
     mob-type: sheep
     drop-type: death
     drops:
-      - item;grass;2;&aGrass block/&aIt contains lore!/&3&lEven more lines!!!;20
-      - item;bread;1;&aBread;80
-      - command;pinata create default %player%;&e&lFree pinata!;30
+      - item;grass;2;&aGrass block/&aIt contains lore!/&3&lEven more lines!!!;20.1
+      - item;bread;1;&aBread;80.5
+      - command;pinata create default %player%;&e&lFree pinata!;5.0
 
 #Crack this pinata!

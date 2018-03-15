@@ -24,7 +24,7 @@ public class CrateManager implements Listener {
     private Map<Player, Location> crateUsage = new HashMap<>();
     private Main plugin;
 
-    public CrateManager(Main plugin) {
+    CrateManager(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -57,7 +57,7 @@ public class CrateManager implements Listener {
         if(e.getClickedBlock() != null && e.getClickedBlock().getType() != null && e.getClickedBlock().getType().equals(Material.CHEST) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if(cratesLocations.containsKey(e.getClickedBlock().getLocation())) {
                 e.setCancelled(true);
-                if(!plugin.getVaultUse()) {
+                if(!plugin.isPluginEnabled("Vault")) {
                     e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
                     return;
                 }

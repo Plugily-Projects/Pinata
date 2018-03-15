@@ -4,9 +4,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.ItemStack;
+import pl.plajer.pinata.PinataItem;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Called when pinata is killed.
@@ -16,7 +16,7 @@ public class PinataDeathEvent extends Event {
     private final Player killer;
     private final Entity pinata;
     private final String name;
-    private final ArrayList<ItemStack[]> drops;
+    private final List<PinataItem> drops;
     private static final HandlerList HANDLERS = new HandlerList();
 
     @Override
@@ -28,7 +28,7 @@ public class PinataDeathEvent extends Event {
         return HANDLERS;
     }
 
-    public PinataDeathEvent(Player killer, Entity pinata, String name, ArrayList<ItemStack[]> drops) {
+    public PinataDeathEvent(Player killer, Entity pinata, String name, List<PinataItem> drops) {
         this.killer = killer;
         this.pinata = pinata;
         this.name = name;
@@ -57,12 +57,12 @@ public class PinataDeathEvent extends Event {
     }
 
     /**
-     * <b>Warning! getDrops() doesn't return command, gun, money drops! TODO in future versions.</b>
+     * Returns List of PinataItem objects.
      *
      * @return drops from pinata.
      * @since 2.1.3
      */
-    public ArrayList<ItemStack[]> getDrops() {
+    public List<PinataItem> getDrops() {
         return this.drops;
     }
 }

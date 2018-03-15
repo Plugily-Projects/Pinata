@@ -1,7 +1,12 @@
-#Pinata plugin messages file
-#Language: English (fr-FR)
-#Translated by Bol2T, Founder of ElyZen (IP: Elyzen.boxtoplay.com)
- 
+#          Pinata plugin messages file
+#            Language: French (fr-FR)
+# Author: Bol2T, Founder of ElyZen (IP: Elyzen.boxtoplay.com)
+#
+#        THIS FILE IS NOT MEANT TO BE EDITED
+#        IT WILL RESET EVERY PLUGIN RESTART!
+#     IF YOU WANT TO EDIT IT COPY IT INTO messages.yml
+
+
 Pinata:
     Specify-Name: "&6&lPinata &a>> &cMets un nom de pinata !"
     Not-Found: "&6&lPinata &a>> &cPinata introuvable!"
@@ -83,13 +88,13 @@ Hologram:
 
 #Signs module. Sign can be created starting with '[pinata]' at first line and 'all' or 'gui' or existing pinata name at second line
 Signs:
-	Invalid-Pinata: "&6&lPinata &a>> &cPinata à la deuxième ligne est invalide ! Utilise 'all' ou 'gui'
+    Invalid-Pinata: "&6&lPinata &a>> &cPinata à la deuxième ligne est invalide ! Utilise 'all' ou 'gui'"
     Sign-Created: "&6&lPinata &a>> &aPancarte créée avec succès !"
     Sign-Destroyed: "&6&lPinata &a>> &aPancarte détruite !"
     No-Permission: "&6&lPinata &a>> &cTu n'as pas la permission de faire ça !"
     Inventory-Name: "&lMenu des pancartes pinatas"
     Lines:
-		First: "&6Buy pinata"
+        First: "&6Buy pinata"
         Second-Specific-Pinata-Color: "&e"
         Second-Every-Pinata: "&aClick for GUI"
 
@@ -116,3 +121,4 @@ Other:
     Plugin-Update-Check-Failed: "&c[Pinata] Échec de vérification de la mise à jour : %error%"
 
 File-Version-Do-Not-Edit: 9
+Language-Version: 9

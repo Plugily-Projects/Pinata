@@ -19,7 +19,7 @@ import java.util.List;
 public class Utils {
 
     public static String colorRawMessage(String message) {
-        return ChatColor.translateAlternateColorCodes('&', Main.getInstance().getFileManager().getMessagesConfig().getString(message));
+        return ChatColor.translateAlternateColorCodes('&', Main.getInstance().getFileManager().getLanguageMessage(message));
     }
 
     public static String colorMessage(String message) {

@@ -1,5 +1,9 @@
-#Pinata plugin messages file
-#Language: Dutch (nl-NL)
+#          Pinata plugin messages file
+#   Language: Dutch (nl-NL)  |  Author: TomTheDeveloper
+#
+#        THIS FILE IS NOT MEANT TO BE EDITED
+#        IT WILL RESET EVERY PLUGIN RESTART!
+#     IF YOU WANT TO EDIT IT COPY IT INTO messages.yml
 
 Pinata:
     Specify-Name: "&6&lPinata &a>> &cSelecteer een &cPinata naam!"
@@ -116,3 +120,4 @@ Other:
     Plugin-Update-Check-Failed: "&c[Pinata] Checken voor updates niet gelukt: %error%"
 
 File-Version-Do-Not-Edit: 9
+Language-Version: 9

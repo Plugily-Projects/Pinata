@@ -64,8 +64,8 @@ class MenuHandler implements Listener {
                     e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
                     return;
                 }
-                Location builderLocation = null;
-                Location entityLocation = null;
+                Location builderLocation;
+                Location entityLocation;
                 if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Crate-Menu.Inventory-Name"))) {
                     if(plugin.getCrateManager().getCrateUsage().containsKey(e.getWhoClicked())) {
                         builderLocation = plugin.getCrateManager().getCrateUsage().get(e.getWhoClicked()).clone().add(0, 8, 0);
@@ -74,7 +74,8 @@ class MenuHandler implements Listener {
                         e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Buy-Error"));
                         return;
                     }
-                } else if(e.getInventory().getName().equals(Utils.colorRawMessage("Signs.Inventory-Name"))) {
+                //sign inventory
+                } else {
                     if(plugin.getSignManager().getSignUsage().containsKey(e.getWhoClicked())) {
                         builderLocation = plugin.getSignManager().getSignUsage().get(e.getWhoClicked()).clone().add(0, 8, 0);
                         entityLocation = plugin.getSignManager().getSignUsage().get(e.getWhoClicked()).clone().add(0, 3, 0);

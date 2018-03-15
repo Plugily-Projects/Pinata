@@ -4,22 +4,28 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 public class PinataManager {
 
     private List<String> pinataList = new ArrayList<>();
-    private Map<String, ArrayList<String>> pinataDrops = new HashMap<>();
+    private Map<String, HashSet<PinataItem>> pinataDrops = new HashMap<>();
+    private Map<String, String> validatorErrors = new HashMap<>();
     private Main plugin;
 
-    public PinataManager(Main plugin) {
+    PinataManager(Main plugin) {
         this.plugin = plugin;
+        validatorErrors.put(".permission", "Validator.Invalid-Permission");
+        validatorErrors.put(".timer", "Validator.Invalid-Timer");
+        validatorErrors.put(".type", "Validator.Invalid-Type");
+        validatorErrors.put(".crate-time", "Validator.Invalid-Crate-Time");
+        validatorErrors.put(".health", "Validator.Invalid-Health");
+        validatorErrors.put(".drop-type", "Validator.Invalid-Drop-Type");
     }
 
     public void loadPinatas() {
@@ -32,41 +38,80 @@ public class PinataManager {
                 }
                 System.out.println(Utils.colorRawMessage("Pinata.Validate.Success").replaceAll("%name%", key));
                 pinataList.add(key);
-                ArrayList<String> list = new ArrayList<>();
-                final List<String> drops = plugin.getFileManager().getPinataConfig().getStringList("pinatas." + key + ".drops");
-                for(String drop : drops) list.add(drop);
-                pinataDrops.put(key, list);
+                HashSet<PinataItem> items = new HashSet<>();
+                for(String s : plugin.getFileManager().getPinataConfig().getStringList("pinatas." + key + ".drops")) {
+                    PinataItem item = stringToItem(s);
+                    items.add(item);
+                }
+                pinataDrops.put(key, items);
             }
         }
     }
 
+    private PinataItem stringToItem(String string) {
+        String[] splited = string.split(";");
+        //- item;<name of item>;<amount>;<name of item and hologram>/<lore>/<next lore>...;<chance of drop>
+        //- command;<command string>;<name of hologram>;<chance of drop>
+        //- money;<amount of money>;<name of hologram>;<chance of drop>
+        //- gun;<name of valid gun>;<name of hologram>;<change of drop>
+        PinataItem item;
+        if(splited[0].equalsIgnoreCase("item")) {
+            item = new PinataItem(PinataItem.ItemType.valueOf(splited[0].toUpperCase()), Double.valueOf(splited[4]));
+        } else {
+            item = new PinataItem(PinataItem.ItemType.valueOf(splited[0].toUpperCase()), Double.valueOf(splited[3]));
+        }
+        switch(PinataItem.ItemType.valueOf(splited[0].toUpperCase())) {
+            case ITEM:
+                ItemStack stack = new ItemStack(Material.valueOf(splited[1].toUpperCase()), Integer.valueOf(splited[2]));
+                ItemMeta meta = stack.getItemMeta();
+                String[] properties = splited[3].split("/");
+                meta.setDisplayName(Utils.colorMessage(properties[0]));
+                List<String> lore = new ArrayList<>();
+                for(String s : Arrays.asList(properties)) {
+                    lore.add(Utils.colorMessage(s));
+                }
+                lore.remove(0);
+                meta.setLore(lore);
+                stack.setItemMeta(meta);
+                item.setItem(stack);
+                item.setHologramName(stack.getItemMeta().getDisplayName());
+                item.setRepresentedMaterial(stack.getType());
+                item.setAmount(stack.getAmount());
+                break;
+            case COMMAND:
+                item.setCommand(splited[1]);
+                item.setHologramName(Utils.colorMessage(splited[2]));
+                item.setRepresentedMaterial(Material.valueOf(plugin.getConfig().getString("command-item").toUpperCase()));
+                item.setAmount(1);
+                break;
+            case GUN:
+                item.setGunName(splited[1]);
+                item.setHologramName(Utils.colorMessage(splited[2]));
+                item.setRepresentedMaterial(Material.valueOf(plugin.getConfig().getString("gun-item").toUpperCase()));
+                item.setAmount(1);
+                break;
+            case MONEY:
+                item.setMoneyValue(Double.valueOf(splited[1]));
+                item.setHologramName(splited[2]);
+                item.setRepresentedMaterial(Material.valueOf(plugin.getConfig().getString("money-item").toUpperCase()));
+                item.setAmount(1);
+                break;
+            default:
+                break;
+        }
+        return item;
+    }
+
+
     private boolean validatePinata(String pinata) {
-        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".permission")) {
-            plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Permission").replaceAll("%name%", pinata));
-            return false;
+        for(String error : validatorErrors.keySet()) {
+            if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + error)) {
+                plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage(validatorErrors.get(error)).replaceAll("%name%", pinata));
+                return false;
+            }
         }
-        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".cost") && plugin.getVaultUse()) {
+        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".cost") && plugin.isPluginEnabled("Vault")) {
             plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Vault-Abandoned").replaceAll("%name%", pinata));
-            return false;
-        }
-        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".timer")) {
-            plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Timer").replaceAll("%name%", pinata));
-            return false;
-        }
-        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".type")) {
-            plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Type").replaceAll("%name%", pinata));
-            return false;
-        }
-        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".crate-time")) {
-            plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Crate-Time").replaceAll("%name%", pinata));
-            return false;
-        }
-        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".health")) {
-            plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Health").replaceAll("%name%", pinata));
-            return false;
-        }
-        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".drop-type")) {
-            plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Drop-Type").replaceAll("%name%", pinata));
             return false;
         }
         try {
@@ -113,7 +158,7 @@ public class PinataManager {
                     plugin.getLogger().log(Level.WARNING, Utils.colorRawMessage("Validator.Invalid-Chance").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                 }
             } else if(partsvaild[0].equals("money")) {
-                if(plugin.getVaultUse()) {
+                if(plugin.isPluginEnabled("Vault")) {
                     if(partsvaild.length < 3) {
                         plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Configuration").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                         return false;
@@ -130,7 +175,7 @@ public class PinataManager {
                     return false;
                 }
             } else if(partsvaild[0].equals("gun")) {
-                if(plugin.getCrackShotUse()) {
+                if(plugin.isPluginEnabled("CrackShot")) {
                     if(partsvaild.length < 3) {
                         plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Configuration").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                         return false;
@@ -152,7 +197,7 @@ public class PinataManager {
         return pinataList;
     }
 
-    public Map<String, ArrayList<String>> getPinataDrop() {
+    public Map<String, HashSet<PinataItem>> getPinataDrop() {
         return pinataDrops;
     }
 }

@@ -1,5 +1,10 @@
-#Pinata plugin messages file
-#Language: Spanish (es-AR)
+#          Pinata plugin messages file
+#   Language: Spanish (es-AR)  |  Author: Adolfo Garolfo
+#
+#        THIS FILE IS NOT MEANT TO BE EDITED
+#        IT WILL RESET EVERY PLUGIN RESTART!
+#     IF YOU WANT TO EDIT IT COPY IT INTO messages.yml
+
 
 Pinata:
   Specify-Name: '&6&lPiñatas &a>> &cEspecifica el nombre de la pinata!'
@@ -123,3 +128,4 @@ Other:
   Plugin-Update-Check-Fail: '&c[Pinata] Fallo al localizar actualizacion: %error%'
 
 File-Version-Do-Not-Edit: 9
+Language-Version: 9

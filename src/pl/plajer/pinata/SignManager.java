@@ -25,7 +25,7 @@ public class SignManager implements Listener {
     private Map<Player, Location> signUsage = new HashMap<>();
     private Main plugin;
 
-    public SignManager(Main plugin) {
+    SignManager(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -73,7 +73,7 @@ public class SignManager implements Listener {
         if(e.getClickedBlock().getType().equals(Material.SIGN) || e.getClickedBlock().getType().equals(Material.SIGN_POST) || e.getClickedBlock().getType().equals(Material.WALL_SIGN)) {
             Sign s = (Sign) e.getClickedBlock().getState();
             if(s.getLine(0).equals(Utils.colorRawMessage("Signs.Lines.First"))) {
-                if(!plugin.getVaultUse()) {
+                if(!plugin.isPluginEnabled("Vault")) {
                     e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
                     return;
                 }

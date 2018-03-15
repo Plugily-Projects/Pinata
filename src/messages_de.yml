@@ -1,5 +1,9 @@
-#Pinata plugin messages file
-#Language: German (de-DE)
+#          Pinata plugin messages file
+#   Language: German (de-DE)  |  Author: Elternbrief
+#
+#        THIS FILE IS NOT MEANT TO BE EDITED
+#        IT WILL RESET EVERY PLUGIN RESTART!
+#     IF YOU WANT TO EDIT IT COPY IT INTO messages.yml
 
 Pinata:
     Specify-Name: "&6&lPinata &a>> &cBitte gib einen Namen an!"
@@ -115,3 +119,4 @@ Other:
     Plugin-Update-Check-Failed: "&c[Pinata] Es konnte nicht nach Aktualisierungen gesucht werden: %error%"
 
 File-Version-Do-Not-Edit: 9
+Language-Version: 9

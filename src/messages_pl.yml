@@ -1,5 +1,9 @@
-#Pinata plugin messages file
-#Language: Polish (pl-PL)
+#          Pinata plugin messages file
+#   Language: Polish (pl-PL)  |  Author: Plajer
+#
+#        THIS FILE IS NOT MEANT TO BE EDITED
+#        IT WILL RESET EVERY PLUGIN RESTART!
+#     IF YOU WANT TO EDIT IT COPY IT INTO messages.yml
 
 Pinata:
     Specify-Name: "&6&lPiniaty &a>> &cPodaj nazwe piniaty!"
@@ -115,3 +119,4 @@ Other:
     Plugin-Update-Check-Failed: "&c[Piniata] Nie udalo sie sprawdzic aktualizacji: %error%"
 
 File-Version-Do-Not-Edit: 9
+Language-Version: 9

@@ -3,7 +3,6 @@ package pl.plajer.pinata;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.shampaggon.crackshot.CSUtility;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -18,7 +17,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.pinata.pinataapi.PinataDeathEvent;
@@ -28,12 +26,13 @@ import pl.plajer.pinata.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 class PinataListeners implements Listener {
 
     private Main plugin;
 
-    public PinataListeners(Main plugin) {
+    PinataListeners(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -105,7 +104,7 @@ class PinataListeners implements Listener {
                         e.setCancelled(true);
                     }
                 }
-                if(plugin.getConfig().getDouble("damage-modifier") != 0.0){
+                if(plugin.getConfig().getDouble("damage-modifier") != 0.0) {
                     e.setDamage(plugin.getConfig().getDouble("damage-modifier"));
                 }
             }
@@ -135,94 +134,47 @@ class PinataListeners implements Listener {
             }
         }
         final int timer = plugin.getFileManager().getPinataConfig().getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
-        Random rand = new Random();
         Player p = (Player) e.getDamager();
-        for(int i = 0; i < plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName()).size(); i++) {
-            String drop = plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName()).get(i);
-            final String[] parts = drop.split(";");
-            int chance = parts[0].equals("item") ? Integer.parseInt(parts[4]) : Integer.parseInt(parts[3]);
-            if(rand.nextInt(100) + 1 < chance) {
-                if(parts[0].equals("item")) {
-                    String[] nameAndLore = parts[3].split("/");
-                    final Item item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(parts[1].toUpperCase())));
-                    item.setPickupDelay(1000);
-                    if(plugin.getHologramsUse()) {
-                        final Hologram hologram = HologramsAPI.createHologram(plugin, item.getLocation().add(0.0, 1.5, 0.0));
-                        hologram.appendTextLine(Utils.colorMessage(nameAndLore[0].replaceAll("%player%", p.getName())) + " x" + parts[2]);
-                        new BukkitRunnable() {
-                            int ticksRun;
+        for(PinataItem item : plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName())) {
+            if(ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
+                final Item dropItem = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(item.getRepresentedMaterial()));
+                dropItem.setPickupDelay(1000);
+                if(plugin.isPluginEnabled("HolographicDisplays")) {
+                    final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
+                    hologram.appendTextLine(Utils.colorMessage(item.getHologramName().replaceAll("%player%", p.getName())) + " x" + item.getAmount());
+                    new BukkitRunnable() {
+                        int ticksRun;
 
-                            @Override
-                            public void run() {
-                                ticksRun++;
-                                hologram.teleport(item.getLocation().add(0.0, 1.5, 0.0));
-                                if(ticksRun > timer * 20) {
-                                    hologram.delete();
-                                    item.remove();
-                                    cancel();
-                                }
+                        @Override
+                        public void run() {
+                            ticksRun++;
+                            hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
+                            if(ticksRun > timer * 20) {
+                                hologram.delete();
+                                dropItem.remove();
+                                cancel();
                             }
-                        }.runTaskTimer(plugin, 1L, 1L);
-                    } else {
-                        Bukkit.getScheduler().runTaskLater(plugin, () -> item.remove(), timer * 20);
-                    }
-                    ItemMeta itemMeta = item.getItemStack().getItemMeta();
-                    itemMeta.setDisplayName(Utils.colorMessage(nameAndLore[0]));
-                    List<String> lore = new ArrayList<>();
-                    for(String s : nameAndLore) {
-                        String colorful = Utils.colorMessage(s);
-                        lore.add(colorful);
-                    }
-                    lore.remove(0);
-                    itemMeta.setLore(lore);
-                    item.getItemStack().setItemMeta(itemMeta);
-                    p.sendMessage(Utils.colorRawMessage("Pinata.Drop.DropMsg").replaceAll("%item%", StringUtils.capitalize(item.getItemStack().getItemMeta().getDisplayName())).replaceAll("%amount%", String.valueOf(item.getItemStack().getAmount())));
-                    p.getInventory().addItem(item.getItemStack());
-                } else { //command, money, gun
-                    Item item = null;
-                    switch(parts[0]) {
-                        case "command":
-                            item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(plugin.getConfig().getString("command-item").toUpperCase())));
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), parts[1].replaceAll("%player%", p.getName()));
-                            break;
-                        case "money":
-                            item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(plugin.getConfig().getString("money-item").toUpperCase())));
-                            plugin.getEco().depositPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), Double.parseDouble(parts[1]));
-                            break;
-                        case "gun":
-                            CSUtility shot = new CSUtility();
-                            shot.giveWeapon(p, parts[1], 1);
-                            item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(plugin.getConfig().getString("gun-item").toUpperCase())));
-                            break;
-                        default:
-                            break;
-                    }
-                    item.setPickupDelay(1000);
-                    final Item finalItem = item;
-                    if(plugin.getHologramsUse()) {
-                        final Hologram hologram = HologramsAPI.createHologram(plugin, item.getLocation().add(0.0, 1.5, 0.0));
-                        hologram.appendTextLine(Utils.colorMessage(parts[2]).replaceAll("%player%", p.getName()));
-                        new BukkitRunnable() {
-                            int ticksRun;
-
-                            @Override
-                            public void run() {
-                                ticksRun++;
-                                hologram.teleport(finalItem.getLocation().add(0.0, 1.5, 0.0));
-                                if(ticksRun > timer * 20) {
-                                    hologram.delete();
-                                    finalItem.remove();
-                                    cancel();
-                                }
-                            }
-                        }.runTaskTimer(plugin, 1, 1);
-                    } else {
-                        Bukkit.getScheduler().runTaskLater(plugin, () -> finalItem.remove(), timer * 20);
-                    }
-                    String dropMsg = Utils.colorRawMessage("Pinata.Drop.DropMsg");
-                    p.sendMessage(dropMsg.replaceAll("%item%", Utils.colorMessage(parts[2])).replaceAll("%amount%", "1"));
+                        }
+                    }.runTaskTimer(plugin, 1L, 1L);
+                } else {
+                    Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, timer * 20);
                 }
-                break;
+                switch(item.getItemType()) {
+                    case ITEM:
+                        p.getInventory().addItem(item.getItem());
+                        break;
+                    case COMMAND:
+                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), item.getCommand().replaceAll("%player%", p.getName()));
+                        break;
+                    case GUN:
+                        CSUtility shot = new CSUtility();
+                        shot.giveWeapon(p, item.getGunName(), 1);
+                        break;
+                    case MONEY:
+                        plugin.getEco().depositPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), item.getMoneyValue());
+                        break;
+                }
+                p.sendMessage(Utils.colorRawMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getHologramName()).replaceAll("%amount%", String.valueOf(item.getAmount())));
             }
         }
     }
@@ -291,106 +243,55 @@ class PinataListeners implements Listener {
             }
         }
         final int timer = plugin.getFileManager().getPinataConfig().getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
-        final ArrayList<ItemStack[]> items = new ArrayList<>();
-        int otherItemsSize = 0;
-        Random rand = new Random();
-        for(int i = 0; i < plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName()).size(); i++) {
-            String drop = plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName()).get(i);
-            final String[] parts = drop.split(";");
-            int chance = parts[0].equals("item") ? Integer.parseInt(parts[4]) : Integer.parseInt(parts[3]);
-            if(rand.nextInt(100) + 1 < chance) {
-                if(parts[0].equals("item")) {
-                    String[] nameAndLore = parts[3].split("/");
-                    final Item item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(parts[1].toUpperCase())));
-                    item.setPickupDelay(1000);
-                    if(plugin.getHologramsUse()) {
-                        final Hologram hologram = HologramsAPI.createHologram(plugin, item.getLocation().add(0.0, 1.5, 0.0));
-                        hologram.appendTextLine(Utils.colorMessage(nameAndLore[0].replaceAll("%player%", p.getName())) + " x" + parts[2]);
-                        new BukkitRunnable() {
-                            int ticksRun;
+        int i = 0;
+        List<PinataItem> items = new ArrayList<>();
+        for(PinataItem item : plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName())) {
+            if(ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
+                final Item dropItem = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(item.getRepresentedMaterial()));
+                dropItem.setPickupDelay(1000);
+                if(plugin.isPluginEnabled("HolographicDisplays")) {
+                    final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
+                    hologram.appendTextLine(Utils.colorMessage(item.getHologramName().replaceAll("%player%", p.getName())) + " x" + item.getAmount());
+                    new BukkitRunnable() {
+                        int ticksRun;
 
-                            @Override
-                            public void run() {
-                                ticksRun++;
-                                hologram.teleport(item.getLocation().add(0.0, 1.5, 0.0));
-                                if(ticksRun > timer * 20) {
-                                    hologram.delete();
-                                    item.remove();
-                                    cancel();
-                                }
+                        @Override
+                        public void run() {
+                            ticksRun++;
+                            hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
+                            if(ticksRun > timer * 20) {
+                                hologram.delete();
+                                dropItem.remove();
+                                cancel();
                             }
-                        }.runTaskTimer(plugin, 1L, 1L);
-                    } else {
-                        Bukkit.getScheduler().runTaskLater(plugin, () -> item.remove(), timer * 20);
-                    }
-                    ItemMeta itemMeta = item.getItemStack().getItemMeta();
-                    itemMeta.setDisplayName(Utils.colorMessage(nameAndLore[0]));
-                    List<String> lore = new ArrayList<>();
-                    for(String s : nameAndLore) {
-                        String colorful = Utils.colorMessage(s);
-                        lore.add(colorful);
-                    }
-                    lore.remove(0);
-                    itemMeta.setLore(lore);
-                    item.getItemStack().setItemMeta(itemMeta);
-                    itemsToGive.add(item);
-                } else { //command, money, gun
-                    Item item = null;
-                    switch(parts[0]) {
-                        case "command":
-                            item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(plugin.getConfig().getString("command-item").toUpperCase())));
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), parts[1].replaceAll("%player%", p.getName()));
-                            break;
-                        case "money":
-                            item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(plugin.getConfig().getString("money-item").toUpperCase())));
-                            plugin.getEco().depositPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), Double.parseDouble(parts[1]));
-                            break;
-                        case "gun":
-                            CSUtility shot = new CSUtility();
-                            shot.giveWeapon(p, parts[1], 1);
-                            item = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.getMaterial(plugin.getConfig().getString("gun-item").toUpperCase())));
-                            break;
-                        default:
-                            break;
-                    }
-                    item.setPickupDelay(1000);
-                    final Item finalItem = item;
-                    if(plugin.getHologramsUse()) {
-                        final Hologram hologram = HologramsAPI.createHologram(plugin, item.getLocation().add(0.0, 1.5, 0.0));
-                        hologram.appendTextLine(Utils.colorMessage(parts[2]).replaceAll("%player%", p.getName()));
-                        new BukkitRunnable() {
-                            int ticksRun;
-
-                            @Override
-                            public void run() {
-                                ticksRun++;
-                                hologram.teleport(finalItem.getLocation().add(0.0, 1.5, 0.0));
-                                if(ticksRun > timer * 20) {
-                                    hologram.delete();
-                                    finalItem.remove();
-                                    cancel();
-                                }
-                            }
-                        }.runTaskTimer(plugin, 1, 1);
-                    } else {
-                        Bukkit.getScheduler().runTaskLater(plugin, () -> finalItem.remove(), timer * 20);
-                    }
-                    String dropMsg = Utils.colorRawMessage("Pinata.Drop.DropMsg");
-                    p.sendMessage(dropMsg.replaceAll("%item%", Utils.colorMessage(parts[2])).replaceAll("%amount%", "1"));
-                    otherItemsSize++;
+                        }
+                    }.runTaskTimer(plugin, 1L, 1L);
+                } else {
+                    Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, timer * 20);
                 }
+                switch(item.getItemType()) {
+                    case ITEM:
+                        p.getInventory().addItem(item.getItem());
+                        break;
+                    case COMMAND:
+                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), item.getCommand().replaceAll("%player%", p.getName()));
+                        break;
+                    case GUN:
+                        CSUtility shot = new CSUtility();
+                        shot.giveWeapon(p, item.getGunName(), 1);
+                        break;
+                    case MONEY:
+                        plugin.getEco().depositPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), item.getMoneyValue());
+                        break;
+                }
+                p.sendMessage(Utils.colorRawMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getHologramName()).replaceAll("%amount%", String.valueOf(item.getAmount())));
             }
-        }
-        for(int i = 0; i < itemsToGive.size(); i++) {
-            Item preItem = itemsToGive.get(i);
-            p.sendMessage(Utils.colorRawMessage("Pinata.Drop.DropMsg").replaceAll("%item%", StringUtils.capitalize(preItem.getItemStack().getItemMeta().getDisplayName())).replaceAll("%amount%", String.valueOf(preItem.getItemStack().getAmount())));
-            ItemStack[] temp = {(preItem.getItemStack())};
-            items.add(temp);
-            p.getInventory().addItem(items.get(i));
+            items.add(item);
+            i++;
         }
         PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), e.getEntity(), e.getEntity().getCustomName(), items);
         Bukkit.getPluginManager().callEvent(pde);
-        if(items.size() == 0 && otherItemsSize == 0) {
+        if(i == 0) {
             p.sendMessage(Utils.colorRawMessage("Pinata.Drop.No-Drops"));
         }
         plugin.getCommands().getPinata().remove(e.getEntity());
