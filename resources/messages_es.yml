@@ -25,6 +25,7 @@ Pinata:
     Player-Not-Found: '&6&lPiñatas &a>> &cEse jugador no esta online!'
     Console-Specify-Player: '&cEspecifica el nombre del jugador!'
     Vault-Not-Detected: '&6&lPiñatas &a>> &cVault no encontrado. Abortando!'
+    Custom-Location-Create-Error: "&6&lPinata &a>> &cSomething went wrong! Make sure you've set valid values: &eworld, x, y, z, pinata name&c!"
     Help-Command:
       Header: '&8&m===========[&r &9&lP&a&li&c&lñ&e&la&3&lt&b&la&5&ls &8&m]==========='
       Description: |2-
