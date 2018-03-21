@@ -78,12 +78,12 @@ public class Commands implements CommandExecutor {
                 int rows = Utils.serializeInt(plugin.getPinataManager().getPinataDrop().get(args[1]).size());
                 Inventory previewMenu = Bukkit.createInventory(null, rows, Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"));
                 int i = 0;
-                for(PinataItem item : plugin.getPinataManager().getPinataDrop().get(args[1])){
+                for(PinataItem item : plugin.getPinataManager().getPinataDrop().get(args[1])) {
                     ItemStack stack = new ItemStack(item.getRepresentedMaterial(), item.getAmount());
                     ItemMeta meta = stack.getItemMeta();
                     List<String> lore = new ArrayList<>();
                     String dropLore = Utils.colorRawMessage("Menus.Preview-Menu.Drop-Chance").replaceAll("%chance%", String.valueOf(item.getDropChance()));
-                    switch(item.getItemType()){
+                    switch(item.getItemType()) {
                         case ITEM:
                             meta.setDisplayName(item.getItem().getItemMeta().getDisplayName());
                             if(item.getItem().getItemMeta().hasLore()) {

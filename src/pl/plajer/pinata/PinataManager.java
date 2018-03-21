@@ -147,14 +147,14 @@ public class PinataManager {
                     plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Item").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                     return false;
                 }
-                if(Integer.parseInt(partsvaild[4]) == 0) {
+                if(Double.parseDouble(partsvaild[4]) == 0) {
                     plugin.getLogger().log(Level.WARNING, Utils.colorRawMessage("Validator.Invalid-Chance").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                 }
             } else if(partsvaild[0].equals("command")) {
                 if(partsvaild.length < 3) {
                     plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Configuration").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                 }
-                if(Integer.parseInt(partsvaild[3]) == 0) {
+                if(Double.parseDouble(partsvaild[3]) == 0) {
                     plugin.getLogger().log(Level.WARNING, Utils.colorRawMessage("Validator.Invalid-Chance").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                 }
             } else if(partsvaild[0].equals("money")) {
@@ -163,10 +163,10 @@ public class PinataManager {
                         plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Configuration").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                         return false;
                     }
-                    if(Integer.parseInt(partsvaild[1]) == 0) {
+                    if(Double.parseDouble(partsvaild[1]) == 0) {
                         plugin.getLogger().log(Level.WARNING, Utils.colorRawMessage("Validator.Invalid-Money-Drop").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                     }
-                    if(Integer.parseInt(partsvaild[3]) == 0) {
+                    if(Double.parseDouble(partsvaild[3]) == 0) {
                         plugin.getLogger().log(Level.WARNING, Utils.colorRawMessage("Validator.Invalid-Chance").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                     }
                 } else {
@@ -180,7 +180,7 @@ public class PinataManager {
                         plugin.getLogger().log(Level.SEVERE, Utils.colorRawMessage("Validator.Invalid-Configuration").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                         return false;
                     }
-                    if(Integer.parseInt(partsvaild[3]) == 0) {
+                    if(Double.parseDouble(partsvaild[3]) == 0) {
                         plugin.getLogger().log(Level.WARNING, Utils.colorRawMessage("Validator.Invalid-Chance").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                     }
                 } else {

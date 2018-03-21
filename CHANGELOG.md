@@ -8,3 +8,7 @@
 
 ### 2.6.1 update (19.03.2018)
 * Fixed es-AR locale
+
+### 2.6.2 update (21.03.2018)
+* Fixed validator error when any drop chance was float number not integer
+* Added support for float numbers in money drop
