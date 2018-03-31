@@ -1,5 +1,6 @@
 package pl.plajer.pinata;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -20,7 +21,9 @@ import java.util.logging.Level;
 
 public class CrateManager implements Listener {
 
+    @Getter
     private Map<Location, String> cratesLocations = new HashMap<>();
+    @Getter
     private Map<Player, Location> crateUsage = new HashMap<>();
     private Main plugin;
 
@@ -58,16 +61,16 @@ public class CrateManager implements Listener {
             if(cratesLocations.containsKey(e.getClickedBlock().getLocation())) {
                 e.setCancelled(true);
                 if(!plugin.isPluginEnabled("Vault")) {
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
+                    e.getPlayer().sendMessage(Utils.colorFileMessage("Pinata.Command.Vault-Not-Detected"));
                     return;
                 }
                 if(!e.getPlayer().hasPermission("pinata.player.crate")) {
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
+                    e.getPlayer().sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.No-Permission"));
                     return;
                 }
                 if(!plugin.getConfig().getBoolean("disabled-worlds-exclusions.crates")) {
                     if(plugin.getDisabledWorlds().contains(e.getPlayer().getWorld().getName())) {
-                        e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
+                        e.getPlayer().sendMessage(Utils.colorFileMessage("Pinata.Create.Disabled-World"));
                         return;
                     }
                 }
@@ -86,13 +89,13 @@ public class CrateManager implements Listener {
                     for(String key : pinata.getKeys(false)) {
                         if(cratesLocations.get(e.getBlock().getLocation()).equals(key)) {
                             if(!e.getPlayer().hasPermission("pinata.admin.crate.destroy")) {
-                                e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.No-Permission"));
+                                e.getPlayer().sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.No-Permission"));
                                 e.setCancelled(true);
                             }
                             plugin.getFileManager().getCratesConfig().set("crates." + key, null);
                             plugin.getFileManager().saveCratesConfig();
                             cratesLocations.remove(e.getBlock().getLocation());
-                            String message = Utils.colorRawMessage("Pinata.Crate-Creation.Destroyed");
+                            String message = Utils.colorFileMessage("Pinata.Crate-Creation.Destroyed");
                             e.getPlayer().sendMessage(message.replaceAll("%name%", key));
                             return;
                         }
@@ -100,14 +103,6 @@ public class CrateManager implements Listener {
                 }
             }
         }
-    }
-
-    public Map<Player, Location> getCrateUsage() {
-        return crateUsage;
-    }
-
-    public Map<Location, String> getCratesLocations() {
-        return cratesLocations;
     }
 
 }

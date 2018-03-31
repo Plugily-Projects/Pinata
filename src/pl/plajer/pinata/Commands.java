@@ -1,5 +1,8 @@
 package pl.plajer.pinata;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,15 +19,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.plajer.pinata.dao.Pinata;
+import pl.plajer.pinata.dao.PinataData;
+import pl.plajer.pinata.dao.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class Commands implements CommandExecutor {
 
+    @Getter
     private Map<Entity, PinataData> pinata = new HashMap<>();
+    @Getter
+    @Setter
     private List<Player> users = new ArrayList<>();
     private Main plugin;
 
@@ -35,7 +48,7 @@ public class Commands implements CommandExecutor {
 
     private boolean isSenderPlayer(CommandSender sender) {
         if(!(sender instanceof Player)) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Only-Player"));
+            sender.sendMessage(Utils.colorFileMessage("Pinata.Command.Only-Player"));
             return false;
         }
         return true;
@@ -43,7 +56,7 @@ public class Commands implements CommandExecutor {
 
     private boolean hasPermission(CommandSender sender, String permission) {
         if(!sender.hasPermission(permission)) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
+            sender.sendMessage(Utils.colorFileMessage("Pinata.Command.No-Permission"));
             return false;
         }
         return true;
@@ -54,8 +67,8 @@ public class Commands implements CommandExecutor {
         if(command.getName().equalsIgnoreCase("pinata")) {
             if(!hasPermission(sender, "pinata.command")) return true;
             if(args.length == 0) {
-                sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Help-Command.Header"));
-                sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Help-Command.Description"));
+                sender.sendMessage(Utils.colorFileMessage("Pinata.Command.Help-Command.Header"));
+                sender.sendMessage(Utils.colorFileMessage("Pinata.Command.Help-Command.Description"));
                 return true;
             }
             if(args[0].equalsIgnoreCase("list")) {
@@ -63,105 +76,81 @@ public class Commands implements CommandExecutor {
                 if(!hasPermission(sender, "pinata.command.list")) return true;
                 Utils.createPinatasGUI("Menus.List-Menu.Inventory-Name", (Player) sender);
                 return true;
-            }
-            if(args[0].equalsIgnoreCase("preview")) {
+            } else if(args[0].equalsIgnoreCase("preview")) {
                 if(!isSenderPlayer(sender)) return true;
                 if(!hasPermission(sender, "pinata.command.preview")) return true;
                 if(args.length == 1) {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Specify-Name"));
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Specify-Name"));
                     return true;
                 }
-                if(!plugin.getPinataManager().getPinataList().contains(args[1])) {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
-                    return true;
-                }
-                int rows = Utils.serializeInt(plugin.getPinataManager().getPinataDrop().get(args[1]).size());
-                Inventory previewMenu = Bukkit.createInventory(null, rows, Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"));
-                int i = 0;
-                for(PinataItem item : plugin.getPinataManager().getPinataDrop().get(args[1])) {
-                    ItemStack stack = new ItemStack(item.getRepresentedMaterial(), item.getAmount());
-                    ItemMeta meta = stack.getItemMeta();
-                    List<String> lore = new ArrayList<>();
-                    String dropLore = Utils.colorRawMessage("Menus.Preview-Menu.Drop-Chance").replaceAll("%chance%", String.valueOf(item.getDropChance()));
-                    switch(item.getItemType()) {
-                        case ITEM:
-                            meta.setDisplayName(item.getItem().getItemMeta().getDisplayName());
-                            if(item.getItem().getItemMeta().hasLore()) {
-                                lore.addAll(item.getItem().getItemMeta().getLore());
-                            }
-                            break;
-                        case COMMAND:
-                            meta.setDisplayName(item.getHologramName());
-                            lore.add(Utils.colorRawMessage("Menus.Preview-Menu.Command-To-Execute").replaceAll("%command%", item.getCommand().replaceAll("%player%", sender.getName())));
-                            break;
-                        case GUN:
-                            meta.setDisplayName(item.getHologramName());
-                            break;
-                        case MONEY:
-                            meta.setDisplayName(item.getHologramName());
-                            lore.add(Utils.colorRawMessage("Menus.Preview-Menu.Money-Reward").replaceAll("%money%", String.valueOf(item.getMoneyValue())));
-                            break;
+                for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                    if(pinata.getID().equals(args[1])) {
+                        Inventory previewMenu = Bukkit.createInventory(null, Utils.serializeInt(pinata.getDrops().size()), Utils.colorFileMessage("Menus.Preview-Menu.Inventory-Name"));
+                        for(PinataItem is : pinata.getDrops()) {
+                            ItemMeta meta = is.getItem().getItemMeta();
+                            List<String> lore = meta.getLore();
+                            lore.add(Utils.colorFileMessage("Menus.Preview-Menu.Drop-Chance").replaceAll("%chance%", String.valueOf(is.getDropChance())));
+                            meta.setLore(lore);
+                            is.getItem().setItemMeta(meta);
+                            previewMenu.addItem(is.getItem());
+                        }
+                        ((Player) sender).openInventory(previewMenu);
+                        return true;
                     }
-                    lore.add(dropLore);
-                    meta.setLore(lore);
-                    stack.setItemMeta(meta);
-                    previewMenu.setItem(i, stack);
-                    i++;
                 }
-                ((Player) sender).openInventory(previewMenu);
+                sender.sendMessage(Utils.colorFileMessage("Pinata.Not-Found"));
                 return true;
-            }
-            if(args[0].equalsIgnoreCase("buy")) {
+            } else if(args[0].equalsIgnoreCase("buy")) {
                 if(!isSenderPlayer(sender)) return true;
                 final Player p = (Player) sender;
                 if(!plugin.isPluginEnabled("Vault")) {
-                    p.sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
+                    p.sendMessage(Utils.colorFileMessage("Pinata.Command.Vault-Not-Detected"));
                     return true;
                 }
                 if(!hasPermission(sender, "pinata.command.buy")) return true;
                 if(!users.isEmpty()) {
                     if(users.contains(p)) {
-                        p.sendMessage(Utils.colorRawMessage("Pinata.Create.Already-Created"));
+                        p.sendMessage(Utils.colorFileMessage("Pinata.Create.Already-Created"));
                         return true;
                     }
                 }
                 if(plugin.getDisabledWorlds().contains(p.getWorld().getName())) {
-                    p.sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
+                    p.sendMessage(Utils.colorFileMessage("Pinata.Create.Disabled-World"));
                     return true;
                 }
                 if(args.length == 1) {
                     Utils.createPinatasGUI("Menus.List-Menu.Inventory-Name", p);
                     return true;
                 }
-                if(!plugin.getPinataManager().getPinataList().contains(args[1])) {
-                    p.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
-                    return true;
-                }
-                if(plugin.getFileManager().getPinataConfig().getInt("pinatas." + args[1] + ".cost") == -1) {
-                    p.sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
-                    return true;
-                }
-                if(plugin.getConfig().getBoolean("using-permissions")) {
-                    final String pinataPermission = plugin.getFileManager().getPinataConfig().get("pinatas." + args[1] + ".permission").toString();
-                    if(!p.hasPermission(pinataPermission)) {
-                        p.sendMessage(Utils.colorRawMessage("Pinata.Create.No-Permission"));
-                        return true;
+                for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                    if(pinata.getID().equals(args[1])) {
+                        if(pinata.getPrice() == -1) {
+                            p.sendMessage(Utils.colorFileMessage("Pinata.Selling.Not-For-Sale"));
+                            return true;
+                        }
+                        if(plugin.getConfig().getBoolean("using-permissions")) {
+                            if(!p.hasPermission(pinata.getPermission())) {
+                                p.sendMessage(Utils.colorFileMessage("Pinata.Create.No-Permission"));
+                                return true;
+                            }
+                        }
+                        if(p.hasPermission("pinata.admin.freeall")) {
+                            Utils.createPinataAtPlayer(p, p.getLocation(), pinata);
+                            return true;
+                        } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost")) {
+                            if(Utils.createPinataAtPlayer(p, p.getLocation(), pinata)) {
+                                plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost"));
+                            }
+                            return true;
+                        } else {
+                            sender.sendMessage(Utils.colorFileMessage("Pinata.Selling.Cannot-Afford"));
+                            return true;
+                        }
                     }
                 }
-                if(p.hasPermission("pinata.admin.freeall")) {
-                    Utils.createPinataAtPlayer(p, p.getLocation(), args[1]);
-                    return true;
-                } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost")) {
-                    if(Utils.createPinataAtPlayer(p, p.getLocation(), args[1])) {
-                        plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost"));
-                    }
-                    return true;
-                } else {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Selling.Cannot-Afford"));
-                    return true;
-                }
-            }
-            if(args[0].equalsIgnoreCase("reloadconfig")) {
+                sender.sendMessage(Utils.colorFileMessage("Pinata.Not-Found"));
+                return true;
+            } else if(args[0].equalsIgnoreCase("reloadconfig")) {
                 if(!hasPermission(sender, "pinata.admin.reload")) return true;
                 try {
                     plugin.reloadConfig();
@@ -172,10 +161,10 @@ public class Commands implements CommandExecutor {
                     plugin.reloadConfig();
                     plugin.getFileManager().reloadMessagesConfig();
                     plugin.getFileManager().reloadPinataConfig();
-                    plugin.getPinataManager().loadPinatas();
+                    plugin.getPinataManager().loadPinatas3();
                     plugin.setupLocale();
                 } catch(Exception e) {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Fail"));
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Config.Reload-Fail"));
                     return true;
                 }
                 plugin.getDisabledWorlds().clear();
@@ -190,16 +179,15 @@ public class Commands implements CommandExecutor {
                         String latestVersion = UpdateChecker.getLatestVersion();
                         if(latestVersion != null) {
                             latestVersion = "v" + latestVersion;
-                            sender.sendMessage(Utils.colorRawMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
+                            sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
                         }
                     } catch(Exception ex) {
-                        sender.sendMessage(Utils.colorRawMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+                        sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
                     }
                 }
-                sender.sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Success"));
+                sender.sendMessage(Utils.colorFileMessage("Pinata.Config.Reload-Success"));
                 return true;
-            }
-            if(args[0].equalsIgnoreCase("create")) {
+            } else if(args[0].equalsIgnoreCase("create")) {
                 if(!hasPermission(sender, "pinata.admin.create")) return true;
                 if(args.length == 6) {
                     //custom location is used
@@ -228,37 +216,39 @@ public class Commands implements CommandExecutor {
                         } else {
                             z = Integer.parseInt(args[4]);
                         }
-                        if(!plugin.getPinataManager().getPinataList().contains(args[5])) {
-                            sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
-                            return true;
+                        for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                            if(pinata.getID().equals(args[5])) {
+                                Location l = new Location(world, x, y, z);
+                                LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + args[5] + ".mob-type").toUpperCase()));
+                                entity.setMaxHealth(Main.getInstance().getFileManager().getPinataConfig().getDouble("pinatas." + args[5] + ".health"));
+                                entity.setHealth(entity.getMaxHealth());
+                                PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, args[5]);
+                                sender.sendMessage(Utils.colorFileMessage("Pinata.Create.Success").replaceAll("%name%", args[5]));
+                                return true;
+                            }
                         }
-                        Location l = new Location(world, x, y, z);
-                        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + args[5] + ".mob-type").toUpperCase()));
-                        entity.setMaxHealth(Main.getInstance().getFileManager().getPinataConfig().getDouble("pinatas." + args[5] + ".health"));
-                        entity.setHealth(entity.getMaxHealth());
-                        PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, args[5]);
-                        sender.sendMessage(Utils.colorRawMessage("Pinata.Create.Success").replaceAll("%name%", args[5]));
+                        sender.sendMessage(Utils.colorFileMessage("Pinata.Not-Found"));
                         return true;
                     } catch(Exception e) {
-                        sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Custom-Location-Create-Error"));
+                        sender.sendMessage(Utils.colorFileMessage("Pinata.Command.Custom-Location-Create-Error"));
                         return true;
                     }
                 }
                 if(args.length == 1) {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Specify-Name"));
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Specify-Name"));
                     return true;
                 }
                 Player user;
                 if(sender instanceof ConsoleCommandSender) {
                     if(args.length != 3) {
-                        sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Console-Specify-Player"));
+                        sender.sendMessage(Utils.colorFileMessage("Pinata.Command.Console-Specify-Player"));
                         return true;
                     }
                     if(Bukkit.getPlayer(args[2]) != null) {
                         user = Bukkit.getPlayer(args[2]);
-                        user.sendMessage(Utils.colorRawMessage("Pinata.Create.By-Console"));
+                        user.sendMessage(Utils.colorFileMessage("Pinata.Create.By-Console"));
                     } else {
-                        sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Player-Not-Found"));
+                        sender.sendMessage(Utils.colorFileMessage("Pinata.Command.Player-Not-Found"));
                         return true;
                     }
                 } else {
@@ -269,34 +259,35 @@ public class Commands implements CommandExecutor {
                         if(Bukkit.getPlayer(args[2]) != null) {
                             user = Bukkit.getPlayer(args[2]);
                         } else {
-                            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Player-Not-Found"));
+                            sender.sendMessage(Utils.colorFileMessage("Pinata.Command.Player-Not-Found"));
                             return true;
                         }
                     }
                 }
-                if(!plugin.getPinataManager().getPinataList().contains(args[1])) {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
-                    return true;
+                for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                    if(pinata.getID().equals(args[1])) {
+                        Utils.createPinataAtPlayer(user, user.getLocation(), pinata);
+                        return true;
+                    }
                 }
-                Utils.createPinataAtPlayer(user, user.getLocation(), args[1]);
+                sender.sendMessage(Utils.colorFileMessage("Pinata.Not-Found"));
                 return true;
-            }
-            if(args[0].equalsIgnoreCase("setcrate")) {
+            } else if(args[0].equalsIgnoreCase("setcrate")) {
                 if(!hasPermission(sender, "pinata.admin.crate.set")) return true;
                 if(!isSenderPlayer(sender)) return true;
                 if(args.length != 2) {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Specify-Name"));
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.Specify-Name"));
                     return true;
                 }
                 Player p = (Player) sender;
                 Block l = p.getTargetBlock(null, 20);
                 if(l.getType().equals(Material.CHEST)) {
                     if(plugin.getCrateManager().getCratesLocations().containsKey(l.getLocation())) {
-                        p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Is-Set-Here"));
+                        p.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.Is-Set-Here"));
                         return true;
                     }
                     if(plugin.getFileManager().getCratesConfig().isSet("crates." + args[1])) {
-                        p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Already-Exists"));
+                        p.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.Already-Exists"));
                         return true;
                     }
                     plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".world", l.getWorld().getName());
@@ -306,42 +297,89 @@ public class Commands implements CommandExecutor {
                     plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".name", args[1]);
                     plugin.getFileManager().saveCratesConfig();
                     plugin.getCrateManager().getCratesLocations().put(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ()), args[1]);
-                    p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Create-Success").replaceAll("%name%", args[1]));
+                    p.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.Create-Success").replaceAll("%name%", args[1]));
                     return true;
                 } else {
-                    p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Target-Block-Not-Chest"));
+                    p.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.Target-Block-Not-Chest"));
                     return true;
                 }
-            }
-            if(args[0].equalsIgnoreCase("cratelist")) {
+            } else if(args[0].equalsIgnoreCase("cratelist")) {
                 if(!hasPermission(sender, "pinata.admin.crate.list")) return true;
                 int num = 0;
-                sender.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.List"));
+                sender.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.List"));
                 for(Location l : plugin.getCrateManager().getCratesLocations().keySet()) {
                     sender.sendMessage(Utils.colorMessage("&a" + plugin.getCrateManager().getCratesLocations().get(l) + " - X: " + l.getX() + " Y: " + l.getY() + " Z: " + l.getZ()));
                     num++;
                 }
                 if(num == 0) {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.List-Empty"));
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.List-Empty"));
                 }
                 return true;
+            } else if(args[0].equalsIgnoreCase("edit")) {
+                if(!hasPermission(sender, "pinata.admin.editor")) return true;
+                if(!isSenderPlayer(sender)) return true;
+                if(args.length == 1) {
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Specify-Name"));
+                    return true;
+                }
+                for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                    if(pinata.getID().equals(args[1])) {
+                        Inventory inv = Bukkit.createInventory(null, 9 * 5, Utils.colorMessage("&lEdit items of pinata " + args[1]));
+                        for(int i = 0; i < plugin.getFileManager().getPinataConfig().getList("Pinatas." + pinata.getID() + ".Drops").size(); i++) {
+                            ItemStack item = (ItemStack) plugin.getFileManager().getPinataConfig().getList("Pinatas." + pinata.getID() + ".Drops").get(i);
+                            inv.addItem(item);
+                        }
+                        ((Player) sender).openInventory(inv);
+                        return true;
+                    }
+                }
+                sender.sendMessage(Utils.colorFileMessage("Pinata.Not-Found"));
+                return true;
+            } else if(args[0].equalsIgnoreCase("setchance")) {
+                if(!hasPermission(sender, "pinata.admin.editor")) return true;
+                if(!isSenderPlayer(sender)) return true;
+                if(args.length == 1) {
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Specify-Amount"));
+                    return true;
+                }
+                if(!NumberUtils.isNumber(args[1])) {
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Not-Number"));
+                    return true;
+                }
+                Player p = (Player) sender;
+                if(p.getItemInHand() == null || p.getItemInHand().getType().equals(Material.AIR)) {
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Not-Holding-Anything"));
+                    return true;
+                }
+                ItemStack item = p.getItemInHand();
+                ItemMeta meta = item.getItemMeta();
+                List<String> lore = new ArrayList<>();
+                if(p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()) {
+                    lore.addAll(meta.getLore());
+                }
+                lore.add(args[1]);
+                meta.setLore(lore);
+                item.setItemMeta(meta);
+                if(item.hasItemMeta()) {
+                    if(item.getItemMeta().hasLore()) {
+                        sender.sendMessage(Utils.colorFileMessage("Pinata.Lore-Set"));
+                        p.setItemInHand(item);
+                        return true;
+                    } else {
+                        sender.sendMessage(Utils.colorFileMessage("Pinata.Lore-Set"));
+                        p.setItemInHand(item);
+                        return true;
+                    }
+                } else {
+                    sender.sendMessage(Utils.colorFileMessage("Pinata.Lore-Set"));
+                    p.setItemInHand(item);
+                    return true;
+                }
             }
         } else {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
+            sender.sendMessage(Utils.colorFileMessage("Pinata.Command.No-Permission"));
             return true;
         }
         return false;
-    }
-
-    public Map<Entity, PinataData> getPinata() {
-        return pinata;
-    }
-
-    public List<Player> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<Player> users) {
-        this.users = users;
     }
 }

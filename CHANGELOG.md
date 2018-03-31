@@ -12,3 +12,11 @@
 ### 2.6.2 update (21.03.2018)
 * Fixed validator error when any drop chance was float number not integer
 * Added support for float numbers in money drop
+
+### 2.6.3 (27.03.2018)
+* Some code changes
+
+### 3.0.0 ALPHA LOG
+#### Build 1
+* Added full support for in-game items
+* Removed crackshot and vault support

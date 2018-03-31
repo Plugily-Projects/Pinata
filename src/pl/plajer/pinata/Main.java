@@ -2,6 +2,7 @@ package pl.plajer.pinata;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -16,19 +17,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+@Getter
 public class Main extends JavaPlugin {
 
     private static Main instance;
-    private final int MESSAGES_FILE_VERSION = 9;
-    private final int CONFIG_FILE_VERSION = 5;
-    private PinataLocale pinataLocale;
+    public static final int MESSAGES_FILE_VERSION = 9;
+    public static final int CONFIG_FILE_VERSION = 5;
+    private PinataLocale locale;
     private CrateManager crateManager;
     private Commands commands;
     private FileManager fileManager;
     private PinataManager pinataManager;
     private SignManager signManager;
     private List<String> disabledWorlds = new ArrayList<>();
-    private Economy econ = null;
+    private Economy eco = null;
 
     public static Main getInstance() {
         return instance;
@@ -75,7 +77,7 @@ public class Main extends JavaPlugin {
         fileManager.reloadPinataConfig();
         fileManager.reloadMessagesConfig();
         crateManager.loadCrates();
-        pinataManager.loadPinatas();
+        pinataManager.loadPinatas3();
         crateManager.particleScheduler();
         if(isPluginEnabled("HolographicDisplays")) hologramScheduler();
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
@@ -85,10 +87,10 @@ public class Main extends JavaPlugin {
                 String latestVersion = UpdateChecker.getLatestVersion();
                 if(latestVersion != null) {
                     latestVersion = "v" + latestVersion;
-                    Bukkit.getConsoleSender().sendMessage(Utils.colorRawMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
+                    Bukkit.getConsoleSender().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
                 }
             } catch(Exception ex) {
-                Bukkit.getConsoleSender().sendMessage(Utils.colorRawMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+                Bukkit.getConsoleSender().sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
             }
         }
     }
@@ -100,7 +102,7 @@ public class Main extends JavaPlugin {
                 if(entity instanceof Sheep) {
                     if(commands.getPinata().containsKey(entity)) {
                         if(commands.getPinata().get(entity).getPlayer() != null) {
-                            commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Removed"));
+                            commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorFileMessage("Pinata.Config.Reload-Removed"));
                         }
                         commands.getPinata().get(entity).getBuilder().getBlock().setType(Material.AIR);
                         commands.getPinata().get(entity).getLeash().remove();
@@ -125,74 +127,42 @@ public class Main extends JavaPlugin {
         saveResource("messages_nl.yml", true);
         switch(getConfig().getString("locale")){
             case "en":
-                pinataLocale = PinataLocale.ENGLISH;
+                locale = PinataLocale.ENGLISH;
                 break;
             case "pl":
-                pinataLocale = PinataLocale.POLSKI;
+                locale = PinataLocale.POLSKI;
                 break;
             case "nl":
-                pinataLocale = PinataLocale.NEDERLANDS;
+                locale = PinataLocale.NEDERLANDS;
                 break;
             case "fr":
-                pinataLocale = PinataLocale.FRANCAIS;
+                locale = PinataLocale.FRANCAIS;
                 break;
             case "de":
-                pinataLocale = PinataLocale.DEUTSCH;
+                locale = PinataLocale.DEUTSCH;
                 break;
             case "es":
-                pinataLocale = PinataLocale.ESPANOL;
+                locale = PinataLocale.ESPANOL;
                 break;
             default:
-                pinataLocale = PinataLocale.ENGLISH;
+                locale = PinataLocale.ENGLISH;
                 break;
         }
         validateLocaleVersion();
     }
 
     private void validateLocaleVersion(){
-        if(pinataLocale == PinataLocale.ENGLISH) return;
+        if(locale == PinataLocale.ENGLISH) return;
         if(fileManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(fileManager.getLanguageMessage("File-Version-Do-Not-Edit"))){
             if(fileManager.getLanguageMessage("File-Version-Do-Not-Edit").equals(fileManager.getLanguageMessage("Language-Version"))){
-                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Loaded locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " without problems!");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Loaded locale " + locale.getFormattedName() + " by " + locale.getAuthor() + " without problems!");
                 return;
             }
-            Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Pinata] Locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " is outdated! Not every message will be translated!");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Pinata] Locale " + locale.getFormattedName() + " by " + locale.getAuthor() + " is outdated! Not every message will be translated!");
             return;
         }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " loading failed, it's outdated! Using default instead...");
-        pinataLocale = PinataLocale.ENGLISH;
-    }
-
-    public PinataLocale getLocale() {
-        return pinataLocale;
-    }
-
-    public CrateManager getCrateManager() {
-        return crateManager;
-    }
-
-    public Commands getCommands() {
-        return commands;
-    }
-
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
-    public PinataManager getPinataManager() {
-        return pinataManager;
-    }
-
-    public SignManager getSignManager() {
-        return signManager;
-    }
-
-    public Economy getEco() {
-        return econ;
-    }
-
-    public List<String> getDisabledWorlds() {
-        return disabledWorlds;
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Locale " + locale.getFormattedName() + " by " + locale.getAuthor() + " loading failed, it's outdated! Using default instead...");
+        locale = PinataLocale.ENGLISH;
     }
 
     private void setupDependencies() {
@@ -227,7 +197,7 @@ public class Main extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for(Location l : crateManager.getCratesLocations().keySet()) {
                 Hologram holo = HologramsAPI.createHologram(this, l.clone().add(0.5, 1.5, 0.5));
-                holo.appendTextLine(Utils.colorRawMessage("Hologram.Crate-Hologram").replaceAll("%name%", crateManager.getCratesLocations().get(l)));
+                holo.appendTextLine(Utils.colorFileMessage("Hologram.Crate-Hologram").replaceAll("%name%", crateManager.getCratesLocations().get(l)));
                 Bukkit.getScheduler().runTaskLater(this, holo::delete, (long) getConfig().getDouble("hologram-refresh") * 20);
             }
         }, (long) this.getConfig().getDouble("hologram-refresh") * 20, (long) this.getConfig().getDouble("hologram-refresh") * 20);
@@ -245,8 +215,8 @@ public class Main extends JavaPlugin {
         if(rsp == null) {
             return false;
         }
-        econ = rsp.getProvider();
-        return econ != null;
+        eco = rsp.getProvider();
+        return eco != null;
     }
 
     public enum PinataLocale {

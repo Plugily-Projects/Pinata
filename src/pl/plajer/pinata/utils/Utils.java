@@ -4,13 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.dao.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Utils {
 
-    public static String colorRawMessage(String message) {
+    public static String colorFileMessage(String message) {
         return ChatColor.translateAlternateColorCodes('&', Main.getInstance().getFileManager().getLanguageMessage(message));
     }
 
@@ -31,39 +31,35 @@ public class Utils {
         else return (int) ((Math.ceil(i / 9) * 9) + 9);
     }
 
-    public static boolean createPinataAtPlayer(Player p, Location l, String pinataName) {
+    public static boolean createPinataAtPlayer(Player p, Location l, Pinata pinata) {
         Location loc = l.clone().add(0, 7, 0);
-        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + pinataName + ".mob-type").toUpperCase()));
-        entity.setMaxHealth(Main.getInstance().getFileManager().getPinataConfig().getDouble("pinatas." + pinataName + ".health"));
+        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), pinata.getEntityType());
+        entity.setMaxHealth(pinata.getHealth());
         entity.setHealth(entity.getMaxHealth());
-        return PinataFactory.createPinata(loc, p, entity, pinataName);
+        return PinataFactory.createPinata(loc, p, entity, pinata.getID());
     }
 
     public static void createPinatasGUI(String name, Player p) {
         int rows = serializeInt(Main.getInstance().getPinataManager().getPinataList().size());
-        Inventory pinatasMenu = Bukkit.createInventory(null, rows, Utils.colorRawMessage(name));
-        for(int i = 0; i < Main.getInstance().getPinataManager().getPinataList().size(); i++) {
-            String pinata = Main.getInstance().getPinataManager().getPinataList().get(i);
+        Inventory pinatasMenu = Bukkit.createInventory(null, rows, Utils.colorFileMessage(name));
+        for(Pinata pinata : Main.getInstance().getPinataManager().getPinataList()){
             ItemStack item = new ItemStack(Material.WOOL, 1);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(Utils.colorMessage("&6") + pinata);
+            meta.setDisplayName(Utils.colorMessage("&6") + pinata.getID());
             List<String> lore = new ArrayList<>();
-            if(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinata + ".type").equals("private")) {
-                lore.add(colorRawMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
-            } else {
-                lore.add(colorRawMessage("Menus.List-Menu.Pinata-Types.Type-Public"));
+            if(pinata.getPinataType() == Pinata.PinataType.PRIVATE) lore.add(colorFileMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
+            else lore.add(colorFileMessage("Menus.List-Menu.Pinata-Types.Type-Public"));
+            if(pinata.getPrice() == -1){
+                lore.add(colorFileMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));
+            } else{
+                String cost = colorFileMessage("Menus.List-Menu.Pinata-Cost");
+                lore.add(cost.replaceAll("%money%", String.valueOf(pinata.getPrice())) + "$");
+                lore.add(colorFileMessage("Menus.List-Menu.Click-Selection.Right-Click"));
             }
-            if(Integer.parseInt(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) == -1) {
-                lore.add(colorRawMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));
-            } else {
-                String cost = colorRawMessage("Menus.List-Menu.Pinata-Cost");
-                lore.add(cost.replaceAll("%money%", Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) + "$");
-                lore.add(colorRawMessage("Menus.List-Menu.Click-Selection.Right-Click"));
-            }
-            lore.add(colorRawMessage("Menus.List-Menu.Click-Selection.Left-Click"));
+            lore.add(colorFileMessage("Menus.List-Menu.Click-Selection.Left-Click"));
             meta.setLore(lore);
             item.setItemMeta(meta);
-            pinatasMenu.setItem(i, item);
+            pinatasMenu.addItem(item);
         }
         p.openInventory(pinatasMenu);
     }

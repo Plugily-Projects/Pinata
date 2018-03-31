@@ -1,7 +1,6 @@
 package pl.plajer.pinata.pinataapi;
 
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -9,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajer.pinata.Main;
-import pl.plajer.pinata.PinataData;
+import pl.plajer.pinata.dao.PinataData;
 import pl.plajer.pinata.utils.Utils;
 
 /**
@@ -37,14 +36,14 @@ public class PinataFactory implements Listener {
             return false;
         }
         if(!(fenceLocation.getBlock().getType().equals(Material.AIR))) {
-            player.sendMessage(Utils.colorRawMessage("Pinata.Create.Fail"));
+            player.sendMessage(Utils.colorFileMessage("Pinata.Create.Fail"));
             entity.remove();
             if(fenceLocation.getBlock().getType().equals(Material.FENCE)) {
                 fenceLocation.getBlock().setType(Material.AIR);
             }
             return false;
         }
-        player.sendMessage(Utils.colorRawMessage("Pinata.Create.Success").replaceAll("%name%", pinataName));
+        player.sendMessage(Utils.colorFileMessage("Pinata.Create.Success").replaceAll("%name%", pinataName));
         Main.getInstance().getCommands().getUsers().add(player);
         //Max height check is to avoid problems with different server specifications
         Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);
@@ -59,9 +58,9 @@ public class PinataFactory implements Listener {
         safefence.getBlock().setType(blocksafe);
         Main.getInstance().getCommands().getPinata().put(entity, new PinataData(player, fenceLocation, hitch));
         entity.setCustomName(pinataName);
-        if(entity instanceof Sheep) {
+        /*if(entity instanceof Sheep) {
             ((Sheep) entity).setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataName + ".color").toString().toUpperCase()));
-        }
+        }*/
         entity.setLeashHolder(hitch);
         if(Main.getInstance().getConfig().getBoolean("blindness-effect")) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Main.getInstance().getConfig().getInt("blindness-duration") * 20, 1));
@@ -112,9 +111,9 @@ public class PinataFactory implements Listener {
         safefence.getBlock().setType(blocksafe);
         Main.getInstance().getCommands().getPinata().put(entity, new PinataData(fenceLocation, hitch));
         entity.setCustomName(pinataName);
-        if(entity instanceof Sheep) {
+        /*if(entity instanceof Sheep) {
             ((Sheep) entity).setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataName + ".color").toString().toUpperCase()));
-        }
+        }*/
         entity.setLeashHolder(hitch);
         //Scheduler to avoid graphical glitch
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> entity.setLeashHolder(hitch), 20);

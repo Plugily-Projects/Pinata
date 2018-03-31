@@ -4,7 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import pl.plajer.pinata.PinataItem;
+import pl.plajer.pinata.dao.PinataItem;
 
 import java.util.List;
 
