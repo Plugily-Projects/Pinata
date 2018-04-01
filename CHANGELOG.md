@@ -20,3 +20,5 @@
 #### Build 1
 * Added full support for in-game items
 * Removed crackshot and vault support
+### Build 2
+* Pinatas data is now saved via entity metadata

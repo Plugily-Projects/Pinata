@@ -10,7 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.Main;
-import pl.plajer.pinata.dao.Pinata;
+import pl.plajer.pinata.dao.PinataExtendedData;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class Utils {
         else return (int) ((Math.ceil(i / 9) * 9) + 9);
     }
 
-    public static boolean createPinataAtPlayer(Player p, Location l, Pinata pinata) {
+    public static boolean createPinataAtPlayer(Player p, Location l, PinataExtendedData pinata) {
         Location loc = l.clone().add(0, 7, 0);
         LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), pinata.getEntityType());
         entity.setMaxHealth(pinata.getHealth());
@@ -42,12 +42,12 @@ public class Utils {
     public static void createPinatasGUI(String name, Player p) {
         int rows = serializeInt(Main.getInstance().getPinataManager().getPinataList().size());
         Inventory pinatasMenu = Bukkit.createInventory(null, rows, Utils.colorFileMessage(name));
-        for(Pinata pinata : Main.getInstance().getPinataManager().getPinataList()){
+        for(PinataExtendedData pinata : Main.getInstance().getPinataManager().getPinataList()){
             ItemStack item = new ItemStack(Material.WOOL, 1);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(Utils.colorMessage("&6") + pinata.getID());
             List<String> lore = new ArrayList<>();
-            if(pinata.getPinataType() == Pinata.PinataType.PRIVATE) lore.add(colorFileMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
+            if(pinata.getPinataType() == PinataExtendedData.PinataType.PRIVATE) lore.add(colorFileMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
             else lore.add(colorFileMessage("Menus.List-Menu.Pinata-Types.Type-Public"));
             if(pinata.getPrice() == -1){
                 lore.add(colorFileMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));

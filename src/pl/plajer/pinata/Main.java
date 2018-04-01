@@ -7,8 +7,10 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.plajer.pinata.dao.PinataData;
 import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
@@ -100,14 +102,13 @@ public class Main extends JavaPlugin {
         for(World world : Bukkit.getServer().getWorlds()) {
             for(Entity entity : Bukkit.getServer().getWorld(world.getName()).getEntities()) {
                 if(entity instanceof Sheep) {
-                    if(commands.getPinata().containsKey(entity)) {
-                        if(commands.getPinata().get(entity).getPlayer() != null) {
-                            commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorFileMessage("Pinata.Config.Reload-Removed"));
-                        }
-                        commands.getPinata().get(entity).getBuilder().getBlock().setType(Material.AIR);
-                        commands.getPinata().get(entity).getLeash().remove();
+                    if(entity.hasMetadata("PinataEntity")){
+                        MetadataValue value = entity.getMetadata("PinataData").get(0);
+                        PinataData data = (PinataData) value.value();
+                        data.getPlayer().sendMessage(Utils.colorFileMessage("Pinata.Config.Reload-Removed"));
+                        data.getBuilder().getBlock().setType(Material.AIR);
+                        data.getLeash().remove();
                         entity.remove();
-                        commands.getPinata().remove(entity);
                     }
                 }
             }

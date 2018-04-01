@@ -1,7 +1,5 @@
 package pl.plajer.pinata;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,33 +10,24 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import pl.plajer.pinata.dao.Pinata;
-import pl.plajer.pinata.dao.PinataData;
+import pl.plajer.pinata.dao.PinataExtendedData;
 import pl.plajer.pinata.dao.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class Commands implements CommandExecutor {
 
-    @Getter
-    private Map<Entity, PinataData> pinata = new HashMap<>();
-    @Getter
-    @Setter
-    private List<Player> users = new ArrayList<>();
     private Main plugin;
 
     Commands(Main plugin) {
@@ -83,7 +72,7 @@ public class Commands implements CommandExecutor {
                     sender.sendMessage(Utils.colorFileMessage("Pinata.Specify-Name"));
                     return true;
                 }
-                for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                for(PinataExtendedData pinata : plugin.getPinataManager().getPinataList()) {
                     if(pinata.getID().equals(args[1])) {
                         Inventory previewMenu = Bukkit.createInventory(null, Utils.serializeInt(pinata.getDrops().size()), Utils.colorFileMessage("Menus.Preview-Menu.Inventory-Name"));
                         for(PinataItem is : pinata.getDrops()) {
@@ -108,11 +97,9 @@ public class Commands implements CommandExecutor {
                     return true;
                 }
                 if(!hasPermission(sender, "pinata.command.buy")) return true;
-                if(!users.isEmpty()) {
-                    if(users.contains(p)) {
-                        p.sendMessage(Utils.colorFileMessage("Pinata.Create.Already-Created"));
-                        return true;
-                    }
+                if(p.hasMetadata("PinataCreated")) {
+                    p.sendMessage(Utils.colorFileMessage("Pinata.Create.Already-Created"));
+                    return true;
                 }
                 if(plugin.getDisabledWorlds().contains(p.getWorld().getName())) {
                     p.sendMessage(Utils.colorFileMessage("Pinata.Create.Disabled-World"));
@@ -122,7 +109,7 @@ public class Commands implements CommandExecutor {
                     Utils.createPinatasGUI("Menus.List-Menu.Inventory-Name", p);
                     return true;
                 }
-                for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                for(PinataExtendedData pinata : plugin.getPinataManager().getPinataList()) {
                     if(pinata.getID().equals(args[1])) {
                         if(pinata.getPrice() == -1) {
                             p.sendMessage(Utils.colorFileMessage("Pinata.Selling.Not-For-Sale"));
@@ -216,7 +203,7 @@ public class Commands implements CommandExecutor {
                         } else {
                             z = Integer.parseInt(args[4]);
                         }
-                        for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                        for(PinataExtendedData pinata : plugin.getPinataManager().getPinataList()) {
                             if(pinata.getID().equals(args[5])) {
                                 Location l = new Location(world, x, y, z);
                                 LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + args[5] + ".mob-type").toUpperCase()));
@@ -264,7 +251,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                 }
-                for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                for(PinataExtendedData pinata : plugin.getPinataManager().getPinataList()) {
                     if(pinata.getID().equals(args[1])) {
                         Utils.createPinataAtPlayer(user, user.getLocation(), pinata);
                         return true;
@@ -322,7 +309,7 @@ public class Commands implements CommandExecutor {
                     sender.sendMessage(Utils.colorFileMessage("Pinata.Specify-Name"));
                     return true;
                 }
-                for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                for(PinataExtendedData pinata : plugin.getPinataManager().getPinataList()) {
                     if(pinata.getID().equals(args[1])) {
                         Inventory inv = Bukkit.createInventory(null, 9 * 5, Utils.colorMessage("&lEdit items of pinata " + args[1]));
                         for(int i = 0; i < plugin.getFileManager().getPinataConfig().getList("Pinatas." + pinata.getID() + ".Drops").size(); i++) {

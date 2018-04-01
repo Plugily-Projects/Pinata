@@ -89,12 +89,10 @@ public class MenuHandler implements Listener {
                     e.getWhoClicked().closeInventory();
                     return;
                 }
-                if(!plugin.getCommands().getUsers().isEmpty()) {
-                    if(plugin.getCommands().getUsers().contains(e.getWhoClicked())) {
-                        e.getWhoClicked().sendMessage(Utils.colorFileMessage("Pinata.Create.Already-Created"));
-                        e.getWhoClicked().closeInventory();
-                        return;
-                    }
+                if(e.getWhoClicked().hasMetadata("PinataCreated")){
+                    e.getWhoClicked().sendMessage(Utils.colorFileMessage("Pinata.Create.Already-Created"));
+                    e.getWhoClicked().closeInventory();
+                    return;
                 }
                 if(plugin.getConfig().getBoolean("using-permissions")) {
                     final String pperm = plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".permission").toString();
@@ -108,7 +106,6 @@ public class MenuHandler implements Listener {
                     LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + pinata + ".mob-type").toUpperCase()));
                     entity.setMaxHealth(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + pinata + ".health"));
                     entity.setHealth(entity.getMaxHealth());
-                    plugin.getCommands().getUsers().add((Player) e.getWhoClicked());
                     if(PinataFactory.createPinata(builderLocation, (Player) e.getWhoClicked(), entity, pinata)) {
                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
                             if(!(entity.isDead())) {
@@ -120,7 +117,6 @@ public class MenuHandler implements Listener {
                     LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, EntityType.valueOf(plugin.getFileManager().getPinataConfig().getString("pinatas." + pinata + ".mob-type").toUpperCase()));
                     entity.setMaxHealth(plugin.getFileManager().getPinataConfig().getDouble("pinatas." + pinata + ".health"));
                     entity.setHealth(entity.getMaxHealth());
-                    plugin.getCommands().getUsers().add((Player) e.getWhoClicked());
                     if(PinataFactory.createPinata(builderLocation, (Player) e.getWhoClicked(), entity, pinata)) {
                         //Pinata created successfully, now we can withdraw $ from player.
                         plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId()), plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".cost"));

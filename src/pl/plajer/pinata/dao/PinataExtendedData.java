@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Getter
 @AllArgsConstructor
-public class Pinata {
+public class PinataExtendedData {
 
     private String ID;
     private String name;

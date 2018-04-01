@@ -5,9 +5,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.Listener;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.dao.PinataExtendedData;
 import pl.plajer.pinata.dao.PinataData;
 import pl.plajer.pinata.utils.Utils;
 
@@ -44,7 +46,9 @@ public class PinataFactory implements Listener {
             return false;
         }
         player.sendMessage(Utils.colorFileMessage("Pinata.Create.Success").replaceAll("%name%", pinataName));
-        Main.getInstance().getCommands().getUsers().add(player);
+        player.setMetadata("PinataCreated", new FixedMetadataValue(Main.getInstance(), true));
+        entity.setMetadata("PinataEntity", new FixedMetadataValue(Main.getInstance(), true));
+        entity.setMetadata("PinataOwner", new FixedMetadataValue(Main.getInstance(), player));
         //Max height check is to avoid problems with different server specifications
         Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);
         Location safestone = new Location(player.getWorld(), 4, player.getWorld().getMaxHeight() - 1, 2);
@@ -56,7 +60,12 @@ public class PinataFactory implements Listener {
         fenceLocation.getBlock().setType(Material.FENCE);
         hitch.teleport(fenceLocation);
         safefence.getBlock().setType(blocksafe);
-        Main.getInstance().getCommands().getPinata().put(entity, new PinataData(player, fenceLocation, hitch));
+        for(PinataExtendedData pinata : Main.getInstance().getPinataManager().getPinataList()){
+            if(pinata.getName().equalsIgnoreCase(pinataName)){
+                entity.setMetadata("PinataExtendedData", new FixedMetadataValue(Main.getInstance(), pinata));
+            }
+        }
+        entity.setMetadata("PinataData", new FixedMetadataValue(Main.getInstance(), new PinataData(fenceLocation, hitch)));
         entity.setCustomName(pinataName);
         /*if(entity instanceof Sheep) {
             ((Sheep) entity).setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataName + ".color").toString().toUpperCase()));
@@ -102,6 +111,8 @@ public class PinataFactory implements Listener {
         Location safefence = new Location(fenceLocation.getWorld(), 3, fenceLocation.getWorld().getMaxHeight() - 1, 2);
         Location safestone = new Location(fenceLocation.getWorld(), 4, fenceLocation.getWorld().getMaxHeight() - 1, 2);
         Material blocksafe = safefence.getBlock().getType();
+        entity.setMetadata("PinataEntity", new FixedMetadataValue(Main.getInstance(), true));
+        entity.setMetadata("PinataOwner", new FixedMetadataValue(Main.getInstance(), null));
         safefence.getBlock().setType(Material.FENCE);
         safestone.getBlock().setType(Material.STONE);
         final LeashHitch hitch = (LeashHitch) safefence.getWorld().spawnEntity(safefence, EntityType.LEASH_HITCH);
@@ -109,7 +120,11 @@ public class PinataFactory implements Listener {
         fenceLocation.getBlock().setType(Material.FENCE);
         hitch.teleport(fenceLocation);
         safefence.getBlock().setType(blocksafe);
-        Main.getInstance().getCommands().getPinata().put(entity, new PinataData(fenceLocation, hitch));
+        for(PinataExtendedData pinata : Main.getInstance().getPinataManager().getPinataList()){
+            if(pinata.getName().equalsIgnoreCase(pinataName)){
+                entity.setMetadata("PinataExtendedData", new FixedMetadataValue(Main.getInstance(), pinata));
+            }
+        }
         entity.setCustomName(pinataName);
         /*if(entity instanceof Sheep) {
             ((Sheep) entity).setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataName + ".color").toString().toUpperCase()));
