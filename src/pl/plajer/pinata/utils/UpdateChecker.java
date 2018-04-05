@@ -1,5 +1,8 @@
 package pl.plajer.pinata.utils;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,10 +20,22 @@ public class UpdateChecker {
         return current.compareTo(newVers) < 0;
     }
 
-    public static void checkUpdate(String currentVersion) {
-        String version = getVersion();
-        if(checkHigher(currentVersion, version))
-            latestVersion = version;
+    public static UpdateType checkUpdate() {
+        try {
+            String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
+            String version = getVersion();
+            if(checkHigher(currentVersion, version)) latestVersion = version;
+            if(latestVersion != null) {
+                if(latestVersion.contains("b")) {
+                    return UpdateType.BETA;
+                } else {
+                    return UpdateType.STABLE;
+                }
+            }
+            return UpdateType.UPDATED;
+        } catch(Exception e) {
+            return UpdateType.ERROR;
+        }
     }
 
     public static String getLatestVersion() {
@@ -48,4 +63,9 @@ public class UpdateChecker {
             version += String.format("%4s", s);
         return version;
     }
+
+    public enum UpdateType {
+        STABLE, BETA, ERROR, UPDATED
+    }
+
 }

@@ -33,9 +33,9 @@ public class CrateManager implements Listener {
     }
 
     public void loadCrates() {
-        ConfigurationSection pinata = plugin.getFileManager().getCratesConfig().getConfigurationSection("crates");
+        ConfigurationSection pinata = plugin.getFileManager().getFile("crates").getConfigurationSection("crates");
         if(pinata != null) {
-            FileConfiguration config = plugin.getFileManager().getCratesConfig();
+            FileConfiguration config = plugin.getFileManager().getFile("crates");
             for(String crate : pinata.getKeys(false)) {
                 Location crateLoc = new Location(Bukkit.getWorld(config.getString("crates." + crate + ".world")), config.getDouble("crates." + crate + ".x"), config.getDouble("crates." + crate + ".y"), config.getDouble("crates." + crate + ".z"));
                 cratesLocations.put(crateLoc, crate);
@@ -83,7 +83,7 @@ public class CrateManager implements Listener {
     @EventHandler
     public void onCrateDestroy(BlockBreakEvent e) {
         if(e.getBlock().getType().equals(Material.CHEST)) {
-            ConfigurationSection pinata = plugin.getFileManager().getCratesConfig().getConfigurationSection("crates");
+            ConfigurationSection pinata = plugin.getFileManager().getFile("crates").getConfigurationSection("crates");
             if(pinata != null) {
                 if(cratesLocations.containsKey(e.getBlock().getLocation())) {
                     for(String key : pinata.getKeys(false)) {
@@ -92,8 +92,9 @@ public class CrateManager implements Listener {
                                 e.getPlayer().sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.No-Permission"));
                                 e.setCancelled(true);
                             }
-                            plugin.getFileManager().getCratesConfig().set("crates." + key, null);
-                            plugin.getFileManager().saveCratesConfig();
+                            FileConfiguration config = plugin.getFileManager().getFile("crates");
+                            config.set("crates." + key, null);
+                            plugin.getFileManager().saveFile(config, "crates");
                             cratesLocations.remove(e.getBlock().getLocation());
                             String message = Utils.colorFileMessage("Pinata.Crate-Creation.Destroyed");
                             e.getPlayer().sendMessage(message.replaceAll("%name%", key));

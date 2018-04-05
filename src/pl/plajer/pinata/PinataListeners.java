@@ -2,10 +2,12 @@ package pl.plajer.pinata;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.sun.deploy.util.UpdateCheck;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -67,15 +69,17 @@ class PinataListeners implements Listener {
         }
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
         if(plugin.getConfig().getBoolean("update-notify")) {
-            try {
-                UpdateChecker.checkUpdate(currentVersion);
-                String latestVersion = UpdateChecker.getLatestVersion();
-                if(latestVersion != null) {
-                    latestVersion = "v" + latestVersion;
-                    e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
-                }
-            } catch(Exception ex) {
-                e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+            switch(UpdateChecker.checkUpdate()){
+                case STABLE:
+                    e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                    break;
+                case BETA:
+                    e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                    //todo beta
+                    break;
+                case ERROR:
+                    e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed"));
+                    break;
             }
         }
     }
@@ -299,8 +303,9 @@ class PinataListeners implements Listener {
                 return;
             }
             String pinata = e.getInventory().getName().replaceAll(Utils.colorMessage("&lEdit items of pinata "), "");
-            plugin.getFileManager().getPinataConfig().set("Pinatas." + pinata + ".Drops", items);
-            plugin.getFileManager().savePinataConfig();
+            FileConfiguration config = plugin.getFileManager().getFile("pinatas");
+            config.set("Pinatas." + pinata + ".Drops", items);
+            plugin.getFileManager().saveFile(config, "pinatas");
             e.getPlayer().sendMessage(Utils.colorFileMessage("Menus.Editor-Menu.Items-Saved").replaceAll("%pinata%", pinata));
         }
     }

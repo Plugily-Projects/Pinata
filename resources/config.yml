@@ -6,16 +6,6 @@ using-permissions: true
 #Notify about plugin updates?
 update-notify: true
 
-#You can modify default locale of plugin here.
-#Available locales:
-#en - English (default)
-#pl - Polish / Polski
-#de - German / Deutsch
-#nl - Dutch / Nederlands
-#fr - French / Français
-#es - Spanish / Español
-locale: en
-
 #In this worlds you can create pinata only by console or '/pinata create' admin command.
 disabled-worlds:
 - 'cASe SenSItIve wORLD namE'

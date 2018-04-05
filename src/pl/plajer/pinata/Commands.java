@@ -10,6 +10,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -124,9 +126,9 @@ public class Commands implements CommandExecutor {
                         if(p.hasPermission("pinata.admin.freeall")) {
                             Utils.createPinataAtPlayer(p, p.getLocation(), pinata);
                             return true;
-                        } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost")) {
+                        } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getFile("pinatas").getDouble("pinatas." + args[1] + ".cost")) {
                             if(Utils.createPinataAtPlayer(p, p.getLocation(), pinata)) {
-                                plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost"));
+                                plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getFile("pinatas").getDouble("pinatas." + args[1] + ".cost"));
                             }
                             return true;
                         } else {
@@ -139,21 +141,13 @@ public class Commands implements CommandExecutor {
                 return true;
             } else if(args[0].equalsIgnoreCase("reloadconfig")) {
                 if(!hasPermission(sender, "pinata.admin.reload")) return true;
-                try {
-                    plugin.reloadConfig();
-                    plugin.getPinataManager().getPinataList().clear();
-                    plugin.saveDefaultConfig();
-                    plugin.getFileManager().saveDefaultMessagesConfig();
-                    plugin.getFileManager().saveDefaultPinataConfig();
-                    plugin.reloadConfig();
-                    plugin.getFileManager().reloadMessagesConfig();
-                    plugin.getFileManager().reloadPinataConfig();
-                    plugin.getPinataManager().loadPinatas3();
-                    plugin.setupLocale();
-                } catch(Exception e) {
-                    sender.sendMessage(Utils.colorFileMessage("Pinata.Config.Reload-Fail"));
-                    return true;
-                }
+                plugin.reloadConfig();
+                plugin.getPinataManager().getPinataList().clear();
+                plugin.saveDefaultConfig();
+                plugin.getFileManager().getFile("messages");
+                plugin.getFileManager().getFile("pinatas");
+                plugin.reloadConfig();
+                plugin.getPinataManager().loadPinatas3();
                 plugin.getDisabledWorlds().clear();
                 for(String world : plugin.getConfig().getStringList("disabled-worlds")) {
                     plugin.getDisabledWorlds().add(world);
@@ -161,15 +155,18 @@ public class Commands implements CommandExecutor {
                 }
                 String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
                 if(plugin.getConfig().getBoolean("update-notify")) {
-                    try {
-                        UpdateChecker.checkUpdate(currentVersion);
-                        String latestVersion = UpdateChecker.getLatestVersion();
-                        if(latestVersion != null) {
-                            latestVersion = "v" + latestVersion;
-                            sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
-                        }
-                    } catch(Exception ex) {
-                        sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+                    switch(UpdateChecker.checkUpdate()) {
+                        case STABLE:
+                            sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                            break;
+                        case BETA:
+                            sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                            //todo beta
+                            break;
+                        case ERROR:
+                            sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed"));
+                            break;
+                        case UPDATED: break;
                     }
                 }
                 sender.sendMessage(Utils.colorFileMessage("Pinata.Config.Reload-Success"));
@@ -206,8 +203,8 @@ public class Commands implements CommandExecutor {
                         for(PinataExtendedData pinata : plugin.getPinataManager().getPinataList()) {
                             if(pinata.getID().equals(args[5])) {
                                 Location l = new Location(world, x, y, z);
-                                LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + args[5] + ".mob-type").toUpperCase()));
-                                entity.setMaxHealth(Main.getInstance().getFileManager().getPinataConfig().getDouble("pinatas." + args[5] + ".health"));
+                                LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getFile("pinatas").getString("pinatas." + args[5] + ".mob-type").toUpperCase()));
+                                entity.setMaxHealth(Main.getInstance().getFileManager().getFile("pinatas").getDouble("pinatas." + args[5] + ".health"));
                                 entity.setHealth(entity.getMaxHealth());
                                 PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, args[5]);
                                 sender.sendMessage(Utils.colorFileMessage("Pinata.Create.Success").replaceAll("%name%", args[5]));
@@ -273,16 +270,17 @@ public class Commands implements CommandExecutor {
                         p.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.Is-Set-Here"));
                         return true;
                     }
-                    if(plugin.getFileManager().getCratesConfig().isSet("crates." + args[1])) {
+                    if(plugin.getFileManager().getFile("crates").isSet("crates." + args[1])) {
                         p.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.Already-Exists"));
                         return true;
                     }
-                    plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".world", l.getWorld().getName());
-                    plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".x", l.getX());
-                    plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".y", l.getY());
-                    plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".z", l.getZ());
-                    plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".name", args[1]);
-                    plugin.getFileManager().saveCratesConfig();
+                    FileConfiguration config = plugin.getFileManager().getFile("crates");
+                    config.set("crates." + args[1] + ".world", l.getWorld().getName());
+                    config.set("crates." + args[1] + ".x", l.getX());
+                    config.set("crates." + args[1] + ".y", l.getY());
+                    config.set("crates." + args[1] + ".z", l.getZ());
+                    config.set("crates." + args[1] + ".name", args[1]);
+                    plugin.getFileManager().saveFile(config, "crates");
                     plugin.getCrateManager().getCratesLocations().put(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ()), args[1]);
                     p.sendMessage(Utils.colorFileMessage("Pinata.Crate-Creation.Create-Success").replaceAll("%name%", args[1]));
                     return true;
@@ -312,8 +310,8 @@ public class Commands implements CommandExecutor {
                 for(PinataExtendedData pinata : plugin.getPinataManager().getPinataList()) {
                     if(pinata.getID().equals(args[1])) {
                         Inventory inv = Bukkit.createInventory(null, 9 * 5, Utils.colorMessage("&lEdit items of pinata " + args[1]));
-                        for(int i = 0; i < plugin.getFileManager().getPinataConfig().getList("Pinatas." + pinata.getID() + ".Drops").size(); i++) {
-                            ItemStack item = (ItemStack) plugin.getFileManager().getPinataConfig().getList("Pinatas." + pinata.getID() + ".Drops").get(i);
+                        for(int i = 0; i < plugin.getFileManager().getFile("pinatas").getList("Pinatas." + pinata.getID() + ".Drops").size(); i++) {
+                            ItemStack item = (ItemStack) plugin.getFileManager().getFile("pinatas").getList("Pinatas." + pinata.getID() + ".Drops").get(i);
                             inv.addItem(item);
                         }
                         ((Player) sender).openInventory(inv);
@@ -344,6 +342,7 @@ public class Commands implements CommandExecutor {
                 if(p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()) {
                     lore.addAll(meta.getLore());
                 }
+                if(NumberUtils.isNumber(lore.get(lore.size() - 1))) lore.remove(lore.get(lore.size() - 1));
                 lore.add(args[1]);
                 meta.setLore(lore);
                 item.setItemMeta(meta);

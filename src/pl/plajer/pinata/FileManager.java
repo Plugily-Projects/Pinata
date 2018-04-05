@@ -8,76 +8,35 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.logging.Level;
 
 public class FileManager {
 
-    private FileConfiguration messagesConfig = null;
-    private File messagesConfigFile = null;
-    private FileConfiguration cratesConfig = null;
-    private File cratesConfigFile = null;
-    private FileConfiguration pinataConfig = null;
-    private File pinataConfigFile = null;
     private Main plugin;
 
     public FileManager(Main plugin) {
         this.plugin = plugin;
     }
 
-    public FileConfiguration getConfig(String filename) {
-        File ConfigFile = new File(plugin.getDataFolder() + File.separator + filename + ".yml");
-        if(!ConfigFile.exists()) {
+    public FileConfiguration getFile(String filename) {
+        File file = new File(plugin.getDataFolder() + File.separator + filename + ".yml");
+        if(!file.exists()) {
             try {
-                plugin.getLogger().info("Creating " + filename + ".yml because it does not exist!");
-                ConfigFile.createNewFile();
+                file.createNewFile();
             } catch(IOException ex) {
                 ex.printStackTrace();
                 Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
                 Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            }
-            ConfigFile = new File(plugin.getDataFolder(), filename + ".yml");
-            YamlConfiguration config = new YamlConfiguration();
-
-            try {
-                config.load(ConfigFile);
-                //YamlConfiguration config = YamlConfiguration.loadConfiguration(ConfigFile);
-            } catch(InvalidConfigurationException ex) {
-                ex.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-                Bukkit.getServer().shutdown();
-
-            } catch(FileNotFoundException e) {
-                e.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                config.save(ConfigFile);
-
-            } catch(IOException ex) {
-                ex.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-                ex.printStackTrace();
             }
         }
-        ConfigFile = new File(plugin.getDataFolder(), filename + ".yml");
+        file = new File(plugin.getDataFolder(), filename + ".yml");
         YamlConfiguration config = new YamlConfiguration();
-
         try {
-            config.load(ConfigFile);
-            //YamlConfiguration config = YamlConfiguration.loadConfiguration(ConfigFile);
+            config.load(file);
         } catch(InvalidConfigurationException ex) {
             ex.printStackTrace();
             Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
             Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            Bukkit.shutdown();
-            return null;
-
+            return new YamlConfiguration();
         } catch(FileNotFoundException e) {
             e.printStackTrace();
             Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
@@ -88,155 +47,18 @@ public class FileManager {
         return config;
     }
 
-    public String getDefaultLanguageMessage(String message){
-        return getConfig("messages").getString(message);
+    public void saveFile(FileConfiguration config, String file){
+        try {
+            config.save(new File(plugin.getDataFolder(), file + ".yml"));
+        } catch(IOException e) {
+            e.printStackTrace();
+            Bukkit.getConsoleSender().sendMessage("Cannot save file " + file + ".yml!");
+            Bukkit.getConsoleSender().sendMessage("Create blank file " + file + ".yml or restart the server!");
+        }
     }
 
     public String getLanguageMessage(String message) {
-        if(plugin.getLocale() != Main.PinataLocale.ENGLISH){
-            return getConfig("messages_" + plugin.getLocale().getPrefix()).getString(message);
-        }
-        return getConfig("messages").getString(message);
-    }
-
-    /*
-     * messages.yml
-     */
-
-    public void saveDefaultMessagesConfig() {
-        if(messagesConfigFile == null) {
-            messagesConfigFile = new File(plugin.getDataFolder(), "messages.yml");
-        }
-        if(!messagesConfigFile.exists()) {
-            plugin.saveResource("messages.yml", false);
-        }
-    }
-
-    public FileConfiguration getMessagesConfig() {
-        if(messagesConfig == null) {
-            reloadMessagesConfig();
-        }
-        return messagesConfig;
-    }
-
-    public void reloadMessagesConfig() {
-        if(messagesConfigFile == null) {
-            messagesConfigFile = new File(plugin.getDataFolder(), "messages.yml");
-        }
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesConfigFile);
-
-        // Look for defaults in the jar
-        try {
-            Reader defConfigStream = new InputStreamReader(plugin.getResource("messages.yml"));
-            if(defConfigStream != null) {
-                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-                messagesConfig.setDefaults(defConfig);
-            }
-        } catch(Exception e) {
-            System.out.println("[Pinata] Error occured while trying to reload configuration!");
-            e.printStackTrace();
-        }
-    }
-
-    public void saveMessagesConfig() {
-        if(messagesConfig == null || messagesConfigFile == null) {
-            return;
-        }
-        try {
-            getMessagesConfig().save(messagesConfigFile);
-        } catch(IOException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Could not save config to " + messagesConfigFile, ex);
-        }
-    }
-
-    /*
-     * crates.yml
-     */
-
-    public void saveDefaultCratesConfig() {
-        if(cratesConfigFile == null) {
-            cratesConfigFile = new File(plugin.getDataFolder(), "crates.yml");
-        }
-        if(!cratesConfigFile.exists()) {
-            plugin.saveResource("crates.yml", false);
-        }
-    }
-
-    public FileConfiguration getCratesConfig() {
-        if(cratesConfig == null) {
-            reloadCratesConfig();
-        }
-        return cratesConfig;
-    }
-
-    public void reloadCratesConfig() {
-        if(cratesConfigFile == null) {
-            cratesConfigFile = new File(plugin.getDataFolder(), "crates.yml");
-        }
-        cratesConfig = YamlConfiguration.loadConfiguration(cratesConfigFile);
-
-        // Look for defaults in the jar
-        Reader defConfigStream = new InputStreamReader(plugin.getResource("crates.yml"));
-        if(defConfigStream != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-            cratesConfig.setDefaults(defConfig);
-        }
-    }
-
-    public void saveCratesConfig() {
-        if(cratesConfig == null || cratesConfigFile == null) {
-            return;
-        }
-        try {
-            getCratesConfig().save(cratesConfigFile);
-        } catch(IOException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Could not save config to " + cratesConfigFile, ex);
-        }
-    }
-
-    /*
-     * pinatas.yml
-     */
-
-    public void saveDefaultPinataConfig() {
-        if(pinataConfigFile == null) {
-            pinataConfigFile = new File(plugin.getDataFolder(), "pinatas.yml");
-        }
-        if(!pinataConfigFile.exists()) {
-            plugin.saveResource("pinatas.yml", false);
-        }
-    }
-
-    public FileConfiguration getPinataConfig() {
-        if(pinataConfig == null) {
-            reloadPinataConfig();
-        }
-        return pinataConfig;
-    }
-
-    public void reloadPinataConfig() {
-        if(pinataConfigFile == null) {
-            pinataConfigFile = new File(plugin.getDataFolder(), "pinatas.yml");
-        }
-        pinataConfig = YamlConfiguration.loadConfiguration(pinataConfigFile);
-
-        // Look for defaults in the jar
-        Reader defConfigStream = new InputStreamReader(plugin.getResource("pinatas.yml"));
-        if(defConfigStream != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-            pinataConfig.setDefaults(defConfig);
-        }
-    }
-
-    public void savePinataConfig() {
-        if(pinataConfig == null || pinataConfigFile == null) {
-            return;
-        }
-        try {
-            getPinataConfig().save(pinataConfigFile);
-        } catch(IOException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Could not save config to " + pinataConfigFile, ex);
-        }
+        return getFile("messages").getString(message);
     }
 
     public void updateConfig(String file) {
@@ -245,7 +67,7 @@ public class FileManager {
         if(file.equals("config.yml")) {
             c = plugin.getConfig();
         } else {
-            c = getMessagesConfig();
+            c = getFile("messages");
         }
         for(String var : c.getKeys(false)) {
             newConfig.remove(var);
