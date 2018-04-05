@@ -2,6 +2,8 @@ package pl.plajer.pinata.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
+import pl.plajer.pinata.Main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.util.regex.Pattern;
 public class UpdateChecker {
 
     private static String latestVersion;
+    private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
     private static boolean checkHigher(String currentVersion, String newVersion) {
         String current = toReadable(currentVersion);
@@ -21,21 +24,25 @@ public class UpdateChecker {
     }
 
     public static UpdateType checkUpdate() {
-        try {
-            String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
-            String version = getVersion();
-            if(checkHigher(currentVersion, version)) latestVersion = version;
-            if(latestVersion != null) {
-                if(latestVersion.contains("b")) {
-                    return UpdateType.BETA;
-                } else {
-                    return UpdateType.STABLE;
+        if(plugin.getConfig().getBoolean("Update-Checker.Check-For-Updates")) {
+            try {
+                String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
+                String version = getVersion();
+                if(checkHigher(currentVersion, version)) latestVersion = version;
+                if(latestVersion != null) {
+                    if(latestVersion.contains("b")) {
+                        if(plugin.getConfig().getBoolean("Update-Checker.Notify-Beta-Versions")) return UpdateType.BETA;
+                        return UpdateType.UPDATED;
+                    } else {
+                        return UpdateType.STABLE;
+                    }
                 }
+                return UpdateType.UPDATED;
+            } catch(Exception e) {
+                return UpdateType.ERROR;
             }
-            return UpdateType.UPDATED;
-        } catch(Exception e) {
-            return UpdateType.ERROR;
         }
+        return UpdateType.UPDATED;
     }
 
     public static String getLatestVersion() {

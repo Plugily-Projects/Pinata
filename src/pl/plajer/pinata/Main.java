@@ -4,7 +4,11 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
@@ -23,9 +27,9 @@ import java.util.logging.Level;
 @Getter
 public class Main extends JavaPlugin {
 
-    private static Main instance;
     public static final int MESSAGES_FILE_VERSION = 9;
     public static final int CONFIG_FILE_VERSION = 5;
+    private static Main instance;
     private CrateManager crateManager;
     private Commands commands;
     private FileManager fileManager;
@@ -80,20 +84,19 @@ public class Main extends JavaPlugin {
         crateManager.particleScheduler();
         if(isPluginEnabled("HolographicDisplays")) hologramScheduler();
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
-        if(getConfig().getBoolean("update-notify")) {
-            switch(UpdateChecker.checkUpdate()){
-                case STABLE:
-                    Bukkit.getConsoleSender().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
-                    break;
-                case BETA:
-                    Bukkit.getConsoleSender().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
-                    //todo beta
-                    break;
-                case ERROR:
-                    Bukkit.getConsoleSender().sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed"));
-                    break;
-                case UPDATED: break;
-            }
+        switch(UpdateChecker.checkUpdate()) {
+            case STABLE:
+                Bukkit.getConsoleSender().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                break;
+            case BETA:
+                Bukkit.getConsoleSender().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                //todo beta
+                break;
+            case ERROR:
+                Bukkit.getConsoleSender().sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed"));
+                break;
+            case UPDATED:
+                break;
         }
     }
 
@@ -102,7 +105,7 @@ public class Main extends JavaPlugin {
         for(World world : Bukkit.getServer().getWorlds()) {
             for(Entity entity : Bukkit.getServer().getWorld(world.getName()).getEntities()) {
                 if(entity instanceof Sheep) {
-                    if(entity.hasMetadata("PinataEntity")){
+                    if(entity.hasMetadata("PinataEntity")) {
                         MetadataValue value = entity.getMetadata("PinataData").get(0);
                         PinataData data = (PinataData) value.value();
                         data.getPlayer().sendMessage(Utils.colorFileMessage("Pinata.Config.Reload-Removed"));

@@ -11,7 +11,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -154,20 +153,19 @@ public class Commands implements CommandExecutor {
                     plugin.getLogger().info("Pinata creation blocked at world " + world + "!");
                 }
                 String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
-                if(plugin.getConfig().getBoolean("update-notify")) {
-                    switch(UpdateChecker.checkUpdate()) {
-                        case STABLE:
-                            sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
-                            break;
-                        case BETA:
-                            sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
-                            //todo beta
-                            break;
-                        case ERROR:
-                            sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed"));
-                            break;
-                        case UPDATED: break;
-                    }
+                switch(UpdateChecker.checkUpdate()) {
+                    case STABLE:
+                        sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                        break;
+                    case BETA:
+                        sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                        //todo beta
+                        break;
+                    case ERROR:
+                        sender.sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed"));
+                        break;
+                    case UPDATED:
+                        break;
                 }
                 sender.sendMessage(Utils.colorFileMessage("Pinata.Config.Reload-Success"));
                 return true;

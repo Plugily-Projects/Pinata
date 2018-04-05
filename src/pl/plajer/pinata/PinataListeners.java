@@ -2,7 +2,6 @@ package pl.plajer.pinata;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.sun.deploy.util.UpdateCheck;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -26,8 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import pl.plajer.pinata.dao.PinataExtendedData;
 import pl.plajer.pinata.dao.PinataData;
+import pl.plajer.pinata.dao.PinataExtendedData;
 import pl.plajer.pinata.dao.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataDeathEvent;
 import pl.plajer.pinata.utils.UpdateChecker;
@@ -68,19 +67,19 @@ class PinataListeners implements Listener {
             return;
         }
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
-        if(plugin.getConfig().getBoolean("update-notify")) {
-            switch(UpdateChecker.checkUpdate()){
-                case STABLE:
-                    e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
-                    break;
-                case BETA:
-                    e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
-                    //todo beta
-                    break;
-                case ERROR:
-                    e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed"));
-                    break;
-            }
+        switch(UpdateChecker.checkUpdate()) {
+            case STABLE:
+                e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                break;
+            case BETA:
+                e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", UpdateChecker.getLatestVersion()));
+                //todo beta
+                break;
+            case ERROR:
+                e.getPlayer().sendMessage(Utils.colorFileMessage("Other.Plugin-Update-Check-Failed"));
+                break;
+            case UPDATED:
+                break;
         }
     }
 
@@ -179,7 +178,7 @@ class PinataListeners implements Listener {
         PinataData data = (PinataData) e.getEntity().getMetadata("PinataData").get(0).value();
         PinataExtendedData extendedData = (PinataExtendedData) e.getEntity().getMetadata("PinataExtendedData").get(0).value();
         if(data.getPlayer() != null) {
-            if(data.getPlayer().hasMetadata("PinataCreated")){
+            if(data.getPlayer().hasMetadata("PinataCreated")) {
                 data.getPlayer().removeMetadata("PinataCreated", plugin);
             }
         }
