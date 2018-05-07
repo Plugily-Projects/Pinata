@@ -36,17 +36,6 @@ hologram-refresh: 2
 #Time in seconds.
 particle-refresh: 2
 
-#Should player get blindness effect when pinata is created?
-blindness-effect: false
-
-#Enable full blindness effect? Blindness + night vision combination
-#'blindness-effect' must be true!
-full-blindness-effect: false
-
-#Duration in seconds of blindness effect after pinata is created
-#'blindness-effect' must be true!
-blindness-duration: 10
-
 #How many hearts should EVERY damage of pinata take?
 #0.0 = disabled, 1 = 0.5 heart
 #Useful if you're creating public types, players won't kill pinatas with their OP swords that fast.
