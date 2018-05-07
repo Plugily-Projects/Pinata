@@ -232,11 +232,11 @@ class PinataListeners implements Listener {
         final Player p = e.getEntity().getKiller() instanceof Player ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
         //drops won't show if killer is environment and pinata player is not assigned. This pinata will be always in our hearts [*]
         if(p == null) return;
-        if(plugin.getConfig().getBoolean("blindness-effect")) {
+        if(plugin.getFileManager().getPinataConfig().getBoolean("pinatas." + e.getEntity().getCustomName() + ".blindness-effect")) {
             if(p.hasPotionEffect(PotionEffectType.BLINDNESS)) {
                 p.removePotionEffect(PotionEffectType.BLINDNESS);
             }
-            if(plugin.getConfig().getBoolean("full-blindness-effect")) {
+            if(plugin.getFileManager().getPinataConfig().getBoolean("pinatas." + e.getEntity().getCustomName() + ".full-blindness-effect")) {
                 if(p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
                     p.removePotionEffect(PotionEffectType.NIGHT_VISION);
                 }

@@ -63,10 +63,10 @@ public class PinataFactory implements Listener {
             ((Sheep) entity).setColor(DyeColor.valueOf(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinataName + ".color").toString().toUpperCase()));
         }
         entity.setLeashHolder(hitch);
-        if(Main.getInstance().getConfig().getBoolean("blindness-effect")) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Main.getInstance().getConfig().getInt("blindness-duration") * 20, 1));
-            if(Main.getInstance().getConfig().getBoolean("full-blindness-effect")) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Main.getInstance().getConfig().getInt("blindness-duration") * 20, 1));
+        if(Main.getInstance().getFileManager().getPinataConfig().getBoolean("pinatas." + pinataName + ".blindness-effect")) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Main.getInstance().getFileManager().getPinataConfig().getInt("pinatas." + pinataName + ".blindness-duration") * 20, 1));
+            if(Main.getInstance().getFileManager().getPinataConfig().getBoolean("pinatas." + pinataName + ".full-blindness-effect")) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Main.getInstance().getFileManager().getPinataConfig().getInt("pinatas." + pinataName + ".blindness-duration") * 20, 1));
             }
         }
         //Scheduler to avoid graphical glitch
