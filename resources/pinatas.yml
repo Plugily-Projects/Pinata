@@ -9,6 +9,11 @@
 #     permission: <string> //type here any permission you want (using-permissions in config.yml must be "true"!)
 #     cost: <number> //cost of pinata in "/pinata buy" command. Available only when Vault is installed. Use "-1" value to disable pinata buying
 #     type: <public/private> //set type of pinata. Setting "public" type allows ANY player break pinata and get its drops. Value "private" allows break pinata only CREATOR
+#     blindness-effect: <effect_name> //Should player get blindness effect when pinata is created?
+#         'blindness-effect' must be true!
+#     blindness-duration: <number> //Duration in seconds of blindness effect after pinata is created
+#         'blindness-effect' must be true!
+#     full-blindness-effect: <true/false> //Enable full blindness effect? Blindness + night vision combination
 #     crate-time: <seconds> //how long can pinata hang above crate when it's created (to avoid trolls that can buy pinata and don't break it)
 #     health: <number> //how many hearts pinata will have
 #     mob-type: <entity> //all valid entities are here: https://minecraft.gamepedia.com/Mob
@@ -34,6 +39,9 @@ pinatas:
     permission: pinata.use.default
     cost: -1
     type: private
+    blindness-effect: false
+    full-blindness-effect: false
+    blindness-duration: 10
     crate-time: 10
     health: 2.5
     mob-type: sheep
