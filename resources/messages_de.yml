@@ -112,11 +112,12 @@ Validator:
     Invalid-Health: "Die Gesundheit der Pinata %name% ist ungültig!"
     Invalid-Drop-Type: "Die Gegenstandsart der Pinata %name% ist ungültig!"
     Invalid-Mob-Type: "Der Mob der Pinata %name% ist ungültig!"
+    Invalid-Blindness: "Blindness values of pinata %name% are invalid!"
     Vault-Abandoned: "Die Pinata %name% benutzt nicht Vault! (Benutze den Wert -1 um die Pinata unverkäuflich zu machen)"
 
 Other:
     Plugin-Up-To-Date: "&e[Pinata] Es gibt eine neue Version! Du bentuzt die Version: %old%, die neueste Version ist: %new%"
     Plugin-Update-Check-Failed: "&c[Pinata] Es konnte nicht nach Aktualisierungen gesucht werden: %error%"
 
-File-Version-Do-Not-Edit: 9
+File-Version-Do-Not-Edit: 10
 Language-Version: 9

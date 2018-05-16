@@ -19,7 +19,7 @@ import java.util.logging.Level;
 public class Main extends JavaPlugin {
 
     private static Main instance;
-    private final int MESSAGES_FILE_VERSION = 9;
+    private final int MESSAGES_FILE_VERSION = 10;
     private final int CONFIG_FILE_VERSION = 5;
     private PinataLocale pinataLocale;
     private CrateManager crateManager;

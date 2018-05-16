@@ -109,10 +109,11 @@ Validator:
     Invalid-Health: "Health of pinata %name% is invalid!"
     Invalid-Drop-Type: "Drop type of pinata %name% is invalid!"
     Invalid-Mob-Type: "Mob of pinata %name% is invalid!"
+    Invalid-Blindness: "Blindness values of pinata %name% are invalid!"
     Vault-Abandoned: "Pinata %name% doesn't use Vault! (use value -1 to prevent pinata from buying)"
 
 Other:
     Plugin-Up-To-Date: "&e[Pinata] There is plugin update! Your version: %old%, new version: %new%"
     Plugin-Update-Check-Failed: "&c[Pinata] Failed to check for update: %error%"
 
-File-Version-Do-Not-Edit: 9
+File-Version-Do-Not-Edit: 10

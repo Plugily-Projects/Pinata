@@ -114,11 +114,12 @@ Validator:
     Invalid-Health: "La vie de la pinata %name% est invalide !"
     Invalid-Drop-Type: "Le type de gain de la pinata %name% est invalide !"
     Invalid-Mob-Type: "Le mob de la pinata %name% est invalide !"
+    Invalid-Blindness: "Blindness values of pinata %name% are invalid!"
     Vault-Abandoned: "Pinata %name% n'utilise pas Vault! (utilise la valeur -1 pour empêcher l'achat de la pinata)"
 
 Other:
     Plugin-Up-To-Date: "&e[Pinata] Mise à jour disponible, vous avez actuellement la version %old%, nouvelle version : %new%   https://www.spigotmc.org/resources/pi%C3%B1ata-1-8-1-12.46655/"
     Plugin-Update-Check-Failed: "&c[Pinata] Échec de vérification de la mise à jour : %error%"
 
-File-Version-Do-Not-Edit: 9
+File-Version-Do-Not-Edit: 10
 Language-Version: 9

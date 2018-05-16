@@ -113,11 +113,12 @@ Validator:
     Invalid-Health: "Leven van Pinata %name% is fout!"
     Invalid-Drop-Type: "Drop type van pinata %name% is fout!"
     Invalid-Mob-Type: "Mob van pinata %name% is fout!"
+    Invalid-Blindness: "Blindness values of pinata %name% are invalid!"
     Vault-Abandoned: "Pinata %name% gebruikt geen Vault! (gebruik waarde -1 om Pinata te verkopen van kopen)"
 
 Other:
     Plugin-Up-To-Date: "&e[Pinata] Er is een plugin update! Aanwezige versie: %old%, nieuwe versie: %new%"
     Plugin-Update-Check-Failed: "&c[Pinata] Checken voor updates niet gelukt: %error%"
 
-File-Version-Do-Not-Edit: 9
+File-Version-Do-Not-Edit: 10
 Language-Version: 9

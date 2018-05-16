@@ -26,6 +26,9 @@ public class PinataManager {
         validatorErrors.put(".crate-time", "Validator.Invalid-Crate-Time");
         validatorErrors.put(".health", "Validator.Invalid-Health");
         validatorErrors.put(".drop-type", "Validator.Invalid-Drop-Type");
+        validatorErrors.put(".blindness-effect", "Validator.Invalid-Blindness");
+        validatorErrors.put(".blindness-duration", "Validator.Invalid-Blindness");
+        validatorErrors.put(".full-blindness-effect", "Validator.Invalid-Blindness");
     }
 
     public void loadPinatas() {

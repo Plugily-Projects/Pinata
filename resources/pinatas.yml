@@ -9,8 +9,7 @@
 #     permission: <string> //type here any permission you want (using-permissions in config.yml must be "true"!)
 #     cost: <number> //cost of pinata in "/pinata buy" command. Available only when Vault is installed. Use "-1" value to disable pinata buying
 #     type: <public/private> //set type of pinata. Setting "public" type allows ANY player break pinata and get its drops. Value "private" allows break pinata only CREATOR
-#     blindness-effect: <effect_name> //Should player get blindness effect when pinata is created?
-#         'blindness-effect' must be true!
+#     blindness-effect: <true/false> //Should player get blindness effect when pinata is created?
 #     blindness-duration: <number> //Duration in seconds of blindness effect after pinata is created
 #         'blindness-effect' must be true!
 #     full-blindness-effect: <true/false> //Enable full blindness effect? Blindness + night vision combination

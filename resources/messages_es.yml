@@ -121,6 +121,7 @@ Validator:
   Invalid-Crate-Time: El tiempo de la caja de la piñata %name% no ha sido establecido!
   Invalid-Health: Health of pinata %name% is invalid!
   Invalid-Mob-Type: El mob de la piñata %name% no es valido!
+  Invalid-Blindness: "Blindness values of pinata %name% are invalid!"
   Vault-Abandoned: Piñata %name% no usa Vault! (usa valor -1 para prevenir la compra de la piñata)
 
 Other:
@@ -128,5 +129,5 @@ Other:
     version: %new%'
   Plugin-Update-Check-Fail: '&c[Pinata] Fallo al localizar actualizacion: %error%'
 
-File-Version-Do-Not-Edit: 9
+File-Version-Do-Not-Edit: 10
 Language-Version: 9

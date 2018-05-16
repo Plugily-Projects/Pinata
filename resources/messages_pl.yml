@@ -112,11 +112,12 @@ Validator:
     Invalid-Health: "Zdrowie piniaty %name% nie zostalo ustawione!"
     Invalid-Drop-Type: "Typ dropu piniaty %name% jest bledny lub nie zostal ustawiony!"
     Invalid-Mob-Type: "Typ moba piniaty %name% nie zostal ustawiony!"
+    Invalid-Blindness: "Ustawienia efektow oslepienia piniaty %name% nie zostaly ustawione!"
     Vault-Abandoned: "Piniata %name% nie uzywa pluginu Vault! (prosze uzyc wartosci -1 by zablokowac mozliwosc kupowania piniaty)"
 
 Other:
     Plugin-Up-To-Date: "&e[Piniata] Nowa wersja piniat juz jest! Twoja wersja: %old%, nowa wersja: %new%"
     Plugin-Update-Check-Failed: "&c[Piniata] Nie udalo sie sprawdzic aktualizacji: %error%"
 
-File-Version-Do-Not-Edit: 9
-Language-Version: 9
+File-Version-Do-Not-Edit: 10
+Language-Version: 10
