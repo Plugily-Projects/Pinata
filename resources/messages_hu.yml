@@ -3,23 +3,23 @@
 #Translated by: montlikadani
 
 Pinata:
-    Specify-Name: "&6&lPinata &a>> &cKérjük, adja meg a pinata nevet!"
+    Specify-Name: "&6&lPinata &a>> &cKérlek, add meg a pinata nevet!"
     Not-Found: "&6&lPinata &a>> &cA pinata nem található!"
-    Not-Own: "&6&lPinata &a>> &cEz nem a te pinatad!"
+    Not-Own: "&6&lPinata &a>> &cEz nem a te pinata-d!"
     Buy-Error: "&6&lPinata &a>> &cHiba lépett fel! Kérlek, próbáld újra!"
     Create:
         Success: "&6&lPinata &a>> &aA pinata &e%name% &asikeresen létrehozva!"
         Fail: "&6&lPinata &a>> &cItt nem használhatsz pinatot!"
-        By-Console: "&6&lPinata &a>> &aA pinatád a konzollal létrehozva!"
+        By-Console: "&6&lPinata &a>> &aA pinata-d a konzollal létrehozva!"
         Already-Created: "&6&lPinata &a>> &cMár vásároltál egy pinata-t!"
         No-Permission: "&6&lPinata &a>> &cNincs jogod ennek a pinata használatára!"
         Disabled-World: "&6&lPinata &a>> &cNem hozhatsz létre pinata-t ebben a világban!"
     Command:
         No-Permission: "&6&lPinata &a>> &cNincs jogod a parancs használatára!"
         Only-Player: "&6&lPinata &a>> &cEzt a parancsot csak játékon belül lehet!"
-        Player-Specify-Name: "&6&lPinata &a>> &cKérjük, add meg a pinata nevet!"
+        Player-Specify-Name: "&6&lPinata &a>> &cKérlek, add meg a pinata nevet!"
         Player-Not-Found: "&6&lPinata &a>> &cEz a játékos nem online!"
-        Console-Specify-Player: "&cKérjük, nevezd meg a játékos nevét!"
+        Console-Specify-Player: "&cKérlek, nevezd meg a játékos nevét!"
         Vault-Not-Detected: "&6&lPinata &a>> &cA Vault nem észlelve! Megszakítás!"
         Custom-Location-Create-Error: "&6&lPinata &a>> &cValami elromlott! Győződj meg arról, hogy érvényes értékeket állítottál be: &evilág, x, y, z, pinata név&c!"
         Help-Command:
@@ -35,7 +35,7 @@ Pinata:
         Fail: "&6&lPinata &a>> &cA pinata %name% betöltve hibával! Megszakítás!"
     Config:
         Reload-Success: "&6&lPinata &a>> &eA konfiguráció újratöltve! Ellenőrizd a konzolt hiba esetén!"
-        Reload-Fail: "&6&lPinata &a>> &cA konfigurációt nem lehetett újratölteni! Kérjük, töltsd újra közvetlenül a plugint vagy a szervert!"
+        Reload-Fail: "&6&lPinata &a>> &cA konfigurációt nem lehetett újratölteni! Kérlek, töltsd újra közvetlenül a plugint vagy a szervert!"
         Reload-Removed: "&6&lPinata &a>> &cA plugin újratöltés eltávolította a pinata-t!"
     Drop:
         DropMsg: "&6&lPinata &a>> &aEldobtál %item% x%amount%&a!"
@@ -44,7 +44,7 @@ Pinata:
         Not-For-Sale: "&6&lPinata &a>> &cEz a pinata nem eladó!"
         Cannot-Afford: "&6&lPinata &a>> &cEzt nem engedheted meg magadnak!"
     Crate-Creation:
-        Specify-Name: "&6&lPinata &a>> &cKérjük, add meg a láda nevet!"
+        Specify-Name: "&6&lPinata &a>> &cKérlek, add meg a láda nevet!"
         Is-Set-Here:  "&6&lPinata &a>> &cA láda ebben a helyszínben van beállítva!"
         Already-Exists: "&6&lPinata &a>> &cEz a láda név már létezik!"
         Create-Success: "&6&lPinata &a>> &aA láda %name% sikeresen létrehozva!"
