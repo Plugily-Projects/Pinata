@@ -20,7 +20,7 @@ public class Main extends JavaPlugin {
 
     private static Main instance;
     private final int MESSAGES_FILE_VERSION = 10;
-    private final int CONFIG_FILE_VERSION = 6;
+    private final int CONFIG_FILE_VERSION = 5;
     private PinataLocale pinataLocale;
     private CrateManager crateManager;
     private Commands commands;
