@@ -20,7 +20,7 @@ public class Main extends JavaPlugin {
 
     private static Main instance;
     private final int MESSAGES_FILE_VERSION = 10;
-    private final int CONFIG_FILE_VERSION = 5;
+    private final int CONFIG_FILE_VERSION = 6;
     private PinataLocale pinataLocale;
     private CrateManager crateManager;
     private Commands commands;
@@ -123,6 +123,7 @@ public class Main extends JavaPlugin {
         saveResource("messages_fr.yml", true);
         saveResource("messages_es.yml", true);
         saveResource("messages_nl.yml", true);
+        saveResource("messages_hu.yml", true);
         switch(getConfig().getString("locale")){
             case "en":
                 pinataLocale = PinataLocale.ENGLISH;
@@ -141,6 +142,9 @@ public class Main extends JavaPlugin {
                 break;
             case "es":
                 pinataLocale = PinataLocale.ESPANOL;
+                break;
+            case "hu":
+                pinataLocale = PinataLocale.HUNGARIAN;
                 break;
             default:
                 pinataLocale = PinataLocale.ENGLISH;
@@ -250,7 +254,13 @@ public class Main extends JavaPlugin {
     }
 
     public enum PinataLocale {
-        DEUTSCH("Deutsch", "de", "Elternbrief"), ENGLISH("English", "", "Plajer"), ESPANOL("Español", "es", "Adolfo Garolfo"), FRANCAIS("Français", "fr", "Bol2T"), NEDERLANDS("Nederlands", "nl", "TomTheDeveloper"), POLSKI("Polski", "pl", "Plajer");
+        DEUTSCH("Deutsch", "de", "Elternbrief"), 
+        ENGLISH("English", "", "Plajer"), 
+        ESPANOL("Español", "es", "Adolfo Garolfo"), 
+        FRANCAIS("Français", "fr", "Bol2T"), 
+        NEDERLANDS("Nederlands", "nl", "TomTheDeveloper"), 
+        POLSKI("Polski", "pl", "Plajer");
+        HUNGARIAN("Hungarian", "hu", "montlikadani");
 
         String formattedName;
         String prefix;
