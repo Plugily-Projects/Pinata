@@ -25,65 +25,19 @@ public class FileManager {
     }
 
     public FileConfiguration getConfig(String filename) {
-        File ConfigFile = new File(plugin.getDataFolder() + File.separator + filename + ".yml");
-        if(!ConfigFile.exists()) {
-            try {
-                plugin.getLogger().info("Creating " + filename + ".yml because it does not exist!");
-                ConfigFile.createNewFile();
-            } catch(IOException ex) {
-                ex.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            }
-            ConfigFile = new File(plugin.getDataFolder(), filename + ".yml");
-            YamlConfiguration config = new YamlConfiguration();
-
-            try {
-                config.load(ConfigFile);
-                //YamlConfiguration config = YamlConfiguration.loadConfiguration(ConfigFile);
-            } catch(InvalidConfigurationException ex) {
-                ex.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-                Bukkit.getServer().shutdown();
-
-            } catch(FileNotFoundException e) {
-                e.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                config.save(ConfigFile);
-
-            } catch(IOException ex) {
-                ex.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-                ex.printStackTrace();
-            }
+        File file = new File(plugin.getDataFolder() + File.separator + filename + ".yml");
+        if(!file.exists()) {
+            plugin.getLogger().info("Creating " + filename + ".yml because it does not exist!");
+            plugin.saveResource(filename + ".yml", true);
         }
-        ConfigFile = new File(plugin.getDataFolder(), filename + ".yml");
+        file = new File(plugin.getDataFolder(), filename + ".yml");
         YamlConfiguration config = new YamlConfiguration();
-
         try {
-            config.load(ConfigFile);
-            //YamlConfiguration config = YamlConfiguration.loadConfiguration(ConfigFile);
-        } catch(InvalidConfigurationException ex) {
+            config.load(file);
+        } catch(InvalidConfigurationException | IOException ex) {
             ex.printStackTrace();
-            Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
+            Bukkit.getConsoleSender().sendMessage("Cannot load file " + filename + ".yml!");
             Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            Bukkit.shutdown();
-            return null;
-
-        } catch(FileNotFoundException e) {
-            e.printStackTrace();
-            Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-            Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-        } catch(IOException e) {
-            e.printStackTrace();
         }
         return config;
     }
