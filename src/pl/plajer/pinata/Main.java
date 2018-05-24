@@ -144,7 +144,7 @@ public class Main extends JavaPlugin {
                 pinataLocale = PinataLocale.ESPANOL;
                 break;
             case "hu":
-                pinataLocale = PinataLocale.HUNGARIAN;
+                pinataLocale = PinataLocale.MAGYAR;
                 break;
             default:
                 pinataLocale = PinataLocale.ENGLISH;
@@ -259,8 +259,8 @@ public class Main extends JavaPlugin {
         ESPANOL("Español", "es", "Adolfo Garolfo"), 
         FRANCAIS("Français", "fr", "Bol2T"), 
         NEDERLANDS("Nederlands", "nl", "TomTheDeveloper"), 
-        POLSKI("Polski", "pl", "Plajer");
-        HUNGARIAN("Hungarian", "hu", "montlikadani");
+        POLSKI("Polski", "pl", "Plajer"),
+        MAGYAR("Magyar", "hu", "montlikadani");
 
         String formattedName;
         String prefix;
