@@ -1,7 +1,6 @@
 package pl.plajer.pinata;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -25,65 +24,28 @@ public class FileManager {
     }
 
     public FileConfiguration getConfig(String filename) {
-        File ConfigFile = new File(plugin.getDataFolder() + File.separator + filename + ".yml");
-        if(!ConfigFile.exists()) {
-            try {
+        try {
+            File ConfigFile = new File(plugin.getDataFolder() + File.separator + filename + ".yml");
+            if(!ConfigFile.exists()) { // Creating config file.
                 plugin.getLogger().info("Creating " + filename + ".yml because it does not exist!");
                 ConfigFile.createNewFile();
-            } catch(IOException ex) {
-                ex.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            }
-            ConfigFile = new File(plugin.getDataFolder(), filename + ".yml");
-            YamlConfiguration config = new YamlConfiguration();
 
-            try {
+                YamlConfiguration config = new YamlConfiguration();
+
+                config = YamlConfiguration.loadConfiguration(ConfigFile);
                 config.load(ConfigFile);
-                //YamlConfiguration config = YamlConfiguration.loadConfiguration(ConfigFile);
-            } catch(InvalidConfigurationException ex) {
-                ex.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-                Bukkit.getServer().shutdown();
-
-            } catch(FileNotFoundException e) {
-                e.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
                 config.save(ConfigFile);
+            } else { // Loading config file.
+                YamlConfiguration config = new YamlConfiguration();
 
-            } catch(IOException ex) {
-                ex.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-                Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-                ex.printStackTrace();
+                config = YamlConfiguration.loadConfiguration(ConfigFile);
+                config.load(ConfigFile);
             }
-        }
-        ConfigFile = new File(plugin.getDataFolder(), filename + ".yml");
-        YamlConfiguration config = new YamlConfiguration();
-
-        try {
-            config.load(ConfigFile);
-            //YamlConfiguration config = YamlConfiguration.loadConfiguration(ConfigFile);
-        } catch(InvalidConfigurationException ex) {
-            ex.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
             Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
             Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            Bukkit.shutdown();
             return null;
-
-        } catch(FileNotFoundException e) {
-            e.printStackTrace();
-            Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
-            Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-        } catch(IOException e) {
-            e.printStackTrace();
         }
         return config;
     }
