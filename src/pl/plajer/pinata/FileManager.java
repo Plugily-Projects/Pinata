@@ -1,6 +1,5 @@
 package pl.plajer.pinata;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -36,8 +35,8 @@ public class FileManager {
             config.load(file);
         } catch(InvalidConfigurationException | IOException ex) {
             ex.printStackTrace();
-            Bukkit.getConsoleSender().sendMessage("Cannot load file " + filename + ".yml!");
-            Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
+            plugin.getLogger().warning("[Pinata] Cannot load file " + filename + ".yml!");
+            plugin.getLogger().warning("[Pinata] Create blank file " + filename + ".yml or restart the server!");
         }
         return config;
     }
@@ -87,7 +86,7 @@ public class FileManager {
                 messagesConfig.setDefaults(defConfig);
             }
         } catch(Exception e) {
-            System.out.println("[Pinata] Error occured while trying to reload configuration!");
+            plugin.getLogger().warning("Error occured while trying to reload configuration!");
             e.printStackTrace();
         }
     }
