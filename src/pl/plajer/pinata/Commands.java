@@ -169,7 +169,6 @@ public class Commands implements CommandExecutor {
                     plugin.saveDefaultConfig();
                     plugin.getFileManager().saveDefaultMessagesConfig();
                     plugin.getFileManager().saveDefaultPinataConfig();
-                    plugin.reloadConfig();
                     plugin.getFileManager().reloadMessagesConfig();
                     plugin.getFileManager().reloadPinataConfig();
                     plugin.getPinataManager().loadPinatas();
