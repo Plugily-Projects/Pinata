@@ -120,10 +120,6 @@ public class Main extends JavaPlugin {
     void setupLocale(){
         saveResource("messages_de.yml", true);
         saveResource("messages_pl.yml", true);
-        saveResource("messages_fr.yml", true);
-        saveResource("messages_es.yml", true);
-        saveResource("messages_nl.yml", true);
-        saveResource("messages_hu.yml", true);
         switch(getConfig().getString("locale")){
             case "en":
                 pinataLocale = PinataLocale.ENGLISH;
@@ -131,20 +127,8 @@ public class Main extends JavaPlugin {
             case "pl":
                 pinataLocale = PinataLocale.POLSKI;
                 break;
-            case "nl":
-                pinataLocale = PinataLocale.NEDERLANDS;
-                break;
-            case "fr":
-                pinataLocale = PinataLocale.FRANCAIS;
-                break;
             case "de":
                 pinataLocale = PinataLocale.DEUTSCH;
-                break;
-            case "es":
-                pinataLocale = PinataLocale.ESPANOL;
-                break;
-            case "hu":
-                pinataLocale = PinataLocale.MAGYAR;
                 break;
             default:
                 pinataLocale = PinataLocale.ENGLISH;
@@ -255,12 +239,8 @@ public class Main extends JavaPlugin {
 
     public enum PinataLocale {
         DEUTSCH("Deutsch", "de", "Elternbrief"), 
-        ENGLISH("English", "", "Plajer"), 
-        ESPANOL("Español", "es", "Adolfo Garolfo"), 
-        FRANCAIS("Français", "fr", "Bol2T"), 
-        NEDERLANDS("Nederlands", "nl", "TomTheDeveloper"), 
-        POLSKI("Polski", "pl", "Plajer"),
-        MAGYAR("Magyar", "hu", "montlikadani");
+        ENGLISH("English", "", "Plajer"),
+        POLSKI("Polski", "pl", "Plajer");
 
         String formattedName;
         String prefix;
