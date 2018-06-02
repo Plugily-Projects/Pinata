@@ -103,7 +103,6 @@ Validator:
   Invalid-Item: "Item piniaty %name% nie jest poprawnie skonfigurowany! Bledny przedmiot: %number%"
   Invalid-Item-Type: "Item piniaty %name% nie jest przedmiotem ani komenda! Bledny przedmiot: %number%"
   Invalid-Chance: "Przedmiot piniaty %name% nigdy sie nie wylosuje! Bledny przedmiot: %number%"
-  Invalid-Money-Drop: "Przedmioty piniaty %name% ma nagrode pieniezna rowna 0! Bledny przedmiot: %number%"
   Invalid-Permission: "Uprawnienie piniaty %name% nie zostalo ustawione!"
   Invalid-Timer: "Timer piniaty %name% nie zostal ustawiony!"
   Invalid-Type: "Typ piniaty %name% nie jest ani publiczny ani prywatny!"

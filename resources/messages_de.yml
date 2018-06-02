@@ -103,7 +103,6 @@ Validator:
   Invalid-Item: "Ein Gegenstand der Pinata %name% ist nicht richtig eingestellt! Der ungültige Gegenstand ist in der Zeile: %number%"
   Invalid-Item-Type: "Ein Gegenstand der Pinata %name% ist weder ein Ding noch ein Befehl! Der ungültige Gegenstand ist in der Zeile: %number%"
   Invalid-Chance: "Ein Item der Pinata %name% wird niemals fallen, da die Chance auf 0% gestellt ist! Der ungültige Gegenstand ist in der Zeile: %number%"
-  Invalid-Money-Drop: "Das Geld in einem Gegenstand der Pinata %name% beträgt 0! Der ungültige Gegenstand ist in der Zeile: %number%"
   Invalid-Permission: "Die Berechtigung der Pinata %name% ist nicht gesetzt!"
   Invalid-Timer: "Die Zeit der Pianta %name% ist nicht gesetzt!"
   Invalid-Type: "Der Typ der Pinata %name% ist weder öffentlich noch privat!"

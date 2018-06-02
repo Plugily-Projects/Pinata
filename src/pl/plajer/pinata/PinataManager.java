@@ -164,37 +164,6 @@ public class PinataManager {
                 if(Double.parseDouble(partsvaild[3]) == 0) {
                     plugin.getLogger().log(Level.WARNING, Utils.colorMessage("Validator.Invalid-Chance").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
                 }
-            } else if(partsvaild[0].equals("money")) {
-                if(plugin.isPluginEnabled("Vault")) {
-                    if(partsvaild.length < 3) {
-                        plugin.getLogger().log(Level.SEVERE, Utils.colorMessage("Validator.Invalid-Configuration").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
-                        return false;
-                    }
-                    if(Double.parseDouble(partsvaild[1]) == 0) {
-                        plugin.getLogger().log(Level.WARNING, Utils.colorMessage("Validator.Invalid-Money-Drop").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
-                    }
-                    if(Double.parseDouble(partsvaild[3]) == 0) {
-                        plugin.getLogger().log(Level.WARNING, Utils.colorMessage("Validator.Invalid-Chance").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
-                    }
-                } else {
-                    plugin.getLogger().log(Level.SEVERE, Utils.colorMessage("Validator.Invalid-Item-Type").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
-                    plugin.getLogger().log(Level.SEVERE, "Vault plugin not found!");
-                    return false;
-                }
-            } else if(partsvaild[0].equals("gun")) {
-                if(plugin.isPluginEnabled("CrackShot")) {
-                    if(partsvaild.length < 3) {
-                        plugin.getLogger().log(Level.SEVERE, Utils.colorMessage("Validator.Invalid-Configuration").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
-                        return false;
-                    }
-                    if(Double.parseDouble(partsvaild[3]) == 0) {
-                        plugin.getLogger().log(Level.WARNING, Utils.colorMessage("Validator.Invalid-Chance").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
-                    }
-                } else {
-                    plugin.getLogger().log(Level.SEVERE, Utils.colorMessage("Validator.Invalid-Item-Type").replaceAll("%number%", String.valueOf(i + 1)).replaceAll("%name%", pinata));
-                    plugin.getLogger().log(Level.SEVERE, "CrackShot plugin not found!");
-                    return false;
-                }
             }
         }
         return true;
