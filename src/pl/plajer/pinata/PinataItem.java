@@ -89,7 +89,7 @@ public class PinataItem {
         this.amount = amount;
     }
 
-    enum ItemType {
+    public enum ItemType {
         ITEM, COMMAND, GUN, MONEY;
     }
 }

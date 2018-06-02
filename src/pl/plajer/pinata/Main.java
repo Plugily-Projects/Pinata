@@ -8,6 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.plajer.pinata.commands.MainCommand;
 import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
@@ -23,7 +24,7 @@ public class Main extends JavaPlugin {
     private final int CONFIG_FILE_VERSION = 5;
     private PinataLocale pinataLocale;
     private CrateManager crateManager;
-    private Commands commands;
+    private MainCommand commands;
     private FileManager fileManager;
     private PinataManager pinataManager;
     private SignManager signManager;
@@ -40,7 +41,7 @@ public class Main extends JavaPlugin {
         instance = this;
         new MetricsLite(this);
         crateManager = new CrateManager(this);
-        commands = new Commands(this);
+        commands = new MainCommand(this);
         fileManager = new FileManager(this);
         setupLocale();
         new MenuHandler(this);
@@ -117,7 +118,7 @@ public class Main extends JavaPlugin {
         }
     }
 
-    void setupLocale(){
+    public void setupLocale(){
         saveResource("messages_de.yml", true);
         saveResource("messages_pl.yml", true);
         switch(getConfig().getString("locale")){
@@ -159,7 +160,7 @@ public class Main extends JavaPlugin {
         return crateManager;
     }
 
-    public Commands getCommands() {
+    public MainCommand getCommands() {
         return commands;
     }
 
