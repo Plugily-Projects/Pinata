@@ -14,67 +14,55 @@ import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-    private static Main instance;
     private final int MESSAGES_FILE_VERSION = 10;
     private final int CONFIG_FILE_VERSION = 5;
+    private List<String> filesToGenerate = Arrays.asList("crates", "pinatas", "messages");
     private PinataLocale pinataLocale;
     private CrateManager crateManager;
     private MainCommand commands;
-    private FileManager fileManager;
     private PinataManager pinataManager;
     private SignManager signManager;
     private List<String> disabledWorlds = new ArrayList<>();
     private Economy econ = null;
 
-    public static Main getInstance() {
-        return instance;
-    }
-
     @Override
     public void onEnable() {
         this.getLogger().log(Level.INFO, "Crack this pinata!");
-        instance = this;
+        ConfigurationManager.init(this);
         new MetricsLite(this);
         crateManager = new CrateManager(this);
-        commands = new MainCommand(this);
-        fileManager = new FileManager(this);
+        commands = new MainCommand(this, true);
         setupLocale();
         new MenuHandler(this);
         new PinataListeners(this);
         pinataManager = new PinataManager(this);
         signManager = new SignManager(this);
         saveDefaultConfig();
-        fileManager.saveDefaultMessagesConfig();
-        fileManager.reloadMessagesConfig();
+        for(String file : filesToGenerate){
+            ConfigurationManager.getConfig(file);
+        }
         setupDependencies();
-        if(!fileManager.getMessagesConfig().isSet("File-Version-Do-Not-Edit") || !fileManager.getMessagesConfig().get("File-Version-Do-Not-Edit").equals(MESSAGES_FILE_VERSION)) {
+        if(!ConfigurationManager.getConfig("messages").isSet("File-Version-Do-Not-Edit") || !ConfigurationManager.getConfig("messages").get("File-Version-Do-Not-Edit").equals(MESSAGES_FILE_VERSION)) {
             getLogger().info("Your messages file is outdated! Updating...");
-            fileManager.updateConfig("messages.yml");
-            fileManager.getMessagesConfig().set("File-Version-Do-Not-Edit", MESSAGES_FILE_VERSION);
-            fileManager.saveMessagesConfig();
+            //todo updater methods
             getLogger().info("File successfully updated!");
         }
         if(!getConfig().isSet("File-Version-Do-Not-Edit") || !getConfig().get("File-Version-Do-Not-Edit").equals(CONFIG_FILE_VERSION)) {
             getLogger().info("Your config file is outdated! Updating...");
-            fileManager.updateConfig("config.yml");
-            getConfig().set("File-Version-Do-Not-Edit", CONFIG_FILE_VERSION);
-            saveConfig();
+            //todo updater methods
             getLogger().info("File successfully updated!");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Warning! Your config.yml file was updated and all comments were removed! If you want to get comments back please generate new config.yml file!");
+            //Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Warning! Your config.yml file was updated and all comments were removed! If you want to get comments back please generate new config.yml file!");
         }
         for(String world : getConfig().getStringList("disabled-worlds")) {
             disabledWorlds.add(world);
             getLogger().info("Pinata creation blocked at world " + world + "!");
         }
-        fileManager.saveDefaultPinataConfig();
-        fileManager.saveDefaultCratesConfig();
-        fileManager.reloadPinataConfig();
-        fileManager.reloadMessagesConfig();
         crateManager.loadCrates();
         pinataManager.loadPinatas();
         crateManager.particleScheduler();
@@ -140,8 +128,8 @@ public class Main extends JavaPlugin {
 
     private void validateLocaleVersion(){
         if(pinataLocale == PinataLocale.ENGLISH) return;
-        if(fileManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(fileManager.getLanguageMessage("File-Version-Do-Not-Edit"))){
-            if(fileManager.getLanguageMessage("File-Version-Do-Not-Edit").equals(fileManager.getLanguageMessage("Language-Version"))){
+        if(ConfigurationManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(ConfigurationManager.getLanguageMessage("File-Version-Do-Not-Edit"))){
+            if(ConfigurationManager.getLanguageMessage("File-Version-Do-Not-Edit").equals(ConfigurationManager.getLanguageMessage("Language-Version"))){
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Loaded locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " without problems!");
                 return;
             }
@@ -162,10 +150,6 @@ public class Main extends JavaPlugin {
 
     public MainCommand getCommands() {
         return commands;
-    }
-
-    public FileManager getFileManager() {
-        return fileManager;
     }
 
     public PinataManager getPinataManager() {

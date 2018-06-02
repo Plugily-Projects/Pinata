@@ -3,12 +3,18 @@ package pl.plajer.pinata;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.utils.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class PinataManager {
@@ -32,22 +38,19 @@ public class PinataManager {
     }
 
     public void loadPinatas() {
-        ConfigurationSection pinata = plugin.getFileManager().getPinataConfig().getConfigurationSection("pinatas");
-        if(pinata != null) {
-            for(String key : pinata.getKeys(false)) {
-                if(!plugin.getPinataManager().validatePinata(key)) {
-                    System.out.println(Utils.colorMessage("Pinata.Validate.Fail").replaceAll("%name%", key));
-                    continue;
-                }
-                System.out.println(Utils.colorMessage("Pinata.Validate.Success").replaceAll("%name%", key));
-                pinataList.add(key);
-                HashSet<PinataItem> items = new HashSet<>();
-                for(String s : plugin.getFileManager().getPinataConfig().getStringList("pinatas." + key + ".drops")) {
-                    PinataItem item = stringToItem(s);
-                    items.add(item);
-                }
-                pinataDrops.put(key, items);
+        for(String key : ConfigurationManager.getConfig("pinatas").getConfigurationSection("pinatas").getKeys(false)) {
+            if(!plugin.getPinataManager().validatePinata(key)) {
+                System.out.println(Utils.colorMessage("Pinata.Validate.Fail").replaceAll("%name%", key));
+                continue;
             }
+            System.out.println(Utils.colorMessage("Pinata.Validate.Success").replaceAll("%name%", key));
+            pinataList.add(key);
+            HashSet<PinataItem> items = new HashSet<>();
+            for(String s : ConfigurationManager.getConfig("pinatas").getStringList("pinatas." + key + ".drops")) {
+                PinataItem item = stringToItem(s);
+                items.add(item);
+            }
+            pinataDrops.put(key, items);
         }
     }
 
@@ -107,24 +110,25 @@ public class PinataManager {
 
 
     private boolean validatePinata(String pinata) {
+        FileConfiguration config = ConfigurationManager.getConfig("pinatas");
         for(String error : validatorErrors.keySet()) {
-            if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + error)) {
+            if(!config.isSet("pinatas." + pinata + error)) {
                 plugin.getLogger().log(Level.SEVERE, Utils.colorMessage(validatorErrors.get(error)).replaceAll("%name%", pinata));
                 return false;
             }
         }
-        if(!plugin.getFileManager().getPinataConfig().isSet("pinatas." + pinata + ".cost") && plugin.isPluginEnabled("Vault")) {
+        if(!config.isSet("pinatas." + pinata + ".cost") && plugin.isPluginEnabled("Vault")) {
             plugin.getLogger().log(Level.SEVERE, Utils.colorMessage("Validator.Vault-Abandoned").replaceAll("%name%", pinata));
             return false;
         }
         try {
-            DyeColor.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".color").toString().toUpperCase());
+            DyeColor.valueOf(config.get("pinatas." + pinata + ".color").toString().toUpperCase());
         } catch(Exception e) {
             plugin.getLogger().log(Level.SEVERE, Utils.colorMessage("Validator-Invalid-Color").replaceAll("%name%", pinata));
             return false;
         }
         try {
-            EntityType e = EntityType.valueOf(plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".mob-type").toString().toUpperCase());
+            EntityType e = EntityType.valueOf(config.get("pinatas." + pinata + ".mob-type").toString().toUpperCase());
             if(!e.isSpawnable()) {
                 plugin.getLogger().log(Level.SEVERE, Utils.colorMessage("Validator-Invalid-Mob-Type").replaceAll("%name%", pinata));
                 return false;
@@ -133,7 +137,7 @@ public class PinataManager {
             plugin.getLogger().log(Level.SEVERE, Utils.colorMessage("Validator-Invalid-Mob-Type").replaceAll("%name%", pinata));
             return false;
         }
-        final List<String> drops = plugin.getFileManager().getPinataConfig().getStringList("pinatas." + pinata + ".drops");
+        final List<String> drops = config.getStringList("pinatas." + pinata + ".drops");
         for(int i = 0; i < drops.size(); i++) {
             String itemvaild = drops.get(i);
             String[] partsvaild = itemvaild.split(";");

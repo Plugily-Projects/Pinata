@@ -7,12 +7,14 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataFactory;
@@ -42,12 +44,6 @@ public class ArgumentsManager extends MainCommand {
         try {
             plugin.reloadConfig();
             plugin.getPinataManager().getPinataList().clear();
-            plugin.saveDefaultConfig();
-            plugin.getFileManager().saveDefaultMessagesConfig();
-            plugin.getFileManager().saveDefaultPinataConfig();
-            plugin.reloadConfig();
-            plugin.getFileManager().reloadMessagesConfig();
-            plugin.getFileManager().reloadPinataConfig();
             plugin.getPinataManager().loadPinatas();
             plugin.setupLocale();
         } catch(Exception e) {
@@ -89,16 +85,19 @@ public class ArgumentsManager extends MainCommand {
                 p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Is-Set-Here"));
                 return;
             }
-            if(plugin.getFileManager().getCratesConfig().isSet("crates." + args[1])) {
+            if(ConfigurationManager.getConfig("crates").isSet("crates." + args[1])) {
                 p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Already-Exists"));
                 return;
             }
-            plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".world", l.getWorld().getName());
-            plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".x", l.getX());
-            plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".y", l.getY());
-            plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".z", l.getZ());
-            plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".name", args[1]);
-            plugin.getFileManager().saveCratesConfig();
+
+            FileConfiguration config = ConfigurationManager.getConfig("crates");
+            config.set("crates." + args[1] + ".world", l.getWorld().getName());
+            config.set("crates." + args[1] + ".x", l.getX());
+            config.set("crates." + args[1] + ".y", l.getY());
+            config.set("crates." + args[1] + ".z", l.getZ());
+            config.set("crates." + args[1] + ".name", args[1]);
+            ConfigurationManager.saveConfig(config, "crates");
+
             plugin.getCrateManager().getCratesLocations().put(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ()), args[1]);
             p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Create-Success").replaceAll("%name%", args[1]));
             return;
@@ -155,8 +154,8 @@ public class ArgumentsManager extends MainCommand {
                     return;
                 }
                 Location l = new Location(world, x, y, z);
-                LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + args[5] + ".mob-type").toUpperCase()));
-                entity.setMaxHealth(Main.getInstance().getFileManager().getPinataConfig().getDouble("pinatas." + args[5] + ".health"));
+                LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(ConfigurationManager.getConfig("pinatas").getString("pinatas." + args[5] + ".mob-type").toUpperCase()));
+                entity.setMaxHealth(ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + args[5] + ".health"));
                 entity.setHealth(entity.getMaxHealth());
                 PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, args[5]);
                 sender.sendMessage(Utils.colorMessage("Pinata.Create.Success").replaceAll("%name%", args[5]));
@@ -229,12 +228,12 @@ public class ArgumentsManager extends MainCommand {
             p.sendMessage(Utils.colorMessage("Pinata.Not-Found"));
             return;
         }
-        if(plugin.getFileManager().getPinataConfig().getInt("pinatas." + args[1] + ".cost") == -1) {
+        if(ConfigurationManager.getConfig("pinatas").getInt("pinatas." + args[1] + ".cost") == -1) {
             p.sendMessage(Utils.colorMessage("Pinata.Selling.Not-For-Sale"));
             return;
         }
         if(plugin.getConfig().getBoolean("using-permissions")) {
-            final String pinataPermission = plugin.getFileManager().getPinataConfig().get("pinatas." + args[1] + ".permission").toString();
+            final String pinataPermission = ConfigurationManager.getConfig("pinatas").get("pinatas." + args[1] + ".permission").toString();
             if(!p.hasPermission(pinataPermission)) {
                 p.sendMessage(Utils.colorMessage("Pinata.Create.No-Permission"));
                 return;
@@ -242,9 +241,9 @@ public class ArgumentsManager extends MainCommand {
         }
         if(p.hasPermission("pinata.admin.freeall")) {
             Utils.createPinataAtPlayer(p, p.getLocation(), args[1]);
-        } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost")) {
+        } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + args[1] + ".cost")) {
             if(Utils.createPinataAtPlayer(p, p.getLocation(), args[1])) {
-                plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost"));
+                plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + args[1] + ".cost"));
             }
         } else {
             sender.sendMessage(Utils.colorMessage("Pinata.Selling.Cannot-Afford"));

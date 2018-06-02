@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
+import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 
@@ -18,8 +20,10 @@ import java.util.List;
 
 public class Utils {
 
+    private static Main plugin = JavaPlugin.getPlugin(Main.class);
+
     public static String colorMessage(String message) {
-        return ChatColor.translateAlternateColorCodes('&', Main.getInstance().getFileManager().getLanguageMessage(message));
+        return ChatColor.translateAlternateColorCodes('&', ConfigurationManager.getLanguageMessage(message));
     }
 
     public static String colorRawMessage(String message) {
@@ -33,31 +37,31 @@ public class Utils {
 
     public static boolean createPinataAtPlayer(Player p, Location l, String pinataName) {
         Location loc = l.clone().add(0, 7, 0);
-        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(Main.getInstance().getFileManager().getPinataConfig().getString("pinatas." + pinataName + ".mob-type").toUpperCase()));
-        entity.setMaxHealth(Main.getInstance().getFileManager().getPinataConfig().getDouble("pinatas." + pinataName + ".health"));
+        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(ConfigurationManager.getConfig("pinatas").getString("pinatas." + pinataName + ".mob-type").toUpperCase()));
+        entity.setMaxHealth(ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + pinataName + ".health"));
         entity.setHealth(entity.getMaxHealth());
         return PinataFactory.createPinata(loc, p, entity, pinataName);
     }
 
     public static void createPinatasGUI(String name, Player p) {
-        int rows = serializeInt(Main.getInstance().getPinataManager().getPinataList().size());
+        int rows = serializeInt(plugin.getPinataManager().getPinataList().size());
         Inventory pinatasMenu = Bukkit.createInventory(null, rows, Utils.colorMessage(name));
-        for(int i = 0; i < Main.getInstance().getPinataManager().getPinataList().size(); i++) {
-            String pinata = Main.getInstance().getPinataManager().getPinataList().get(i);
+        for(int i = 0; i < plugin.getPinataManager().getPinataList().size(); i++) {
+            String pinata = plugin.getPinataManager().getPinataList().get(i);
             ItemStack item = new ItemStack(Material.WOOL, 1);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(Utils.colorRawMessage("&6") + pinata);
             List<String> lore = new ArrayList<>();
-            if(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinata + ".type").equals("private")) {
+            if(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata + ".type").equals("private")) {
                 lore.add(colorMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
             } else {
                 lore.add(colorMessage("Menus.List-Menu.Pinata-Types.Type-Public"));
             }
-            if(Integer.parseInt(Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) == -1) {
+            if(Integer.parseInt(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata + ".cost").toString()) == -1) {
                 lore.add(colorMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));
             } else {
                 String cost = colorMessage("Menus.List-Menu.Pinata-Cost");
-                lore.add(cost.replaceAll("%money%", Main.getInstance().getFileManager().getPinataConfig().get("pinatas." + pinata + ".cost").toString()) + "$");
+                lore.add(cost.replaceAll("%money%", ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata + ".cost").toString()) + "$");
                 lore.add(colorMessage("Menus.List-Menu.Click-Selection.Right-Click"));
             }
             lore.add(colorMessage("Menus.List-Menu.Click-Selection.Left-Click"));

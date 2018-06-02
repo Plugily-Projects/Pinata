@@ -86,7 +86,7 @@ class PinataListeners implements Listener {
                     e.setCancelled(false);
                     return;
                 }
-                if(plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".type").equals("public")) {
+                if(ConfigurationManager.getConfig("pinatas").get("pinatas." + e.getEntity().getCustomName() + ".type").equals("public")) {
                     e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
                     //override World Guard blocking
                     e.setCancelled(false);
@@ -123,17 +123,17 @@ class PinataListeners implements Listener {
         if(plugin.getCommands().getPinata().get(e.getEntity()) == null || !(e.getDamager() instanceof Player)) {
             return;
         }
-        if(!plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".drop-type").toString().toLowerCase().equals("punch")) {
+        if(!ConfigurationManager.getConfig("pinatas").get("pinatas." + e.getEntity().getCustomName() + ".drop-type").toString().toLowerCase().equals("punch")) {
             return;
         }
         if(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() != null) {
             //MUST be public is player is not assigned
-            if(!plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager()) && plugin.getFileManager().getPinataConfig().get("pinatas." + e.getEntity().getCustomName() + ".type").equals("private")) {
+            if(!plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager()) && ConfigurationManager.getConfig("pinatas").get("pinatas." + e.getEntity().getCustomName() + ".type").equals("private")) {
                 e.setCancelled(true);
                 return;
             }
         }
-        final int timer = plugin.getFileManager().getPinataConfig().getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
+        final int timer = ConfigurationManager.getConfig("pinatas").getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
         Player p = (Player) e.getDamager();
         for(PinataItem item : plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName())) {
             if(ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
@@ -232,17 +232,17 @@ class PinataListeners implements Listener {
         final Player p = e.getEntity().getKiller() instanceof Player ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
         //drops won't show if killer is environment and pinata player is not assigned. This pinata will be always in our hearts [*]
         if(p == null) return;
-        if(plugin.getFileManager().getPinataConfig().getBoolean("pinatas." + e.getEntity().getCustomName() + ".blindness-effect")) {
+        if(ConfigurationManager.getConfig("pinatas").getBoolean("pinatas." + e.getEntity().getCustomName() + ".blindness-effect")) {
             if(p.hasPotionEffect(PotionEffectType.BLINDNESS)) {
                 p.removePotionEffect(PotionEffectType.BLINDNESS);
             }
-            if(plugin.getFileManager().getPinataConfig().getBoolean("pinatas." + e.getEntity().getCustomName() + ".full-blindness-effect")) {
+            if(ConfigurationManager.getConfig("pinatas").getBoolean("pinatas." + e.getEntity().getCustomName() + ".full-blindness-effect")) {
                 if(p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
                     p.removePotionEffect(PotionEffectType.NIGHT_VISION);
                 }
             }
         }
-        final int timer = plugin.getFileManager().getPinataConfig().getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
+        final int timer = ConfigurationManager.getConfig("pinatas").getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
         int i = 0;
         List<PinataItem> items = new ArrayList<>();
         for(PinataItem item : plugin.getPinataManager().getPinataDrop().get(e.getEntity().getCustomName())) {
