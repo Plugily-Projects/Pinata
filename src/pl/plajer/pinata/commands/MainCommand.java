@@ -29,7 +29,7 @@ public class MainCommand implements CommandExecutor {
 
     public boolean isSenderPlayer(CommandSender sender) {
         if(!(sender instanceof Player)) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Only-Player"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Command.Only-Player"));
             return false;
         }
         return true;
@@ -37,7 +37,7 @@ public class MainCommand implements CommandExecutor {
 
     public boolean hasPermission(CommandSender sender, String permission) {
         if(!sender.hasPermission(permission)) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.No-Permission"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Command.No-Permission"));
             return false;
         }
         return true;
@@ -47,8 +47,8 @@ public class MainCommand implements CommandExecutor {
     public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
         if(!hasPermission(sender, "pinata.command")) return true;
         if(args.length == 0) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Help-Command.Header"));
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Help-Command.Description"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Header"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Description"));
             return true;
         }
         if(args[0].equalsIgnoreCase("list")) {
@@ -68,8 +68,8 @@ public class MainCommand implements CommandExecutor {
         } else if(args[0].equalsIgnoreCase("cratelist")) {
             argumentsManager.printCrateList(sender);
         } else {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Help-Command.Header"));
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Help-Command.Description"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Header"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Description"));
         }
         return true;
     }

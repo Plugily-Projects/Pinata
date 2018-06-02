@@ -37,14 +37,14 @@ public class PinataFactory implements Listener {
             return false;
         }
         if(!(fenceLocation.getBlock().getType().equals(Material.AIR))) {
-            player.sendMessage(Utils.colorRawMessage("Pinata.Create.Fail"));
+            player.sendMessage(Utils.colorMessage("Pinata.Create.Fail"));
             entity.remove();
             if(fenceLocation.getBlock().getType().equals(Material.FENCE)) {
                 fenceLocation.getBlock().setType(Material.AIR);
             }
             return false;
         }
-        player.sendMessage(Utils.colorRawMessage("Pinata.Create.Success").replaceAll("%name%", pinataName));
+        player.sendMessage(Utils.colorMessage("Pinata.Create.Success").replaceAll("%name%", pinataName));
         Main.getInstance().getCommands().getUsers().add(player);
         //Max height check is to avoid problems with different server specifications
         Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);

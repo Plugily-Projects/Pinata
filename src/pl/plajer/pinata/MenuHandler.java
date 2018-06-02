@@ -25,7 +25,7 @@ class MenuHandler implements Listener {
 
     @EventHandler
     public void onMenuInteract(final InventoryClickEvent e) {
-        if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"))) {
+        if(e.getInventory().getName().equals(Utils.colorMessage("Menus.Preview-Menu.Inventory-Name"))) {
             e.setCancelled(true);
             return;
         }
@@ -33,8 +33,8 @@ class MenuHandler implements Listener {
             return;
         }
         final ItemMeta item = e.getCurrentItem().getItemMeta();
-        final String pinata = item.getDisplayName().replaceAll(Utils.colorMessage("&6"), "");
-        if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.List-Menu.Inventory-Name"))) {
+        final String pinata = item.getDisplayName().replaceAll(Utils.colorRawMessage("&6"), "");
+        if(e.getInventory().getName().equals(Utils.colorMessage("Menus.List-Menu.Inventory-Name"))) {
             e.setCancelled(true);
             if(e.getClick() == ClickType.LEFT) {
                 e.getWhoClicked().closeInventory();
@@ -42,16 +42,16 @@ class MenuHandler implements Listener {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinata), 1);
             }
             if(e.getClick() == ClickType.RIGHT) {
-                if(item.getLore().get(1).equals(Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"))) {
+                if(item.getLore().get(1).equals(Utils.colorMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"))) {
                     e.getWhoClicked().closeInventory();
-                    e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
+                    e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Selling.Not-For-Sale"));
                     return;
                 }
                 e.getWhoClicked().closeInventory();
-                Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), Utils.colorMessage("pinata buy " + item.getDisplayName().replaceAll("&6", ""))), 1);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), Utils.colorRawMessage("pinata buy " + item.getDisplayName().replaceAll("&6", ""))), 1);
             }
         }
-        if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Crate-Menu.Inventory-Name")) || e.getInventory().getName().equals(Utils.colorRawMessage("Signs.Inventory-Name"))) {
+        if(e.getInventory().getName().equals(Utils.colorMessage("Menus.Crate-Menu.Inventory-Name")) || e.getInventory().getName().equals(Utils.colorMessage("Signs.Inventory-Name"))) {
             e.setCancelled(true);
             if(e.getClick() == ClickType.LEFT) {
                 e.getWhoClicked().closeInventory();
@@ -59,19 +59,19 @@ class MenuHandler implements Listener {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinata), 1);
             }
             if(e.getClick() == ClickType.RIGHT) {
-                if(item.getLore().get(1).equals(Utils.colorRawMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"))) {
+                if(item.getLore().get(1).equals(Utils.colorMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"))) {
                     e.getWhoClicked().closeInventory();
-                    e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
+                    e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Selling.Not-For-Sale"));
                     return;
                 }
                 Location builderLocation;
                 Location entityLocation;
-                if(e.getInventory().getName().equals(Utils.colorRawMessage("Menus.Crate-Menu.Inventory-Name"))) {
+                if(e.getInventory().getName().equals(Utils.colorMessage("Menus.Crate-Menu.Inventory-Name"))) {
                     if(plugin.getCrateManager().getCrateUsage().containsKey(e.getWhoClicked())) {
                         builderLocation = plugin.getCrateManager().getCrateUsage().get(e.getWhoClicked()).clone().add(0, 8, 0);
                         entityLocation = plugin.getCrateManager().getCrateUsage().get(e.getWhoClicked()).clone().add(0, 3, 0);
                     } else {
-                        e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Buy-Error"));
+                        e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Buy-Error"));
                         return;
                     }
                 //sign inventory
@@ -80,18 +80,18 @@ class MenuHandler implements Listener {
                         builderLocation = plugin.getSignManager().getSignUsage().get(e.getWhoClicked()).clone().add(0, 8, 0);
                         entityLocation = plugin.getSignManager().getSignUsage().get(e.getWhoClicked()).clone().add(0, 3, 0);
                     } else {
-                        e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Buy-Error"));
+                        e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Buy-Error"));
                         return;
                     }
                 }
                 if(plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".cost") == -1) {
-                    e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
+                    e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Selling.Not-For-Sale"));
                     e.getWhoClicked().closeInventory();
                     return;
                 }
                 if(!plugin.getCommands().getUsers().isEmpty()) {
                     if(plugin.getCommands().getUsers().contains(e.getWhoClicked())) {
-                        e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Create.Already-Created"));
+                        e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Create.Already-Created"));
                         e.getWhoClicked().closeInventory();
                         return;
                     }
@@ -99,7 +99,7 @@ class MenuHandler implements Listener {
                 if(plugin.getConfig().getBoolean("using-permissions")) {
                     final String pperm = plugin.getFileManager().getPinataConfig().get("pinatas." + pinata + ".permission").toString();
                     if(!e.getWhoClicked().hasPermission(pperm)) {
-                        e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Create.No-Permission"));
+                        e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Create.No-Permission"));
                         e.getWhoClicked().closeInventory();
                         return;
                     }
@@ -131,7 +131,7 @@ class MenuHandler implements Listener {
                         }, plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".crate-time") * 20);
                     }
                 } else {
-                    e.getWhoClicked().sendMessage(Utils.colorRawMessage("Pinata.Selling.Cannot-Afford"));
+                    e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Selling.Cannot-Afford"));
                 }
                 e.getWhoClicked().closeInventory();
             }

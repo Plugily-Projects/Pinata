@@ -35,16 +35,16 @@ public class SignManager implements Listener {
         if(e.getLine(0).equalsIgnoreCase("[pinata]")) {
             if(e.getPlayer().hasPermission("pinata.admin.sign.set")) {
                 if(e.getLine(1).isEmpty()) {
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Signs.Invalid-Pinata"));
+                    e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
                     return;
                 }
-                e.setLine(0, Utils.colorRawMessage("Signs.Lines.First"));
+                e.setLine(0, Utils.colorMessage("Signs.Lines.First"));
                 if(e.getLine(1).equalsIgnoreCase("all") || e.getLine(1).equalsIgnoreCase("gui")) {
-                    e.setLine(1, Utils.colorRawMessage("Signs.Lines.Second-Every-Pinata"));
+                    e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Every-Pinata"));
                 } else if(plugin.getPinataManager().getPinataList().contains(e.getLine(1))) {
-                    e.setLine(1, Utils.colorRawMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
+                    e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
                 } else {
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Signs.Invalid-Pinata"));
+                    e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
                 }
             }
         }
@@ -54,11 +54,11 @@ public class SignManager implements Listener {
     public void onSignDestroy(BlockBreakEvent e) {
         if(e.getBlock().getType().equals(Material.SIGN) || e.getBlock().getType().equals(Material.SIGN_POST) || e.getBlock().getType().equals(Material.WALL_SIGN)) {
             Sign s = (Sign) e.getBlock().getState();
-            if(s.getLine(0).equals(Utils.colorRawMessage("Signs.Lines.First"))) {
+            if(s.getLine(0).equals(Utils.colorMessage("Signs.Lines.First"))) {
                 if(e.getPlayer().hasPermission("pinata.admin.sign.destroy")) {
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Signs.Invalid-Pinata"));
+                    e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
                 } else {
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Signs.No-Permission"));
+                    e.getPlayer().sendMessage(Utils.colorMessage("Signs.No-Permission"));
                 }
             }
         }
@@ -72,22 +72,22 @@ public class SignManager implements Listener {
         }
         if(e.getClickedBlock().getType().equals(Material.SIGN) || e.getClickedBlock().getType().equals(Material.SIGN_POST) || e.getClickedBlock().getType().equals(Material.WALL_SIGN)) {
             Sign s = (Sign) e.getClickedBlock().getState();
-            if(s.getLine(0).equals(Utils.colorRawMessage("Signs.Lines.First"))) {
+            if(s.getLine(0).equals(Utils.colorMessage("Signs.Lines.First"))) {
                 if(!plugin.isPluginEnabled("Vault")) {
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
+                    e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Command.Vault-Not-Detected"));
                     return;
                 }
                 if(!e.getPlayer().hasPermission("pinata.player.sign")) {
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Sings.No-Permission"));
+                    e.getPlayer().sendMessage(Utils.colorMessage("Sings.No-Permission"));
                     return;
                 }
                 if(!plugin.getConfig().getBoolean("disabled-worlds-exclusions.signs")) {
                     if(plugin.getDisabledWorlds().contains(e.getPlayer().getWorld().getName())) {
-                        e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Create.Disabled-World"));
                         return;
                     }
                 }
-                if(s.getLine(1).equals(Utils.colorRawMessage("Signs.Lines.Second-Every-Pinata"))) {
+                if(s.getLine(1).equals(Utils.colorMessage("Signs.Lines.Second-Every-Pinata"))) {
                     signUsage.put(e.getPlayer(), e.getClickedBlock().getLocation());
                     Utils.createPinatasGUI("Signs.Inventory-Name", e.getPlayer());
                 } else {
@@ -116,7 +116,7 @@ public class SignManager implements Listener {
                             }, plugin.getFileManager().getPinataConfig().getInt("pinatas." + pinata + ".crate-time") * 20);
                         }
                     } else {
-                        e.getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Selling.Cannot-Afford"));
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Selling.Cannot-Afford"));
                     }
                 }
             }

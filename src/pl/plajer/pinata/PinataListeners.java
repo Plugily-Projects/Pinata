@@ -68,10 +68,10 @@ class PinataListeners implements Listener {
                 String latestVersion = UpdateChecker.getLatestVersion();
                 if(latestVersion != null) {
                     latestVersion = "v" + latestVersion;
-                    e.getPlayer().sendMessage(Utils.colorRawMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
+                    e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
                 }
             } catch(Exception ex) {
-                e.getPlayer().sendMessage(Utils.colorRawMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+                e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
             }
         }
     }
@@ -100,7 +100,7 @@ class PinataListeners implements Listener {
                         e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
                         e.setCancelled(false);
                     } else {
-                        e.getDamager().sendMessage(Utils.colorRawMessage("Pinata.Not-Own"));
+                        e.getDamager().sendMessage(Utils.colorMessage("Pinata.Not-Own"));
                         e.setCancelled(true);
                     }
                 }
@@ -113,7 +113,7 @@ class PinataListeners implements Listener {
 
     @EventHandler
     public void onBatDamage(EntityDamageEvent e) {
-        if(e.getEntityType().equals(EntityType.BAT) || (e.getEntity().getCustomName() != null && e.getEntity().getCustomName().equals(Utils.colorMessage("&6Halloween!")))) {
+        if(e.getEntityType().equals(EntityType.BAT) || (e.getEntity().getCustomName() != null && e.getEntity().getCustomName().equals(Utils.colorRawMessage("&6Halloween!")))) {
             e.setCancelled(true);
         }
     }
@@ -141,7 +141,7 @@ class PinataListeners implements Listener {
                 dropItem.setPickupDelay(1000);
                 if(plugin.isPluginEnabled("HolographicDisplays")) {
                     final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
-                    hologram.appendTextLine(Utils.colorMessage(item.getHologramName().replaceAll("%player%", p.getName())) + " x" + item.getAmount());
+                    hologram.appendTextLine(Utils.colorRawMessage(item.getHologramName().replaceAll("%player%", p.getName())) + " x" + item.getAmount());
                     new BukkitRunnable() {
                         int ticksRun;
 
@@ -174,7 +174,7 @@ class PinataListeners implements Listener {
                         plugin.getEco().depositPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), item.getMoneyValue());
                         break;
                 }
-                p.sendMessage(Utils.colorRawMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getHologramName()).replaceAll("%amount%", String.valueOf(item.getAmount())));
+                p.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getHologramName()).replaceAll("%amount%", String.valueOf(item.getAmount())));
             }
         }
     }
@@ -211,7 +211,7 @@ class PinataListeners implements Listener {
             final ArrayList<Entity> bats = new ArrayList<>();
             for(int i = 0; i < 5; i++) {
                 final Entity bat = e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), EntityType.BAT);
-                bat.setCustomName(Utils.colorMessage("&6Halloween!"));
+                bat.setCustomName(Utils.colorRawMessage("&6Halloween!"));
                 bats.add(bat);
             }
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -251,7 +251,7 @@ class PinataListeners implements Listener {
                 dropItem.setPickupDelay(1000);
                 if(plugin.isPluginEnabled("HolographicDisplays")) {
                     final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
-                    hologram.appendTextLine(Utils.colorMessage(item.getHologramName().replaceAll("%player%", p.getName())) + " x" + item.getAmount());
+                    hologram.appendTextLine(Utils.colorRawMessage(item.getHologramName().replaceAll("%player%", p.getName())) + " x" + item.getAmount());
                     new BukkitRunnable() {
                         int ticksRun;
 
@@ -284,7 +284,7 @@ class PinataListeners implements Listener {
                         plugin.getEco().depositPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), item.getMoneyValue());
                         break;
                 }
-                p.sendMessage(Utils.colorRawMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getHologramName()).replaceAll("%amount%", String.valueOf(item.getAmount())));
+                p.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getHologramName()).replaceAll("%amount%", String.valueOf(item.getAmount())));
             }
             items.add(item);
             i++;
@@ -292,7 +292,7 @@ class PinataListeners implements Listener {
         PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), e.getEntity(), e.getEntity().getCustomName(), items);
         Bukkit.getPluginManager().callEvent(pde);
         if(i == 0) {
-            p.sendMessage(Utils.colorRawMessage("Pinata.Drop.No-Drops"));
+            p.sendMessage(Utils.colorMessage("Pinata.Drop.No-Drops"));
         }
         plugin.getCommands().getPinata().remove(e.getEntity());
         itemsToGive.clear();

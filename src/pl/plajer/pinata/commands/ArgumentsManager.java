@@ -51,7 +51,7 @@ public class ArgumentsManager extends MainCommand {
             plugin.getPinataManager().loadPinatas();
             plugin.setupLocale();
         } catch(Exception e) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Fail"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Config.Reload-Fail"));
             return;
         }
         plugin.getDisabledWorlds().clear();
@@ -66,31 +66,31 @@ public class ArgumentsManager extends MainCommand {
                 String latestVersion = UpdateChecker.getLatestVersion();
                 if(latestVersion != null) {
                     latestVersion = "v" + latestVersion;
-                    sender.sendMessage(Utils.colorRawMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
+                    sender.sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
                 }
             } catch(Exception ex) {
-                sender.sendMessage(Utils.colorRawMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+                sender.sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
             }
         }
-        sender.sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Success"));
+        sender.sendMessage(Utils.colorMessage("Pinata.Config.Reload-Success"));
     }
 
     public void setCrate(CommandSender sender, String[] args) {
         if(!hasPermission(sender, "pinata.admin.crate.set")) return;
         if(!isSenderPlayer(sender)) return;
         if(args.length != 2) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Specify-Name"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Specify-Name"));
             return;
         }
         Player p = (Player) sender;
         Block l = p.getTargetBlock(null, 20);
         if(l.getType().equals(Material.CHEST)) {
             if(plugin.getCrateManager().getCratesLocations().containsKey(l.getLocation())) {
-                p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Is-Set-Here"));
+                p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Is-Set-Here"));
                 return;
             }
             if(plugin.getFileManager().getCratesConfig().isSet("crates." + args[1])) {
-                p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Already-Exists"));
+                p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Already-Exists"));
                 return;
             }
             plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".world", l.getWorld().getName());
@@ -100,10 +100,10 @@ public class ArgumentsManager extends MainCommand {
             plugin.getFileManager().getCratesConfig().set("crates." + args[1] + ".name", args[1]);
             plugin.getFileManager().saveCratesConfig();
             plugin.getCrateManager().getCratesLocations().put(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ()), args[1]);
-            p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Create-Success").replaceAll("%name%", args[1]));
+            p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Create-Success").replaceAll("%name%", args[1]));
             return;
         } else {
-            p.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.Target-Block-Not-Chest"));
+            p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Target-Block-Not-Chest"));
             return;
         }
     }
@@ -111,13 +111,13 @@ public class ArgumentsManager extends MainCommand {
     public void printCrateList(CommandSender sender) {
         if(!hasPermission(sender, "pinata.admin.crate.list")) return;
         int num = 0;
-        sender.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.List"));
+        sender.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.List"));
         for(Location l : plugin.getCrateManager().getCratesLocations().keySet()) {
-            sender.sendMessage(Utils.colorMessage("&a" + plugin.getCrateManager().getCratesLocations().get(l) + " - X: " + l.getX() + " Y: " + l.getY() + " Z: " + l.getZ()));
+            sender.sendMessage(Utils.colorRawMessage("&a" + plugin.getCrateManager().getCratesLocations().get(l) + " - X: " + l.getX() + " Y: " + l.getY() + " Z: " + l.getZ()));
             num++;
         }
         if(num == 0) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Crate-Creation.List-Empty"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.List-Empty"));
         }
     }
 
@@ -151,7 +151,7 @@ public class ArgumentsManager extends MainCommand {
                     z = Integer.parseInt(args[4]);
                 }
                 if(!plugin.getPinataManager().getPinataList().contains(args[5])) {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
+                    sender.sendMessage(Utils.colorMessage("Pinata.Not-Found"));
                     return;
                 }
                 Location l = new Location(world, x, y, z);
@@ -159,28 +159,28 @@ public class ArgumentsManager extends MainCommand {
                 entity.setMaxHealth(Main.getInstance().getFileManager().getPinataConfig().getDouble("pinatas." + args[5] + ".health"));
                 entity.setHealth(entity.getMaxHealth());
                 PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, args[5]);
-                sender.sendMessage(Utils.colorRawMessage("Pinata.Create.Success").replaceAll("%name%", args[5]));
+                sender.sendMessage(Utils.colorMessage("Pinata.Create.Success").replaceAll("%name%", args[5]));
                 return;
             } catch(Exception e) {
-                sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Custom-Location-Create-Error"));
+                sender.sendMessage(Utils.colorMessage("Pinata.Command.Custom-Location-Create-Error"));
                 return;
             }
         }
         if(args.length == 1) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Specify-Name"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Specify-Name"));
             return;
         }
         Player user;
         if(sender instanceof ConsoleCommandSender) {
             if(args.length != 3) {
-                sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Console-Specify-Player"));
+                sender.sendMessage(Utils.colorMessage("Pinata.Command.Console-Specify-Player"));
                 return;
             }
             if(Bukkit.getPlayer(args[2]) != null) {
                 user = Bukkit.getPlayer(args[2]);
-                user.sendMessage(Utils.colorRawMessage("Pinata.Create.By-Console"));
+                user.sendMessage(Utils.colorMessage("Pinata.Create.By-Console"));
             } else {
-                sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Player-Not-Found"));
+                sender.sendMessage(Utils.colorMessage("Pinata.Command.Player-Not-Found"));
                 return;
             }
         } else {
@@ -191,13 +191,13 @@ public class ArgumentsManager extends MainCommand {
                 if(Bukkit.getPlayer(args[2]) != null) {
                     user = Bukkit.getPlayer(args[2]);
                 } else {
-                    sender.sendMessage(Utils.colorRawMessage("Pinata.Command.Player-Not-Found"));
+                    sender.sendMessage(Utils.colorMessage("Pinata.Command.Player-Not-Found"));
                     return;
                 }
             }
         }
         if(!plugin.getPinataManager().getPinataList().contains(args[1])) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Not-Found"));
             return;
         }
         Utils.createPinataAtPlayer(user, user.getLocation(), args[1]);
@@ -207,18 +207,18 @@ public class ArgumentsManager extends MainCommand {
         if(!isSenderPlayer(sender)) return;
         final Player p = (Player) sender;
         if(!plugin.isPluginEnabled("Vault")) {
-            p.sendMessage(Utils.colorRawMessage("Pinata.Command.Vault-Not-Detected"));
+            p.sendMessage(Utils.colorMessage("Pinata.Command.Vault-Not-Detected"));
             return;
         }
         if(!hasPermission(sender, "pinata.command.buy")) return;
         if(!super.getUsers().isEmpty()) {
             if(super.getUsers().contains(p)) {
-                p.sendMessage(Utils.colorRawMessage("Pinata.Create.Already-Created"));
+                p.sendMessage(Utils.colorMessage("Pinata.Create.Already-Created"));
                 return;
             }
         }
         if(plugin.getDisabledWorlds().contains(p.getWorld().getName())) {
-            p.sendMessage(Utils.colorRawMessage("Pinata.Create.Disabled-World"));
+            p.sendMessage(Utils.colorMessage("Pinata.Create.Disabled-World"));
             return;
         }
         if(args.length == 1) {
@@ -226,17 +226,17 @@ public class ArgumentsManager extends MainCommand {
             return;
         }
         if(!plugin.getPinataManager().getPinataList().contains(args[1])) {
-            p.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
+            p.sendMessage(Utils.colorMessage("Pinata.Not-Found"));
             return;
         }
         if(plugin.getFileManager().getPinataConfig().getInt("pinatas." + args[1] + ".cost") == -1) {
-            p.sendMessage(Utils.colorRawMessage("Pinata.Selling.Not-For-Sale"));
+            p.sendMessage(Utils.colorMessage("Pinata.Selling.Not-For-Sale"));
             return;
         }
         if(plugin.getConfig().getBoolean("using-permissions")) {
             final String pinataPermission = plugin.getFileManager().getPinataConfig().get("pinatas." + args[1] + ".permission").toString();
             if(!p.hasPermission(pinataPermission)) {
-                p.sendMessage(Utils.colorRawMessage("Pinata.Create.No-Permission"));
+                p.sendMessage(Utils.colorMessage("Pinata.Create.No-Permission"));
                 return;
             }
         }
@@ -247,7 +247,7 @@ public class ArgumentsManager extends MainCommand {
                 plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), plugin.getFileManager().getPinataConfig().getDouble("pinatas." + args[1] + ".cost"));
             }
         } else {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Selling.Cannot-Afford"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Selling.Cannot-Afford"));
         }
     }
 
@@ -255,21 +255,21 @@ public class ArgumentsManager extends MainCommand {
         if(!isSenderPlayer(sender)) return;
         if(!hasPermission(sender, "pinata.command.preview")) return;
         if(args.length == 1) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Specify-Name"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Specify-Name"));
             return;
         }
         if(!plugin.getPinataManager().getPinataList().contains(args[1])) {
-            sender.sendMessage(Utils.colorRawMessage("Pinata.Not-Found"));
+            sender.sendMessage(Utils.colorMessage("Pinata.Not-Found"));
             return;
         }
         int rows = Utils.serializeInt(plugin.getPinataManager().getPinataDrop().get(args[1]).size());
-        Inventory previewMenu = Bukkit.createInventory(null, rows, Utils.colorRawMessage("Menus.Preview-Menu.Inventory-Name"));
+        Inventory previewMenu = Bukkit.createInventory(null, rows, Utils.colorMessage("Menus.Preview-Menu.Inventory-Name"));
         int i = 0;
         for(PinataItem item : plugin.getPinataManager().getPinataDrop().get(args[1])) {
             ItemStack stack = new ItemStack(item.getRepresentedMaterial(), item.getAmount());
             ItemMeta meta = stack.getItemMeta();
             List<String> lore = new ArrayList<>();
-            String dropLore = Utils.colorRawMessage("Menus.Preview-Menu.Drop-Chance").replaceAll("%chance%", String.valueOf(item.getDropChance()));
+            String dropLore = Utils.colorMessage("Menus.Preview-Menu.Drop-Chance").replaceAll("%chance%", String.valueOf(item.getDropChance()));
             switch(item.getItemType()) {
                 case ITEM:
                     meta.setDisplayName(item.getItem().getItemMeta().getDisplayName());
@@ -279,14 +279,14 @@ public class ArgumentsManager extends MainCommand {
                     break;
                 case COMMAND:
                     meta.setDisplayName(item.getHologramName());
-                    lore.add(Utils.colorRawMessage("Menus.Preview-Menu.Command-To-Execute").replaceAll("%command%", item.getCommand().replaceAll("%player%", sender.getName())));
+                    lore.add(Utils.colorMessage("Menus.Preview-Menu.Command-To-Execute").replaceAll("%command%", item.getCommand().replaceAll("%player%", sender.getName())));
                     break;
                 case GUN:
                     meta.setDisplayName(item.getHologramName());
                     break;
                 case MONEY:
                     meta.setDisplayName(item.getHologramName());
-                    lore.add(Utils.colorRawMessage("Menus.Preview-Menu.Money-Reward").replaceAll("%money%", String.valueOf(item.getMoneyValue())));
+                    lore.add(Utils.colorMessage("Menus.Preview-Menu.Money-Reward").replaceAll("%money%", String.valueOf(item.getMoneyValue())));
                     break;
             }
             lore.add(dropLore);

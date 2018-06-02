@@ -86,10 +86,10 @@ public class Main extends JavaPlugin {
                 String latestVersion = UpdateChecker.getLatestVersion();
                 if(latestVersion != null) {
                     latestVersion = "v" + latestVersion;
-                    Bukkit.getConsoleSender().sendMessage(Utils.colorRawMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
+                    Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
                 }
             } catch(Exception ex) {
-                Bukkit.getConsoleSender().sendMessage(Utils.colorRawMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+                Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
             }
         }
     }
@@ -101,7 +101,7 @@ public class Main extends JavaPlugin {
                 if(entity instanceof Sheep) {
                     if(commands.getPinata().containsKey(entity)) {
                         if(commands.getPinata().get(entity).getPlayer() != null) {
-                            commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorRawMessage("Pinata.Config.Reload-Removed"));
+                            commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorMessage("Pinata.Config.Reload-Removed"));
                         }
                         commands.getPinata().get(entity).getBuilder().getBlock().setType(Material.AIR);
                         commands.getPinata().get(entity).getLeash().remove();
@@ -216,7 +216,7 @@ public class Main extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for(Location l : crateManager.getCratesLocations().keySet()) {
                 Hologram holo = HologramsAPI.createHologram(this, l.clone().add(0.5, 1.5, 0.5));
-                holo.appendTextLine(Utils.colorRawMessage("Hologram.Crate-Hologram").replaceAll("%name%", crateManager.getCratesLocations().get(l)));
+                holo.appendTextLine(Utils.colorMessage("Hologram.Crate-Hologram").replaceAll("%name%", crateManager.getCratesLocations().get(l)));
                 Bukkit.getScheduler().runTaskLater(this, holo::delete, (long) getConfig().getDouble("hologram-refresh") * 20);
             }
         }, (long) this.getConfig().getDouble("hologram-refresh") * 20, (long) this.getConfig().getDouble("hologram-refresh") * 20);
