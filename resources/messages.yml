@@ -2,118 +2,118 @@
 #Language: English (en-GB)
 
 Pinata:
-    Specify-Name: "&6&lPinata &a>> &cPlease specify pinata name!"
-    Not-Found: "&6&lPinata &a>> &cPinata not found!"
-    Not-Own: "&6&lPinata &a>> &cThat's not your pinata!"
-    Buy-Error: "&6&lPinata &a>> &cAn error occurred! Please try again!"
-    Create:
-        Success: "&6&lPinata &a>> &aPinata &e%name% &asuccessfully created!"
-        Fail: "&6&lPinata &a>> &cYou can't use pinata here!"
-        By-Console: "&6&lPinata &a>> &aYour pinata was created by console!"
-        Already-Created: "&6&lPinata &a>> &cYou've already bought pinata!"
-        No-Permission: "&6&lPinata &a>> &cYou don't have permission to use this pinata!"
-        Disabled-World: "&6&lPinata &a>> &cYou can't create pinatas in this world!"
-    Command:
-        No-Permission: "&6&lPinata &a>> &cYou don't have permission to use this command!"
-        Only-Player: "&6&lPinata &a>> &cYou can only execute this command as a player!"
-        Player-Specify-Name: "&6&lPinata &a>> &cPlease specify pinata name!"
-        Player-Not-Found: "&6&lPinata &a>> &cThat player isn't online!"
-        Console-Specify-Player: "&cPlease specify player name!"
-        Vault-Not-Detected: "&6&lPinata &a>> &cVault not detected! Aborting!"
-        Custom-Location-Create-Error: "&6&lPinata &a>> &cSomething went wrong! Make sure you've set valid values: &eworld, x, y, z, pinata name&c!"
-        Help-Command:
-            Header: "&8&m===========[&r &9&lP&a&li&c&ln&e&la&3&lt&b&la&5&ls &8&m]==========="
-            Description: " &a/pinata create &6- Create existing pinata (admin command)\n
-                &a/pinata reloadconfig &6- Reload pinata configs (admin command)\n
-                &a/pinata list &6- List of all pinatas\n
-                &a/pinata buy &6- Buy pinata (Requires Vault)\n
-                &a/pinata preview &6- Preview pinata drops\n
-                &a/pinata setcrate &6- Sets pinata crate location (admin command)"
-    Validate:
-        Success: "&6&lPinata &a>> &aPinata %name% loaded!"
-        Fail: "&6&lPinata &a>> &cPinata %name% loaded with errors! Aborting!"
-    Config:
-        Reload-Success: "&6&lPinata &a>> &eConfiguration reloaded! Check console for any errors!"
-        Reload-Fail: "&6&lPinata &a>> &cConfiguration couldn't be reloaded! Please reload plugin or server directly!"
-        Reload-Removed: "&6&lPinata &a>> &cPlugin reload removed your pinata!"
-    Drop:
-        DropMsg: "&6&lPinata &a>> &aYou've dropped %item% x%amount%&a!"
-        No-Drops: "&6&lPinata &a>> &cYou're unlucky this time!"
-    Selling:
-        Not-For-Sale: "&6&lPinata &a>> &cThis pinata isn't for sale!"
-        Cannot-Afford: "&6&lPinata &a>> &cYou can't afford this!"
-    Crate-Creation:
-        Specify-Name: "&6&lPinata &a>> &cPlease specify crate name!"
-        Is-Set-Here:  "&6&lPinata &a>> &cCrate at this location is set!"
-        Already-Exists: "&6&lPinata &a>> &cCrate with this name already exists!"
-        Create-Success: "&6&lPinata &a>> &aCrate %name% created successfully!"
-        Destroyed: "&6&lPinata &a>> &aCrate %name% destroyed!"
-        Target-Block-Not-Chest: "&6&lPinata &a>> &cTarget block isn't chest!"
-        No-Permission: "&6&lPinata &a>> &cYou don't have permission to do this!"
-        List: "&6&lPinata &a>> List of all available crates:"
-        List-Empty: "&6&lPinata &a>> &cThere are no crates!"
-    Creator:
-        Already-Exists: "&6&lPinata &a>> &cPinata with that name already exists!"
+  Specify-Name: "&6&lPinata &a>> &cPlease specify pinata name!"
+  Not-Found: "&6&lPinata &a>> &cPinata not found!"
+  Not-Own: "&6&lPinata &a>> &cThat's not your pinata!"
+  Buy-Error: "&6&lPinata &a>> &cAn error occurred! Please try again!"
+  Create:
+    Success: "&6&lPinata &a>> &aPinata &e%name% &asuccessfully created!"
+    Fail: "&6&lPinata &a>> &cYou can't use pinata here!"
+    By-Console: "&6&lPinata &a>> &aYour pinata was created by console!"
+    Already-Created: "&6&lPinata &a>> &cYou've already bought pinata!"
+    No-Permission: "&6&lPinata &a>> &cYou don't have permission to use this pinata!"
+    Disabled-World: "&6&lPinata &a>> &cYou can't create pinatas in this world!"
+  Command:
+    No-Permission: "&6&lPinata &a>> &cYou don't have permission to use this command!"
+    Only-Player: "&6&lPinata &a>> &cYou can only execute this command as a player!"
+    Player-Specify-Name: "&6&lPinata &a>> &cPlease specify pinata name!"
+    Player-Not-Found: "&6&lPinata &a>> &cThat player isn't online!"
+    Console-Specify-Player: "&cPlease specify player name!"
+    Vault-Not-Detected: "&6&lPinata &a>> &cVault not detected! Aborting!"
+    Custom-Location-Create-Error: "&6&lPinata &a>> &cSomething went wrong! Make sure you've set valid values: &eworld, x, y, z, pinata name&c!"
+    Help-Command:
+      Header: "&8&m===========[&r &9&lP&a&li&c&ln&e&la&3&lt&b&la&5&ls &8&m]==========="
+      Description: " &a/pinata create &6- Create existing pinata (admin command)\n
+        &a/pinata reloadconfig &6- Reload pinata configs (admin command)\n
+        &a/pinata list &6- List of all pinatas\n
+        &a/pinata buy &6- Buy pinata (Requires Vault)\n
+        &a/pinata preview &6- Preview pinata drops\n
+        &a/pinata setcrate &6- Sets pinata crate location (admin command)"
+  Validate:
+    Success: "&6&lPinata &a>> &aPinata %name% loaded!"
+    Fail: "&6&lPinata &a>> &cPinata %name% loaded with errors! Aborting!"
+  Config:
+    Reload-Success: "&6&lPinata &a>> &eConfiguration reloaded! Check console for any errors!"
+    Reload-Fail: "&6&lPinata &a>> &cConfiguration couldn't be reloaded! Please reload plugin or server directly!"
+    Reload-Removed: "&6&lPinata &a>> &cPlugin reload removed your pinata!"
+  Drop:
+    DropMsg: "&6&lPinata &a>> &aYou've dropped %item% x%amount%&a!"
+    No-Drops: "&6&lPinata &a>> &cYou're unlucky this time!"
+  Selling:
+    Not-For-Sale: "&6&lPinata &a>> &cThis pinata isn't for sale!"
+    Cannot-Afford: "&6&lPinata &a>> &cYou can't afford this!"
+  Crate-Creation:
+    Specify-Name: "&6&lPinata &a>> &cPlease specify crate name!"
+    Is-Set-Here:  "&6&lPinata &a>> &cCrate at this location is set!"
+    Already-Exists: "&6&lPinata &a>> &cCrate with this name already exists!"
+    Create-Success: "&6&lPinata &a>> &aCrate %name% created successfully!"
+    Destroyed: "&6&lPinata &a>> &aCrate %name% destroyed!"
+    Target-Block-Not-Chest: "&6&lPinata &a>> &cTarget block isn't chest!"
+    No-Permission: "&6&lPinata &a>> &cYou don't have permission to do this!"
+    List: "&6&lPinata &a>> List of all available crates:"
+    List-Empty: "&6&lPinata &a>> &cThere are no crates!"
+  Creator:
+    Already-Exists: "&6&lPinata &a>> &cPinata with that name already exists!"
 
 Menus:
-    List-Menu:
-        Inventory-Name: "&lList of all pinatas"
-        Pinata-Cost: "&eCost of pinata: &7%money%"
-        Pinata-Cost-Not-For-Sale: "&cThis pinata is not for sale!"
-        Pinata-Types:
-            Type-Public: "&6Type of pinata: &aPublic"
-            Type-Private: "&6Type of pinata: &cPrivate"
-        Click-Selection:
-            Left-Click: "&c◄ &eLeft click to preview drops"
-            Right-Click: "&c► &eRight click to buy pinata"
-    Preview-Menu:
-        Inventory-Name: "&lPinata preview menu"
-        Drop-Chance: "&3Chance of drop &7%chance%%"
-        Command-To-Execute: "&eExecuted command: &7%command%"
-        Money-Reward: "&eMoney reward: &7%money%"
-    Crate-Menu:
-        Inventory-Name: "&lPinata crate menu"
-    Creator-Menu:
-        Inventory-Name: "&lCreator menu"
+  List-Menu:
+    Inventory-Name: "&lList of all pinatas"
+    Pinata-Cost: "&eCost of pinata: &7%money%"
+    Pinata-Cost-Not-For-Sale: "&cThis pinata is not for sale!"
+    Pinata-Types:
+      Type-Public: "&6Type of pinata: &aPublic"
+      Type-Private: "&6Type of pinata: &cPrivate"
+    Click-Selection:
+      Left-Click: "&c◄ &eLeft click to preview drops"
+      Right-Click: "&c► &eRight click to buy pinata"
+  Preview-Menu:
+    Inventory-Name: "&lPinata preview menu"
+    Drop-Chance: "&3Chance of drop &7%chance%%"
+    Command-To-Execute: "&eExecuted command: &7%command%"
+    Money-Reward: "&eMoney reward: &7%money%"
+  Crate-Menu:
+    Inventory-Name: "&lPinata crate menu"
+  Creator-Menu:
+    Inventory-Name: "&lCreator menu"
 
 #Hologram above pinata crate
 Hologram:
-    Crate-Hologram: "&aCrate &e%name%"
+  Crate-Hologram: "&aCrate &e%name%"
 
 #Signs module. Sign can be created starting with '[pinata]' at first line and 'all' or 'gui' or existing pinata name at second line
 Signs:
-    Invalid-Pinata: "&6&lPinata &a>> &cPinata at second line is invalid! Please use 'all' or 'gui' name to make it every pinata GUI sign"
-    Sign-Created: "&6&lPinata &a>> &aPinata sign successfully created!"
-    Sign-Destroyed: "&6&lPinata &a>> &aPinata sign destroyed!"
-    No-Permission: "&6&lPinata &a>> &cYou don't have permission to do that!"
-    Inventory-Name: "&lPinata signs menu"
-    Lines:
-        First: "&6Buy pinata"
-        Second-Specific-Pinata-Color: "&e"
-        Second-Every-Pinata: "&aClick for GUI"
+  Invalid-Pinata: "&6&lPinata &a>> &cPinata at second line is invalid! Please use 'all' or 'gui' name to make it every pinata GUI sign"
+  Sign-Created: "&6&lPinata &a>> &aPinata sign successfully created!"
+  Sign-Destroyed: "&6&lPinata &a>> &aPinata sign destroyed!"
+  No-Permission: "&6&lPinata &a>> &cYou don't have permission to do that!"
+  Inventory-Name: "&lPinata signs menu"
+  Lines:
+    First: "&6Buy pinata"
+    Second-Specific-Pinata-Color: "&e"
+    Second-Every-Pinata: "&aClick for GUI"
 
 
 #Validator console messages.
 #You don't need to translate them because they don't show to your players :)
 Validator:
-    Invalid-Configuration: "Pinata %name% isn't properly configured! Invalid item line: %number%"
-    Invalid-Item: "Item of pinata %name% isn't properly configured! Invalid item line: %number%"
-    Invalid-Item-Type: "Item of pinata %name% is neither item nor command! Invalid item line: %number%"
-    Invalid-Chance: "Item of pinata %name% will never drop! Invalid item line: %number%"
-    Invalid-Money-Drop: "Money item of pinata %name% has amount 0! Invalid item line: %number%"
-    Invalid-Permission: "Permission of pinata %name% isn't set!"
-    Invalid-Timer: "Timer of pinata %name% isn't set!"
-    Invalid-Type: "Type of pinata %name% is neither public nor private!"
-    Invalid-Color: "Color of pinata %name% isn't valid!"
-    Invalid-Crate-Time: "Crate time of pinata %name% isn't set!"
-    Invalid-Health: "Health of pinata %name% is invalid!"
-    Invalid-Drop-Type: "Drop type of pinata %name% is invalid!"
-    Invalid-Mob-Type: "Mob of pinata %name% is invalid!"
-    Invalid-Blindness: "Blindness values of pinata %name% are invalid!"
-    Vault-Abandoned: "Pinata %name% doesn't use Vault! (use value -1 to prevent pinata from buying)"
+  Invalid-Configuration: "Pinata %name% isn't properly configured! Invalid item line: %number%"
+  Invalid-Item: "Item of pinata %name% isn't properly configured! Invalid item line: %number%"
+  Invalid-Item-Type: "Item of pinata %name% is neither item nor command! Invalid item line: %number%"
+  Invalid-Chance: "Item of pinata %name% will never drop! Invalid item line: %number%"
+  Invalid-Money-Drop: "Money item of pinata %name% has amount 0! Invalid item line: %number%"
+  Invalid-Permission: "Permission of pinata %name% isn't set!"
+  Invalid-Timer: "Timer of pinata %name% isn't set!"
+  Invalid-Type: "Type of pinata %name% is neither public nor private!"
+  Invalid-Color: "Color of pinata %name% isn't valid!"
+  Invalid-Crate-Time: "Crate time of pinata %name% isn't set!"
+  Invalid-Health: "Health of pinata %name% is invalid!"
+  Invalid-Drop-Type: "Drop type of pinata %name% is invalid!"
+  Invalid-Mob-Type: "Mob of pinata %name% is invalid!"
+  Invalid-Blindness: "Blindness values of pinata %name% are invalid!"
+  Vault-Abandoned: "Pinata %name% doesn't use Vault! (use value -1 to prevent pinata from buying)"
 
 Other:
-    Plugin-Up-To-Date: "&e[Pinata] There is plugin update! Your version: %old%, new version: %new%"
-    Plugin-Update-Check-Failed: "&c[Pinata] Failed to check for update: %error%"
+  Plugin-Up-To-Date: "&e[Pinata] There is plugin update! Your version: %old%, new version: %new%"
+  Plugin-Update-Check-Failed: "&c[Pinata] Failed to check for update: %error%"
 
 File-Version-Do-Not-Edit: 10
