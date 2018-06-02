@@ -2,11 +2,11 @@ package pl.plajer.pinata;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.utils.Utils;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package pl.plajer.pinata;
+package pl.plajer.pinata.pinata;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -90,6 +90,6 @@ public class PinataItem {
     }
 
     public enum ItemType {
-        ITEM, COMMAND, GUN, MONEY;
+        ITEM, COMMAND, GUN, MONEY
     }
 }

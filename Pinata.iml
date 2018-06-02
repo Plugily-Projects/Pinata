@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="spigot-api-1.12.2-R0.1-SNAPSHOT-b1409" level="project" />
+    <orderEntry type="library" name="lombok-plugin-0.17" level="application" />
   </component>
 </module>

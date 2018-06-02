@@ -11,7 +11,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
-import pl.plajer.pinata.PinataData;
+import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.utils.Utils;
 
 /**
@@ -61,7 +61,7 @@ public class PinataFactory implements Listener {
         fenceLocation.getBlock().setType(Material.FENCE);
         hitch.teleport(fenceLocation);
         safefence.getBlock().setType(blocksafe);
-        plugin.getCommands().getPinata().put(entity, new PinataData(player, fenceLocation, hitch));
+        plugin.getCommands().getPinata().put(entity, new LivingPinata(player, fenceLocation, hitch));
         entity.setCustomName(pinataName);
         if(entity instanceof Sheep) {
             ((Sheep) entity).setColor(DyeColor.valueOf(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinataName + ".color").toString().toUpperCase()));
@@ -114,7 +114,7 @@ public class PinataFactory implements Listener {
         fenceLocation.getBlock().setType(Material.FENCE);
         hitch.teleport(fenceLocation);
         safefence.getBlock().setType(blocksafe);
-        plugin.getCommands().getPinata().put(entity, new PinataData(fenceLocation, hitch));
+        plugin.getCommands().getPinata().put(entity, new LivingPinata(fenceLocation, hitch));
         entity.setCustomName(pinataName);
         if(entity instanceof Sheep) {
             ((Sheep) entity).setColor(DyeColor.valueOf(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinataName + ".color").toString().toUpperCase()));

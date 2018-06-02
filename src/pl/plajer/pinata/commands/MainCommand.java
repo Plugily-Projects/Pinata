@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import pl.plajer.pinata.Main;
-import pl.plajer.pinata.PinataData;
+import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.utils.Utils;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class MainCommand implements CommandExecutor {
 
-    private Map<Entity, PinataData> pinata = new HashMap<>();
+    private Map<Entity, LivingPinata> pinata = new HashMap<>();
     private List<Player> users = new ArrayList<>();
     private ArgumentsManager argumentsManager;
 
@@ -74,7 +74,7 @@ public class MainCommand implements CommandExecutor {
         return true;
     }
 
-    public Map<Entity, PinataData> getPinata() {
+    public Map<Entity, LivingPinata> getPinata() {
         return pinata;
     }
 

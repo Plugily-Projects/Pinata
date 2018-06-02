@@ -91,7 +91,7 @@ public class Main extends JavaPlugin {
                         if(commands.getPinata().get(entity).getPlayer() != null) {
                             commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorMessage("Pinata.Config.Reload-Removed"));
                         }
-                        commands.getPinata().get(entity).getBuilder().getBlock().setType(Material.AIR);
+                        commands.getPinata().get(entity).getFence().getBlock().setType(Material.AIR);
                         commands.getPinata().get(entity).getLeash().remove();
                         entity.remove();
                         commands.getPinata().remove(entity);

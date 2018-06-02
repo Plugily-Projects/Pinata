@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataDeathEvent;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
@@ -43,7 +44,7 @@ class PinataListeners implements Listener {
             if(en instanceof Sheep) {
                 if(plugin.getCommands().getPinata().containsKey(en)) {
                     if(plugin.getCommands().getPinata().get(en).getPlayer().equals(e.getPlayer())) {
-                        plugin.getCommands().getPinata().get(en).getBuilder().getBlock().setType(Material.AIR);
+                        plugin.getCommands().getPinata().get(en).getFence().getBlock().setType(Material.AIR);
                         plugin.getCommands().getPinata().get(en).getLeash().remove();
                         en.remove();
                         plugin.getCommands().getPinata().remove(en);
@@ -226,7 +227,7 @@ class PinataListeners implements Listener {
         e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.POTION_BREAK, 10);
         e.getDrops().clear();
         e.setDroppedExp(0);
-        plugin.getCommands().getPinata().get(e.getEntity()).getBuilder().getBlock().setType(Material.AIR);
+        plugin.getCommands().getPinata().get(e.getEntity()).getFence().getBlock().setType(Material.AIR);
         plugin.getCommands().getPinata().get(e.getEntity()).getLeash().remove();
         final ArrayList<Item> itemsToGive = new ArrayList<>();
         final Player p = e.getEntity().getKiller() instanceof Player ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
