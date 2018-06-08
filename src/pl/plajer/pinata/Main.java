@@ -109,6 +109,7 @@ public class Main extends JavaPlugin {
     public void setupLocale(){
         saveResource("messages_de.yml", true);
         saveResource("messages_pl.yml", true);
+        saveResource("messages_hu.yml", true);
         switch(getConfig().getString("locale")){
             case "en":
                 pinataLocale = PinataLocale.ENGLISH;
@@ -118,6 +119,9 @@ public class Main extends JavaPlugin {
                 break;
             case "de":
                 pinataLocale = PinataLocale.DEUTSCH;
+                break;
+            case "hu":
+                pinataLocale = PinataLocale.HUNGARIAN;
                 break;
             default:
                 pinataLocale = PinataLocale.ENGLISH;
@@ -226,6 +230,7 @@ public class Main extends JavaPlugin {
         DEUTSCH("Deutsch", "de", "Elternbrief"), 
         ENGLISH("English", "", "Plajer"),
         POLSKI("Polski", "pl", "Plajer");
+        HUNGARIAN("Hungarian", "hu", "montlikadani")
 
         String formattedName;
         String prefix;
