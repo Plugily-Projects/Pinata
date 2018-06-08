@@ -1,6 +1,7 @@
 package pl.plajer.pinata;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -48,7 +49,7 @@ class MenuHandler implements Listener {
                     return;
                 }
                 e.getWhoClicked().closeInventory();
-                Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), Utils.colorRawMessage("pinata buy " + item.getDisplayName().replaceAll("&6", ""))), 1);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), Utils.colorRawMessage("pinata buy " + ChatColor.stripColor(item.getDisplayName()))), 1);
             }
         }
         if(e.getInventory().getName().equals(Utils.colorMessage("Menus.Crate-Menu.Inventory-Name")) || e.getInventory().getName().equals(Utils.colorMessage("Signs.Inventory-Name"))) {
