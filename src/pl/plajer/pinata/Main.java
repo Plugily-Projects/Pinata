@@ -229,8 +229,8 @@ public class Main extends JavaPlugin {
     public enum PinataLocale {
         DEUTSCH("Deutsch", "de", "Elternbrief"), 
         ENGLISH("English", "", "Plajer"),
-        POLSKI("Polski", "pl", "Plajer");
-        HUNGARIAN("Hungarian", "hu", "montlikadani")
+        POLSKI("Polski", "pl", "Plajer"),
+        HUNGARIAN("Hungarian", "hu", "montlikadani");
 
         String formattedName;
         String prefix;
