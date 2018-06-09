@@ -1,6 +1,6 @@
 storage:
   default:
-    access-name: "default"
+    display-name: "default"
     timer-display: 5
     color: RED
     permission-string: "pinata.use.default"

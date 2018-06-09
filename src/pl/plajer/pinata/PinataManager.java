@@ -51,7 +51,7 @@ public class PinataManager {
             item.setAmount(1);
             item.setHologramName("item");
 
-            String name = config.getString(accessKey + "access-name");
+            String name = config.getString(accessKey + "display-name");
             EntityType eType = EntityType.valueOf(config.getString(accessKey + "mob-entity-type"));
             Pinata.PinataType pType = Pinata.PinataType.valueOf(config.getString(accessKey + "pinata-access-type"));
             Pinata.DropType dType = Pinata.DropType.valueOf(config.getString(accessKey + "items-drop-type"));
