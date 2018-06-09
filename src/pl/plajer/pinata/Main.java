@@ -23,7 +23,7 @@ public class Main extends JavaPlugin {
 
     private final int MESSAGES_FILE_VERSION = 10;
     private final int CONFIG_FILE_VERSION = 5;
-    private List<String> filesToGenerate = Arrays.asList("crates", "pinatas", "messages");
+    private List<String> filesToGenerate = Arrays.asList("crates", "pinatas", "messages", "pinata_storage");
     private PinataLocale pinataLocale;
     private CrateManager crateManager;
     private MainCommand commands;

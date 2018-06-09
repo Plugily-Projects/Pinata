@@ -1,1 +1,15 @@
-Pinatas: {}
+storage:
+  default:
+    access-name: "default"
+    timer-display: 5
+    color: RED
+    permission-string: "pinata.use.default"
+    crate-buy-cost: -1
+    pinata-access-type: PRIVATE
+    blindness-activated: false
+    full-blindness-activated: false
+    crate-display-time-alive: 10
+    health-amount: 2.5
+    mob-entity-type: SHEEP
+    items-drop-type: DEATH
+    drops: []

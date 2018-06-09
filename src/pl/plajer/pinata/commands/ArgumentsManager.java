@@ -302,4 +302,8 @@ public class ArgumentsManager extends MainCommand {
         sender.sendMessage(Utils.colorMessage("Pinata.Not-Found"));
     }
 
+    public void createNewPinata(CommandSender sender, String pinataID){
+
+    }
+
 }

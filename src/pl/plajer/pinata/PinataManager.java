@@ -40,27 +40,29 @@ public class PinataManager {
     }
 
     public void loadPinatas3(){
-        for(String key : ConfigurationManager.getConfig("pinatas").getConfigurationSection("pinatas").getKeys(false)) {
-            //if(!plugin.getPinataManager().validatePinata(key)) {
-            //    System.out.println(Utils.colorMessage("Pinata.Validate.Fail").replaceAll("%name%", key));
-            //    continue;
-            //}
-            //todo
+        FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+        for(String key : config.getConfigurationSection("storage").getKeys(false)){
+            String accessKey = "storage." + key + ".";
+
+            //todo item reader
             PinataItem item = new PinataItem(PinataItem.ItemType.ITEM, 100.0);
             item.setRepresentedMaterial(Material.PAPER);
             item.setItem(new ItemStack(Material.PAPER, 1));
             item.setAmount(1);
             item.setHologramName("item");
-            Pinata pinata = new Pinata(key, key, EntityType.SHEEP, Pinata.PinataType.PRIVATE, Pinata.DropType.DEATH, 10.0,
-                    5, 5.0, 5, "*", Collections.singletonList(item));
-            //System.out.println(Utils.colorMessage("Pinata.Validate.Success").replaceAll("%name%", key));
+
+            String name = config.getString(accessKey + "access-name");
+            EntityType eType = EntityType.valueOf(config.getString(accessKey + "mob-entity-type"));
+            Pinata.PinataType pType = Pinata.PinataType.valueOf(config.getString(accessKey + "pinata-access-type"));
+            Pinata.DropType dType = Pinata.DropType.valueOf(config.getString(accessKey + "items-drop-type"));
+            double health = config.getDouble(accessKey + "health-amount");
+            int cTime = config.getInt(accessKey + "crate-display-time-alive");
+            double price = config.getDouble(accessKey + "crate-buy-cost");
+            int viewTime = config.getInt(accessKey + "timer-display");
+            String perm = config.getString(accessKey + "permission-string");
+
+            Pinata pinata = new Pinata(key, name, eType, pType, dType, health, cTime, price, viewTime, perm, Collections.singletonList(item));
             pinataList.add(pinata);
-            /*HashSet<PinataItem> items = new HashSet<>();
-            for(String s : ConfigurationManager.getConfig("pinatas").getStringList("pinatas." + key + ".drops")) {
-                PinataItem item = stringToItem(s);
-                items.add(item);
-            }
-            pinataDrops.put(key, items);*/
         }
     }
 
