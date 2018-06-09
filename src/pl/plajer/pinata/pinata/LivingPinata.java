@@ -14,16 +14,19 @@ public class LivingPinata {
     private Player player;
     private Location fenceLocation;
     private LeashHitch leash;
+    private Pinata data;
 
-    public LivingPinata(Player player, Location fenceLocation, LeashHitch leash) {
+    public LivingPinata(Player player, Location fenceLocation, LeashHitch leash, Pinata data) {
         this.player = player;
         this.fenceLocation = fenceLocation;
         this.leash = leash;
+        this.data = data;
     }
 
-    public LivingPinata(Location f, LeashHitch l) {
+    public LivingPinata(Location f, LeashHitch l, Pinata data) {
         fenceLocation = f;
         leash = l;
+        this.data = data;
     }
 
     public Player getPlayer() {
@@ -38,4 +41,7 @@ public class LivingPinata {
         return leash;
     }
 
+    public Pinata getData() {
+        return data;
+    }
 }

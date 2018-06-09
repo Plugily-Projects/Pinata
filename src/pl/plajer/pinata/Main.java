@@ -67,7 +67,7 @@ public class Main extends JavaPlugin {
             getLogger().info("Pinata creation blocked at world " + world + "!");
         }
         crateManager.loadCrates();
-        pinataManager.loadPinatas();
+        pinataManager.loadPinatas3();
         crateManager.particleScheduler();
         if(isPluginEnabled("HolographicDisplays")) hologramScheduler();
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();

@@ -14,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.Utils;
 
@@ -41,9 +42,13 @@ public class SignManager implements Listener {
                 e.setLine(0, Utils.colorMessage("Signs.Lines.First"));
                 if(e.getLine(1).equalsIgnoreCase("all") || e.getLine(1).equalsIgnoreCase("gui")) {
                     e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Every-Pinata"));
-                } else if(plugin.getPinataManager().getPinataList().contains(e.getLine(1))) {
-                    e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
                 } else {
+                    for(Pinata pinata : plugin.getPinataManager().getPinataList()){
+                        if(pinata.getID().equals(e.getLine(1))){
+                            e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
+                            return;
+                        }
+                    }
                     e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
                 }
             }

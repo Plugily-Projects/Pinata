@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 
 import java.util.ArrayList;
@@ -47,21 +48,21 @@ public class Utils {
         int rows = serializeInt(plugin.getPinataManager().getPinataList().size());
         Inventory pinatasMenu = Bukkit.createInventory(null, rows, Utils.colorMessage(name));
         for(int i = 0; i < plugin.getPinataManager().getPinataList().size(); i++) {
-            String pinata = plugin.getPinataManager().getPinataList().get(i);
+            Pinata pinata = plugin.getPinataManager().getPinataList().get(i);
             ItemStack item = new ItemStack(Material.WOOL, 1);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(Utils.colorRawMessage("&6") + pinata);
+            meta.setDisplayName(Utils.colorRawMessage("&6") + pinata.getID());
             List<String> lore = new ArrayList<>();
-            if(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata + ".type").equals("private")) {
+            if(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata.getID() + ".type").equals("private")) {
                 lore.add(colorMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
             } else {
                 lore.add(colorMessage("Menus.List-Menu.Pinata-Types.Type-Public"));
             }
-            if(Integer.parseInt(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata + ".cost").toString()) == -1) {
+            if(Integer.parseInt(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata.getID() + ".cost").toString()) == -1) {
                 lore.add(colorMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));
             } else {
                 String cost = colorMessage("Menus.List-Menu.Pinata-Cost");
-                lore.add(cost.replaceAll("%money%", ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata + ".cost").toString()) + "$");
+                lore.add(cost.replaceAll("%money%", ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata.getID() + ".cost").toString()) + "$");
                 lore.add(colorMessage("Menus.List-Menu.Click-Selection.Right-Click"));
             }
             lore.add(colorMessage("Menus.List-Menu.Click-Selection.Left-Click"));

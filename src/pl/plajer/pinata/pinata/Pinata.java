@@ -2,6 +2,7 @@ package pl.plajer.pinata.pinata;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bukkit.entity.EntityType;
 
 import java.util.List;
 
@@ -14,8 +15,24 @@ import java.util.List;
 @AllArgsConstructor
 public class Pinata {
 
+    private String ID;
     private String name;
-    private PinataData deepData;
-    private List<PinataItem> items;
+    private EntityType entityType;
+    private PinataType pinataType;
+    private DropType dropType;
+    private double health;
+    private int crateTime;
+    private double price;
+    private int dropViewTime;
+    private String permission;
+    private List<PinataItem> drops;
+
+    public enum PinataType {
+        PUBLIC, PRIVATE
+    }
+
+    public enum DropType {
+        PUNCH, DEATH
+    }
 
 }

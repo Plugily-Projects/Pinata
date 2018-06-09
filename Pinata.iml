@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="spigot-api-1.12.2-R0.1-SNAPSHOT-b1409" level="project" />
     <orderEntry type="library" name="lombok-plugin-0.17" level="application" />
+    <orderEntry type="library" name="lombok-1.16.4" level="project" />
   </component>
 </module>

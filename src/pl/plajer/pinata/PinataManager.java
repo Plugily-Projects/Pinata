@@ -6,11 +6,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,8 +21,8 @@ import java.util.logging.Level;
 
 public class PinataManager {
 
-    private List<String> pinataList = new ArrayList<>();
-    private Map<String, HashSet<PinataItem>> pinataDrops = new HashMap<>();
+    private List<Pinata> pinataList = new ArrayList<>();
+    private Map<Pinata, HashSet<PinataItem>> pinataDrops = new HashMap<>();
     private Map<String, String> validatorErrors = new HashMap<>();
     private Main plugin;
 
@@ -37,6 +39,32 @@ public class PinataManager {
         validatorErrors.put(".full-blindness-effect", "Validator.Invalid-Blindness");
     }
 
+    public void loadPinatas3(){
+        for(String key : ConfigurationManager.getConfig("pinatas").getConfigurationSection("pinatas").getKeys(false)) {
+            //if(!plugin.getPinataManager().validatePinata(key)) {
+            //    System.out.println(Utils.colorMessage("Pinata.Validate.Fail").replaceAll("%name%", key));
+            //    continue;
+            //}
+            //todo
+            PinataItem item = new PinataItem(PinataItem.ItemType.ITEM, 100.0);
+            item.setRepresentedMaterial(Material.PAPER);
+            item.setItem(new ItemStack(Material.PAPER, 1));
+            item.setAmount(1);
+            item.setHologramName("item");
+            Pinata pinata = new Pinata(key, key, EntityType.SHEEP, Pinata.PinataType.PRIVATE, Pinata.DropType.DEATH, 10.0,
+                    5, 5.0, 5, "*", Collections.singletonList(item));
+            //System.out.println(Utils.colorMessage("Pinata.Validate.Success").replaceAll("%name%", key));
+            pinataList.add(pinata);
+            /*HashSet<PinataItem> items = new HashSet<>();
+            for(String s : ConfigurationManager.getConfig("pinatas").getStringList("pinatas." + key + ".drops")) {
+                PinataItem item = stringToItem(s);
+                items.add(item);
+            }
+            pinataDrops.put(key, items);*/
+        }
+    }
+
+    @Deprecated
     public void loadPinatas() {
         for(String key : ConfigurationManager.getConfig("pinatas").getConfigurationSection("pinatas").getKeys(false)) {
             if(!plugin.getPinataManager().validatePinata(key)) {
@@ -44,16 +72,17 @@ public class PinataManager {
                 continue;
             }
             System.out.println(Utils.colorMessage("Pinata.Validate.Success").replaceAll("%name%", key));
-            pinataList.add(key);
+           // pinataList.add(key);
             HashSet<PinataItem> items = new HashSet<>();
             for(String s : ConfigurationManager.getConfig("pinatas").getStringList("pinatas." + key + ".drops")) {
                 PinataItem item = stringToItem(s);
                 items.add(item);
             }
-            pinataDrops.put(key, items);
+           // pinataDrops.put(key, items);
         }
     }
 
+    @Deprecated
     private PinataItem stringToItem(String string) {
         String[] splited = string.split(";");
         //- item;<name of item>;<amount>;<name of item and hologram>/<lore>/<next lore>...;<chance of drop>
@@ -108,7 +137,7 @@ public class PinataManager {
         return item;
     }
 
-
+    @Deprecated
     private boolean validatePinata(String pinata) {
         FileConfiguration config = ConfigurationManager.getConfig("pinatas");
         for(String error : validatorErrors.keySet()) {
@@ -169,11 +198,8 @@ public class PinataManager {
         return true;
     }
 
-    public List<String> getPinataList() {
+    public List<Pinata> getPinataList() {
         return pinataList;
     }
 
-    public Map<String, HashSet<PinataItem>> getPinataDrop() {
-        return pinataDrops;
-    }
 }

@@ -7,9 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import pl.plajer.pinata.Main;
-import pl.plajer.pinata.pinata.Pinata;
-import pl.plajer.pinata.pinata.PinataData;
-import pl.plajer.pinata.utils.Utils;
 
 /**
  * @author Plajer
@@ -47,7 +44,7 @@ public class CreatorEvents implements Listener {
                             e.getWhoClicked().sendMessage(ChatColor.RED + "This item doesn't has a name!");
                             return;
                         }
-                        
+
                         return;
                     }
                 case "► Set mob type":
