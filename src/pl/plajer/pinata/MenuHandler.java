@@ -75,7 +75,7 @@ class MenuHandler implements Listener {
                         e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Buy-Error"));
                         return;
                     }
-                //sign inventory
+                    //sign inventory
                 } else {
                     if(plugin.getSignManager().getSignUsage().containsKey(e.getWhoClicked())) {
                         builderLocation = plugin.getSignManager().getSignUsage().get(e.getWhoClicked()).clone().add(0, 8, 0);

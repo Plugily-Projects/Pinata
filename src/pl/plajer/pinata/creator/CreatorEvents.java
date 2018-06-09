@@ -20,19 +20,19 @@ public class CreatorEvents implements Listener {
 
     private Main plugin;
 
-    public CreatorEvents(Main plugin){
+    public CreatorEvents(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e){
+    public void onInventoryClick(InventoryClickEvent e) {
         if(e.getInventory().getName() == null || e.getCurrentItem() == null) return;
         if(e.getInventory().getName().contains("Editing pinata: ")) {
             String pInvName = e.getInventory().getName().replace("Editing pinata: ", "");
             Pinata pinata = null;
-            for(Pinata p : plugin.getPinataManager().getPinataList()){
-                if(p.getID().equals(pInvName)){
+            for(Pinata p : plugin.getPinataManager().getPinataList()) {
+                if(p.getID().equals(pInvName)) {
                     pinata = p;
                 }
             }

@@ -7,7 +7,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -80,8 +84,8 @@ class PinataListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPinataDamage(EntityDamageByEntityEvent e) {
-        for(Pinata pinata : plugin.getPinataManager().getPinataList()){
-            if(pinata.getName().equals(e.getEntity().getCustomName())){
+        for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+            if(pinata.getName().equals(e.getEntity().getCustomName())) {
                 if(plugin.getCommands().getPinata().get(e.getEntity()) != null) {
                     if(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() == null) {
                         //the type MUST be public, because pinata creator is not assigned
@@ -140,8 +144,8 @@ class PinataListeners implements Listener {
         }
         final int timer = ConfigurationManager.getConfig("pinatas").getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
         Player p = (Player) e.getDamager();
-        for(Pinata pinata : plugin.getPinataManager().getPinataList()){
-            if(pinata.getName().equals(e.getEntity().getCustomName())){
+        for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+            if(pinata.getName().equals(e.getEntity().getCustomName())) {
                 for(PinataItem item : pinata.getDrops()) {
                     if(ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
                         final Item dropItem = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(item.getRepresentedMaterial()));
@@ -255,8 +259,8 @@ class PinataListeners implements Listener {
         final int timer = ConfigurationManager.getConfig("pinatas").getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
         int i = 0;
         List<PinataItem> items = new ArrayList<>();
-        for(Pinata pinata : plugin.getPinataManager().getPinataList()){
-            if(pinata.getName().equals(e.getEntity().getCustomName())){
+        for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+            if(pinata.getName().equals(e.getEntity().getCustomName())) {
                 for(PinataItem item : pinata.getDrops()) {
                     if(ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
                         final Item dropItem = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(item.getRepresentedMaterial()));

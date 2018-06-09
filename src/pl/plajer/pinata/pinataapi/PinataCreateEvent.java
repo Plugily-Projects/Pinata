@@ -11,28 +11,11 @@ import org.bukkit.event.HandlerList;
  */
 public class PinataCreateEvent extends Event implements Cancellable {
 
-    private Player creator = null;
+    private static final HandlerList HANDLERS = new HandlerList();
     private final Entity pinata;
     private final String name;
-    private static final HandlerList HANDLERS = new HandlerList();
+    private Player creator = null;
     private boolean isCancelled;
-
-    @Override
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-
-    public boolean isCancelled() {
-        return this.isCancelled;
-    }
-
-    public void setCancelled(boolean isCancelled) {
-        this.isCancelled = isCancelled;
-    }
 
     public PinataCreateEvent(Player creator, Entity pinata, String pinataName) {
         this.creator = creator;
@@ -43,6 +26,23 @@ public class PinataCreateEvent extends Event implements Cancellable {
     public PinataCreateEvent(Entity pinata, String pinataName) {
         this.pinata = pinata;
         this.name = pinataName;
+    }
+
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLERS;
+    }
+
+    public boolean isCancelled() {
+        return this.isCancelled;
+    }
+
+    public void setCancelled(boolean isCancelled) {
+        this.isCancelled = isCancelled;
     }
 
     /**

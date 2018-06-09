@@ -6,9 +6,8 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
 
 public class ConfigurationManager {
 
@@ -46,12 +45,12 @@ public class ConfigurationManager {
         }
     }
 
-    public static String getDefaultLanguageMessage(String message){
+    public static String getDefaultLanguageMessage(String message) {
         return getConfig("messages").getString(message);
     }
 
     public static String getLanguageMessage(String message) {
-        if(plugin.getLocale() != Main.PinataLocale.ENGLISH){
+        if(plugin.getLocale() != Main.PinataLocale.ENGLISH) {
             return getConfig("messages_" + plugin.getLocale().getPrefix()).getString(message);
         }
         return getConfig("messages").getString(message);

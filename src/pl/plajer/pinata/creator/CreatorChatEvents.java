@@ -45,7 +45,7 @@ public class CreatorChatEvents implements Listener {
                         return;
                     }
                 case SET_HEALTH:
-                    if(!NumberUtils.isNumber(e.getMessage())){
+                    if(!NumberUtils.isNumber(e.getMessage())) {
                         e.getPlayer().sendMessage("Following message is not a number!");
                         return;
                     }

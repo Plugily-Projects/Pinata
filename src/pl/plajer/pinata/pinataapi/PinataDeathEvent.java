@@ -13,26 +13,26 @@ import java.util.List;
  */
 public class PinataDeathEvent extends Event {
 
+    private static final HandlerList HANDLERS = new HandlerList();
     private final Player killer;
     private final Entity pinata;
     private final String name;
     private final List<PinataItem> drops;
-    private static final HandlerList HANDLERS = new HandlerList();
-
-    @Override
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
 
     public PinataDeathEvent(Player killer, Entity pinata, String name, List<PinataItem> drops) {
         this.killer = killer;
         this.pinata = pinata;
         this.name = name;
         this.drops = drops;
+    }
+
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLERS;
     }
 
     /**

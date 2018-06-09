@@ -39,9 +39,9 @@ public class PinataManager {
         validatorErrors.put(".full-blindness-effect", "Validator.Invalid-Blindness");
     }
 
-    public void loadPinatas3(){
+    public void loadPinatas3() {
         FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
-        for(String key : config.getConfigurationSection("storage").getKeys(false)){
+        for(String key : config.getConfigurationSection("storage").getKeys(false)) {
             String accessKey = "storage." + key + ".";
 
             //todo item reader
@@ -74,13 +74,13 @@ public class PinataManager {
                 continue;
             }
             System.out.println(Utils.colorMessage("Pinata.Validate.Success").replaceAll("%name%", key));
-           // pinataList.add(key);
+            // pinataList.add(key);
             HashSet<PinataItem> items = new HashSet<>();
             for(String s : ConfigurationManager.getConfig("pinatas").getStringList("pinatas." + key + ".drops")) {
                 PinataItem item = stringToItem(s);
                 items.add(item);
             }
-           // pinataDrops.put(key, items);
+            // pinataDrops.put(key, items);
         }
     }
 

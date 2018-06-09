@@ -43,8 +43,8 @@ public class SignManager implements Listener {
                 if(e.getLine(1).equalsIgnoreCase("all") || e.getLine(1).equalsIgnoreCase("gui")) {
                     e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Every-Pinata"));
                 } else {
-                    for(Pinata pinata : plugin.getPinataManager().getPinataList()){
-                        if(pinata.getID().equals(e.getLine(1))){
+                    for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                        if(pinata.getID().equals(e.getLine(1))) {
                             e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
                             return;
                         }

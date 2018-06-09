@@ -3,7 +3,11 @@ package pl.plajer.pinata;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -47,7 +51,7 @@ public class Main extends JavaPlugin {
         signManager = new SignManager(this);
         creatorChatEvents = new CreatorChatEvents();
         saveDefaultConfig();
-        for(String file : filesToGenerate){
+        for(String file : filesToGenerate) {
             ConfigurationManager.getConfig(file);
         }
         setupDependencies();
@@ -109,11 +113,11 @@ public class Main extends JavaPlugin {
         }
     }
 
-    public void setupLocale(){
+    public void setupLocale() {
         saveResource("messages_de.yml", true);
         saveResource("messages_pl.yml", true);
         saveResource("messages_hu.yml", true);
-        switch(getConfig().getString("locale")){
+        switch(getConfig().getString("locale")) {
             case "en":
                 pinataLocale = PinataLocale.ENGLISH;
                 break;
@@ -133,10 +137,10 @@ public class Main extends JavaPlugin {
         validateLocaleVersion();
     }
 
-    private void validateLocaleVersion(){
+    private void validateLocaleVersion() {
         if(pinataLocale == PinataLocale.ENGLISH) return;
-        if(ConfigurationManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(ConfigurationManager.getLanguageMessage("File-Version-Do-Not-Edit"))){
-            if(ConfigurationManager.getLanguageMessage("File-Version-Do-Not-Edit").equals(ConfigurationManager.getLanguageMessage("Language-Version"))){
+        if(ConfigurationManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(ConfigurationManager.getLanguageMessage("File-Version-Do-Not-Edit"))) {
+            if(ConfigurationManager.getLanguageMessage("File-Version-Do-Not-Edit").equals(ConfigurationManager.getLanguageMessage("Language-Version"))) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Loaded locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " without problems!");
                 return;
             }
@@ -234,7 +238,7 @@ public class Main extends JavaPlugin {
     }
 
     public enum PinataLocale {
-        DEUTSCH("Deutsch", "de", "Elternbrief"), 
+        DEUTSCH("Deutsch", "de", "Elternbrief"),
         ENGLISH("English", "", "Plajer"),
         POLSKI("Polski", "pl", "Plajer"),
         HUNGARIAN("Hungarian", "hu", "montlikadani");

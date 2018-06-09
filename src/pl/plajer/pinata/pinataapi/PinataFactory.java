@@ -4,7 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LeashHitch;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -32,8 +36,8 @@ public class PinataFactory implements Listener {
      * @return <b>true</b> if creation succeed, <b>false</b> if creation couldn't be completed
      */
     public static boolean createPinata(final Location fenceLocation, final Player player, final LivingEntity entity, final String pinataName) {
-        for(Pinata pinata : plugin.getPinataManager().getPinataList()){
-            if(pinata.getID().equals(pinataName)){
+        for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+            if(pinata.getID().equals(pinataName)) {
                 PinataCreateEvent pce = new PinataCreateEvent(player, entity, pinataName);
                 Bukkit.getPluginManager().callEvent(pce);
                 if(pce.isCancelled()) {
@@ -94,8 +98,8 @@ public class PinataFactory implements Listener {
      * @return <b>true</b> if creation succeed, <b>false</b> if creation couldn't be completed
      */
     public static boolean createPinata(final Location fenceLocation, final LivingEntity entity, final String pinataName) {
-        for(Pinata pinata : plugin.getPinataManager().getPinataList()){
-            if(pinata.getID().equals(pinataName)){
+        for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+            if(pinata.getID().equals(pinataName)) {
                 PinataCreateEvent pce = new PinataCreateEvent(entity, pinataName);
                 Bukkit.getPluginManager().callEvent(pce);
                 if(pce.isCancelled()) {
