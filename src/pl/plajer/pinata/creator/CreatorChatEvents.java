@@ -26,4 +26,7 @@ public class CreatorChatEvents implements Listener {
         SET_MOB_TYPE, SET_HEALTH, SET_CRATE_TIME, SET_DROP_VIEW_TIME, SET_BLINDNESS_DURATION, SET_FULL_BLINDNESS
     }
 
+    public Map<Player, ChatReaction> getChatReactions() {
+        return chatReactions;
+    }
 }

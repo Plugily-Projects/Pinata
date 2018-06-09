@@ -9,6 +9,7 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.pinata.commands.MainCommand;
+import pl.plajer.pinata.creator.CreatorChatEvents;
 import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
@@ -28,6 +29,7 @@ public class Main extends JavaPlugin {
     private MainCommand commands;
     private PinataManager pinataManager;
     private SignManager signManager;
+    private CreatorChatEvents creatorChatEvents;
     private List<String> disabledWorlds = new ArrayList<>();
     private Economy econ = null;
 
@@ -43,6 +45,7 @@ public class Main extends JavaPlugin {
         new PinataListeners(this);
         pinataManager = new PinataManager(this);
         signManager = new SignManager(this);
+        creatorChatEvents = new CreatorChatEvents();
         saveDefaultConfig();
         for(String file : filesToGenerate){
             ConfigurationManager.getConfig(file);
@@ -162,6 +165,10 @@ public class Main extends JavaPlugin {
 
     public SignManager getSignManager() {
         return signManager;
+    }
+
+    public CreatorChatEvents getCreatorChatEvents() {
+        return creatorChatEvents;
     }
 
     public Economy getEco() {
