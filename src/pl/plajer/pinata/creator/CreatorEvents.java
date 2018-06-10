@@ -56,10 +56,12 @@ public class CreatorEvents implements Listener {
                         config.set("storage." + pinata.getID() + ".display-name", e.getCurrentItem().getItemMeta().getDisplayName());
                         //todo
                         e.getWhoClicked().sendMessage("Pinata display name set to " + e.getCurrentItem().getItemMeta().getDisplayName());
-                        return;
                     }
+                    return;
                 case "► Set mob type":
-                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), CreatorChatEvents.ChatReaction.SET_MOB_TYPE);
+                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_MOB_TYPE, pinata));
+                    e.getWhoClicked().sendMessage("Type valid mob type in chat!");
+                    return;
                 case "► Set pinata permission":
                     if(e.getCurrentItem().getType() == Material.NAME_TAG && e.getCursor().getType() == Material.NAME_TAG) {
                         e.setCancelled(true);
@@ -75,20 +77,22 @@ public class CreatorEvents implements Listener {
                         config.set("storage." + pinata.getID() + ".permission-string", e.getCurrentItem().getItemMeta().getDisplayName());
                         //todo
                         e.getWhoClicked().sendMessage("Pinata access permission set to " + e.getCurrentItem().getItemMeta().getDisplayName());
-                        return;
                     }
+                    return;
                 case "► Set damage type":
                 case "► Set drop type":
                 case "► Set health":
-                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), CreatorChatEvents.ChatReaction.SET_HEALTH);
+                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_HEALTH, pinata));
                 case "► Set crate alive time":
-                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), CreatorChatEvents.ChatReaction.SET_CRATE_TIME);
+                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_CRATE_TIME, pinata));
                 case "► Set drop view time":
-                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), CreatorChatEvents.ChatReaction.SET_DROP_VIEW_TIME);
-                case "► Set blindness duration":
-                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), CreatorChatEvents.ChatReaction.SET_BLINDNESS_DURATION);
+                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_DROP_VIEW_TIME, pinata));
                 case "► Set blindness effect":
-                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), CreatorChatEvents.ChatReaction.SET_FULL_BLINDNESS);
+                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_BLINDNESS, pinata));
+                case "► Set blindness duration":
+                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_BLINDNESS_DURATION, pinata));
+                case "► Set full blindness effect":
+                    plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_FULL_BLINDNESS, pinata));
                 case "► Edit pinata drops":
             }
             e.getWhoClicked().closeInventory();

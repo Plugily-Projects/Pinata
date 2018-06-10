@@ -96,32 +96,36 @@ public class SignManager implements Listener {
                     signUsage.put(e.getPlayer(), e.getClickedBlock().getLocation());
                     Utils.createPinatasGUI("Signs.Inventory-Name", e.getPlayer());
                 } else {
-                    String pinata = ChatColor.stripColor(s.getLine(1));
-                    Location loc = e.getClickedBlock().getLocation().clone().add(0, 8, 0);
-                    Location entityLoc = e.getClickedBlock().getLocation().clone().add(0, 3, 0);
-                    LivingEntity entity = (LivingEntity) entityLoc.getWorld().spawnEntity(entityLoc, EntityType.valueOf(ConfigurationManager.getConfig("pinatas").getString("pinatas." + pinata + ".mob-type").toUpperCase()));
-                    entity.setMaxHealth(ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + pinata + ".health"));
-                    entity.setHealth(entity.getMaxHealth());
-                    if(e.getPlayer().hasPermission("pinata.admin.freeall")) {
-                        if(PinataFactory.createPinata(loc, e.getPlayer(), entity, pinata)) {
-                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                if(!(entity.isDead())) {
-                                    entity.damage(entity.getMaxHealth());
+                    String pinataName = ChatColor.stripColor(s.getLine(1));
+                    for(Pinata pinata : plugin.getPinataManager().getPinataList()){
+                        if(pinata.getID().equalsIgnoreCase(pinataName)){
+                            Location loc = e.getClickedBlock().getLocation().clone().add(0, 8, 0);
+                            Location entityLoc = e.getClickedBlock().getLocation().clone().add(0, 3, 0);
+                            LivingEntity entity = (LivingEntity) entityLoc.getWorld().spawnEntity(entityLoc, pinata.getEntityType());
+                            entity.setMaxHealth(pinata.getHealth());
+                            entity.setHealth(entity.getMaxHealth());
+                            if(e.getPlayer().hasPermission("pinata.admin.freeall")) {
+                                if(PinataFactory.createPinata(loc, e.getPlayer(), entity, pinata)) {
+                                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                        if(!(entity.isDead())) {
+                                            entity.damage(entity.getMaxHealth());
+                                        }
+                                    }, pinata.getCrateTime() * 20);
                                 }
-                            }, ConfigurationManager.getConfig("pinatas").getInt("pinatas." + pinata + ".crate-time") * 20);
-                        }
-                    } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(e.getPlayer().getUniqueId())) >= ConfigurationManager.getConfig("pinatas").getInt("pinatas." + pinata + ".cost")) {
-                        if(PinataFactory.createPinata(loc, e.getPlayer(), entity, pinata)) {
-                            //Pinata created successfully, now we can withdraw $ from player.
-                            plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getPlayer().getUniqueId()), ConfigurationManager.getConfig("pinatas").getInt("pinatas." + pinata + ".cost"));
-                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                if(!(entity.isDead())) {
-                                    entity.damage(entity.getMaxHealth());
+                            } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(e.getPlayer().getUniqueId())) >= pinata.getPrice()) {
+                                if(PinataFactory.createPinata(loc, e.getPlayer(), entity, pinata)) {
+                                    //Pinata created successfully, now we can withdraw $ from player.
+                                    plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getPlayer().getUniqueId()), pinata.getPrice());
+                                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                        if(!(entity.isDead())) {
+                                            entity.damage(entity.getMaxHealth());
+                                        }
+                                    }, pinata.getCrateTime() * 20);
                                 }
-                            }, ConfigurationManager.getConfig("pinatas").getInt("pinatas." + pinata + ".crate-time") * 20);
+                            } else {
+                                e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Selling.Cannot-Afford"));
+                            }
                         }
-                    } else {
-                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Selling.Cannot-Afford"));
                     }
                 }
             }

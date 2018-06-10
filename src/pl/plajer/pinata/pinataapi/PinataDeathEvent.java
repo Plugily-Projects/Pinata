@@ -4,25 +4,27 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
 
 import java.util.List;
 
 /**
- * Called when pinata is killed.
+ * Called when entity is killed.
  */
+//todo
 public class PinataDeathEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player killer;
-    private final Entity pinata;
-    private final String name;
+    private final Entity entity;
+    private final Pinata pinata;
     private final List<PinataItem> drops;
 
-    public PinataDeathEvent(Player killer, Entity pinata, String name, List<PinataItem> drops) {
+    public PinataDeathEvent(Player killer, Entity entity, Pinata pinata, List<PinataItem> drops) {
         this.killer = killer;
+        this.entity = entity;
         this.pinata = pinata;
-        this.name = name;
         this.drops = drops;
     }
 
@@ -36,30 +38,27 @@ public class PinataDeathEvent extends Event {
     }
 
     /**
-     * @return killer of pinata.
+     * @return killer of entity.
      */
     public Player getKiller() {
         return this.killer;
     }
 
     /**
-     * @return killed pinata.
+     * @return killed entity.
      */
-    public Entity getPinata() {
-        return this.pinata;
+    public Entity getEntity() {
+        return this.entity;
     }
 
-    /**
-     * @return killed pinata name.
-     */
-    public String getPinataName() {
-        return this.name;
+    public Pinata getPinata() {
+        return pinata;
     }
 
     /**
      * Returns List of PinataItem objects.
      *
-     * @return drops from pinata.
+     * @return drops from entity.
      * @since 2.1.3
      */
     public List<PinataItem> getDrops() {

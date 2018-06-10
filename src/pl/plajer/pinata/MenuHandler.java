@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.Utils;
 
@@ -34,13 +35,15 @@ class MenuHandler implements Listener {
             return;
         }
         final ItemMeta item = e.getCurrentItem().getItemMeta();
-        final String pinata = item.getDisplayName().replaceAll(Utils.colorRawMessage("&6"), "");
+        final String pinataName = item.getDisplayName().replaceAll(Utils.colorRawMessage("&6"), "");
+        Pinata pinata = plugin.getPinataManager().getPinataByName(pinataName);
+        if(pinata == null) return;
         if(e.getInventory().getName().equals(Utils.colorMessage("Menus.List-Menu.Inventory-Name"))) {
             e.setCancelled(true);
             if(e.getClick() == ClickType.LEFT) {
                 e.getWhoClicked().closeInventory();
                 //Scheduler to prevent bugged GUI
-                Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinata), 1);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinataName), 1);
             }
             if(e.getClick() == ClickType.RIGHT) {
                 if(item.getLore().get(1).equals(Utils.colorMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"))) {
@@ -57,7 +60,7 @@ class MenuHandler implements Listener {
             if(e.getClick() == ClickType.LEFT) {
                 e.getWhoClicked().closeInventory();
                 //Scheduler to prevent bugged GUI
-                Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinata), 1);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(e.getWhoClicked(), "pinata preview " + pinataName), 1);
             }
             if(e.getClick() == ClickType.RIGHT) {
                 if(item.getLore().get(1).equals(Utils.colorMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"))) {
@@ -85,7 +88,7 @@ class MenuHandler implements Listener {
                         return;
                     }
                 }
-                if(ConfigurationManager.getConfig("pinatas").getInt("pinatas." + pinata + ".cost") == -1) {
+                if(pinata.getPrice() == -1) {
                     e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Selling.Not-For-Sale"));
                     e.getWhoClicked().closeInventory();
                     return;
@@ -98,16 +101,15 @@ class MenuHandler implements Listener {
                     }
                 }
                 if(plugin.getConfig().getBoolean("using-permissions")) {
-                    final String pperm = ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata + ".permission").toString();
-                    if(!e.getWhoClicked().hasPermission(pperm)) {
+                    if(!e.getWhoClicked().hasPermission(pinata.getPermission())) {
                         e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Create.No-Permission"));
                         e.getWhoClicked().closeInventory();
                         return;
                     }
                 }
                 if(e.getWhoClicked().hasPermission("pinata.admin.freeall")) {
-                    LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, EntityType.valueOf(ConfigurationManager.getConfig("pinatas").getString("pinatas." + pinata + ".mob-type").toUpperCase()));
-                    entity.setMaxHealth(ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + pinata + ".health"));
+                    LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, pinata.getEntityType());
+                    entity.setMaxHealth(pinata.getHealth());
                     entity.setHealth(entity.getMaxHealth());
                     plugin.getCommands().getUsers().add((Player) e.getWhoClicked());
                     if(PinataFactory.createPinata(builderLocation, (Player) e.getWhoClicked(), entity, pinata)) {
@@ -115,21 +117,21 @@ class MenuHandler implements Listener {
                             if(!(entity.isDead())) {
                                 entity.damage(entity.getMaxHealth());
                             }
-                        }, ConfigurationManager.getConfig("pinatas").getInt("pinatas." + pinata + ".crate-time") * 20);
+                        }, pinata.getCrateTime() * 20);
                     }
-                } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId())) >= ConfigurationManager.getConfig("pinatas").getInt("pinatas." + pinata + ".cost")) {
-                    LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, EntityType.valueOf(ConfigurationManager.getConfig("pinatas").getString("pinatas." + pinata + ".mob-type").toUpperCase()));
-                    entity.setMaxHealth(ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + pinata + ".health"));
+                } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId())) >= pinata.getPrice()) {
+                    LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, pinata.getEntityType());
+                    entity.setMaxHealth(pinata.getHealth());
                     entity.setHealth(entity.getMaxHealth());
                     plugin.getCommands().getUsers().add((Player) e.getWhoClicked());
                     if(PinataFactory.createPinata(builderLocation, (Player) e.getWhoClicked(), entity, pinata)) {
                         //Pinata created successfully, now we can withdraw $ from player.
-                        plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId()), ConfigurationManager.getConfig("pinatas").getInt("pinatas." + pinata + ".cost"));
+                        plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId()), pinata.getPrice());
                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
                             if(!(entity.isDead())) {
                                 entity.damage(entity.getMaxHealth());
                             }
-                        }, ConfigurationManager.getConfig("pinatas").getInt("pinatas." + pinata + ".crate-time") * 20);
+                        }, pinata.getCrateTime() * 20);
                     }
                 } else {
                     e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Selling.Cannot-Afford"));

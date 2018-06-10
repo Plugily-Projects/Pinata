@@ -10,6 +10,7 @@ import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.utils.Utils;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,6 +54,7 @@ public class PinataManager {
 
             String name = config.getString(accessKey + "display-name");
             EntityType eType = EntityType.valueOf(config.getString(accessKey + "mob-entity-type"));
+            DyeColor color = DyeColor.valueOf(config.getString(accessKey + "color"));
             Pinata.PinataType pType = Pinata.PinataType.valueOf(config.getString(accessKey + "pinata-access-type"));
             Pinata.DropType dType = Pinata.DropType.valueOf(config.getString(accessKey + "items-drop-type"));
             double health = config.getDouble(accessKey + "health-amount");
@@ -60,10 +62,21 @@ public class PinataManager {
             double price = config.getDouble(accessKey + "crate-buy-cost");
             int viewTime = config.getInt(accessKey + "timer-display");
             String perm = config.getString(accessKey + "permission-string");
+            boolean bEnabled = config.getBoolean(accessKey + "blindness-activated");
+            int bTime = config.getInt(accessKey + "blindness-duration");
+            boolean fullBlind = config.getBoolean(accessKey + "full-blindness-activated");
 
-            Pinata pinata = new Pinata(key, name, eType, pType, dType, health, cTime, price, viewTime, perm, Collections.singletonList(item));
+            Pinata pinata = new Pinata(key, name, eType, color, pType, dType, health, cTime, price, viewTime, perm, bEnabled, bTime, fullBlind, Collections.singletonList(item));
             pinataList.add(pinata);
         }
+    }
+
+    @Nullable
+    public Pinata getPinataByName(String name) {
+        for(Pinata pinata : pinataList) {
+            if(pinata.getID().equals(name)) return pinata;
+        }
+        return null;
     }
 
     @Deprecated

@@ -67,6 +67,12 @@ public class MainCommand implements CommandExecutor {
             argumentsManager.setCrate(sender, args);
         } else if(args[0].equalsIgnoreCase("cratelist")) {
             argumentsManager.printCrateList(sender);
+        } else if(args[0].equalsIgnoreCase("createnew")){
+            if(args.length == 1) {
+                sender.sendMessage("Please type pinata name!");
+            } else {
+                argumentsManager.createNewPinata(sender, args[1]);
+            }
         } else {
             sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Header"));
             sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Description"));

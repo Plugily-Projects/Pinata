@@ -1,6 +1,8 @@
 package pl.plajer.pinata.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,6 +25,7 @@ import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -151,10 +154,10 @@ public class ArgumentsManager extends MainCommand {
                 for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
                     if(pinata.getID().equals(args[5])) {
                         Location l = new Location(world, x, y, z);
-                        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(ConfigurationManager.getConfig("pinatas").getString("pinatas." + args[5] + ".mob-type").toUpperCase()));
-                        entity.setMaxHealth(ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + args[5] + ".health"));
+                        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), pinata.getEntityType());
+                        entity.setMaxHealth(pinata.getHealth());
                         entity.setHealth(entity.getMaxHealth());
-                        PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, args[5]);
+                        PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, pinata);
                         sender.sendMessage(Utils.colorMessage("Pinata.Create.Success").replaceAll("%name%", args[5]));
                         return;
                     }
@@ -198,7 +201,7 @@ public class ArgumentsManager extends MainCommand {
         }
         for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
             if(pinata.getID().equals(args[1])) {
-                Utils.createPinataAtPlayer(user, user.getLocation(), args[1]);
+                Utils.createPinataAtPlayer(user, user.getLocation(), pinata);
                 return;
             }
         }
@@ -229,22 +232,21 @@ public class ArgumentsManager extends MainCommand {
         }
         for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
             if(pinata.getID().equals(args[1])) {
-                if(ConfigurationManager.getConfig("pinatas").getInt("pinatas." + args[1] + ".cost") == -1) {
+                if(pinata.getPrice() == -1) {
                     p.sendMessage(Utils.colorMessage("Pinata.Selling.Not-For-Sale"));
                     return;
                 }
                 if(plugin.getConfig().getBoolean("using-permissions")) {
-                    final String pinataPermission = ConfigurationManager.getConfig("pinatas").get("pinatas." + args[1] + ".permission").toString();
-                    if(!p.hasPermission(pinataPermission)) {
+                    if(!p.hasPermission(pinata.getPermission())) {
                         p.sendMessage(Utils.colorMessage("Pinata.Create.No-Permission"));
                         return;
                     }
                 }
                 if(p.hasPermission("pinata.admin.freeall")) {
-                    Utils.createPinataAtPlayer(p, p.getLocation(), args[1]);
-                } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + args[1] + ".cost")) {
-                    if(Utils.createPinataAtPlayer(p, p.getLocation(), args[1])) {
-                        plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + args[1] + ".cost"));
+                    Utils.createPinataAtPlayer(p, p.getLocation(), pinata);
+                } else if(plugin.getEco().getBalance(Bukkit.getOfflinePlayer(p.getUniqueId())) >= pinata.getPrice()) {
+                    if(Utils.createPinataAtPlayer(p, p.getLocation(), pinata)) {
+                        plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()), pinata.getPrice());
                     }
                 } else {
                     sender.sendMessage(Utils.colorMessage("Pinata.Selling.Cannot-Afford"));
@@ -303,7 +305,45 @@ public class ArgumentsManager extends MainCommand {
     }
 
     public void createNewPinata(CommandSender sender, String pinataID) {
+        //todo perm check
+        //todo console check
+        for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+            if(pinata.getID().equals(pinataID)) {
+                sender.sendMessage("This pinata already exists!");
+                return;
+            }
+        }
+        PinataItem item = new PinataItem(PinataItem.ItemType.ITEM, 100.0);
+        item.setRepresentedMaterial(Material.PAPER);
+        item.setItem(new ItemStack(Material.PAPER, 1));
+        item.setAmount(1);
+        item.setHologramName("Example item");
 
+        Pinata pinata = new Pinata(pinataID, pinataID, EntityType.SHEEP, DyeColor.WHITE, Pinata.PinataType.PRIVATE,
+                Pinata.DropType.DEATH, 20.0, 10, -1, 5, "pinata.use." + pinataID,
+                true, 15, false, Collections.singletonList(item));
+        plugin.getPinataManager().getPinataList().add(pinata);
+
+        FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+        config.set("storage." + pinataID + ".display-name", pinataID);
+        config.set("storage." + pinataID + ".timer-display", 5);
+        config.set("storage." + pinataID + ".color", "WHITE");
+        config.set("storage." + pinataID + ".permission-string", "pinata.use." + pinataID);
+        config.set("storage." + pinataID + ".crate-buy-cost", -1);
+        config.set("storage." + pinataID + ".pinata-access-type", "PRIVATE");
+        config.set("storage." + pinataID + ".blindness-activated", true);
+        config.set("storage." + pinataID + ".blindness-duration", 15);
+        config.set("storage." + pinataID + ".full-blindness-activated", false);
+        config.set("storage." + pinataID + ".crate-display-time-alive", 10);
+        config.set("storage." + pinataID + ".health-amount", 20.0);
+        config.set("storage." + pinataID + ".mob-entity-type", "SHEEP");
+        config.set("storage." + pinataID + ".items-drop-type", "DEATH");
+        config.set("storage." + pinataID + ".drops",
+                new ArrayList<ItemStack>() {{
+                    add(item.getItem());
+                }});
+        ConfigurationManager.saveConfig(config, "pinata_storage");
+        sender.sendMessage("New pinata with ID " + pinataID + " created!");
     }
 
 }

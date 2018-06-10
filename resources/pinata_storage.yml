@@ -7,6 +7,7 @@ storage:
     crate-buy-cost: -1
     pinata-access-type: PRIVATE
     blindness-activated: false
+    blindness-duration: 10
     full-blindness-activated: false
     crate-display-time-alive: 10
     health-amount: 2.5

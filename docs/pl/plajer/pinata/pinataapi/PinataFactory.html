@@ -37,7 +37,7 @@ var activeTableTab = "activeTableTab";
 <!--   -->
 </a>
 <ul class="navList" title="Navigation">
-<li><a href="../../../../pl/plajer/pinata/pinataapi/package-summary.html">Package</a></li>
+<li><a href="../../../../pl/plajer/entity/pinataapi/package-summary.html">Package</a></li>
 <li class="navBarCell1Rev">Class</li>
 <li><a href="package-tree.html">Tree</a></li>
 <li><a href="../../../../deprecated-list.html">Deprecated</a></li>
@@ -47,11 +47,11 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../pl/plajer/pinata/pinataapi/PinataDeathEvent.html" title="class in pl.plajer.pinata.pinataapi"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../pl/plajer/entity/pinataapi/PinataDeathEvent.html" title="class in pl.plajer.entity.pinataapi"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li>Next&nbsp;Class</li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../index.html?pl/plajer/pinata/pinataapi/PinataFactory.html" target="_top">Frames</a></li>
+<li><a href="../../../../index.html?pl/plajer/entity/pinataapi/PinataFactory.html" target="_top">Frames</a></li>
 <li><a href="PinataFactory.html" target="_top">No&nbsp;Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_top">
@@ -90,7 +90,7 @@ var activeTableTab = "activeTableTab";
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">pl.plajer.pinata.pinataapi</div>
+<div class="subTitle">pl.plajer.entity.pinataapi</div>
 <h2 title="Class PinataFactory" class="title">Class PinataFactory</h2>
 </div>
 <div class="contentContainer">
@@ -98,7 +98,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>pl.plajer.pinata.pinataapi.PinataFactory</li>
+<li>pl.plajer.entity.pinataapi.PinataFactory</li>
 </ul>
 </li>
 </ul>
@@ -114,7 +114,7 @@ var activeTableTab = "activeTableTab";
 <pre>public class <span class="typeNameLabel">PinataFactory</span>
 extends java.lang.Object
 implements org.bukkit.event.Listener</pre>
-<div class="block">Class with pinata creation methods.</div>
+<div class="block">Class with entity creation methods.</div>
 </li>
 </ul>
 </div>
@@ -133,7 +133,7 @@ implements org.bukkit.event.Listener</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../pl/plajer/pinata/pinataapi/PinataFactory.html#PinataFactory--">PinataFactory</a></span>()</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../pl/plajer/entity/pinataapi/PinataFactory.html#PinataFactory--">PinataFactory</a></span>()</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -152,19 +152,19 @@ implements org.bukkit.event.Listener</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>static boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../pl/plajer/pinata/pinataapi/PinataFactory.html#createPinata-org.bukkit.Location-org.bukkit.entity.LivingEntity-java.lang.String-">createPinata</a></span>(org.bukkit.Location&nbsp;fenceLocation,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../pl/plajer/entity/pinataapi/PinataFactory.html#createPinata-org.bukkit.Location-org.bukkit.entity.LivingEntity-java.lang.String-">createPinata</a></span>(org.bukkit.Location&nbsp;fenceLocation,
             org.bukkit.entity.LivingEntity&nbsp;entity,
             java.lang.String&nbsp;pinataName)</code>
-<div class="block">Creates pinata at specified location using already spawned entity, name of pinata required.</div>
+<div class="block">Creates entity at specified location using already spawned entity, name of entity required.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>static boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../pl/plajer/pinata/pinataapi/PinataFactory.html#createPinata-org.bukkit.Location-org.bukkit.entity.Player-org.bukkit.entity.LivingEntity-java.lang.String-">createPinata</a></span>(org.bukkit.Location&nbsp;fenceLocation,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../pl/plajer/entity/pinataapi/PinataFactory.html#createPinata-org.bukkit.Location-org.bukkit.entity.Player-org.bukkit.entity.LivingEntity-java.lang.String-">createPinata</a></span>(org.bukkit.Location&nbsp;fenceLocation,
             org.bukkit.entity.Player&nbsp;player,
             org.bukkit.entity.LivingEntity&nbsp;entity,
             java.lang.String&nbsp;pinataName)</code>
-<div class="block">Creates pinata at specified location for target player using already spawned entity, name of pinata required.</div>
+<div class="block">Creates entity at specified location for target player using already spawned entity, name of entity required.</div>
 </td>
 </tr>
 </table>
@@ -216,13 +216,13 @@ implements org.bukkit.event.Listener</pre>
                                    org.bukkit.entity.Player&nbsp;player,
                                    org.bukkit.entity.LivingEntity&nbsp;entity,
                                    java.lang.String&nbsp;pinataName)</pre>
-<div class="block">Creates pinata at specified location for target player using already spawned entity, name of pinata required.</div>
+<div class="block">Creates entity at specified location for target player using already spawned entity, name of entity required.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>fenceLocation</code> - location where to spawn pinata</dd>
-<dd><code>player</code> - player who will be owner of pinata</dd>
-<dd><code>entity</code> - entity that will be transformed to pinata</dd>
-<dd><code>pinataName</code> - name of pinata from pinatas.yml</dd>
+<dd><code>fenceLocation</code> - location where to spawn entity</dd>
+<dd><code>player</code> - player who will be owner of entity</dd>
+<dd><code>entity</code> - entity that will be transformed to entity</dd>
+<dd><code>pinataName</code> - name of entity from pinatas.yml</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd><b>true</b> if creation succeed, <b>false</b> if creation couldn't be completed</dd>
 </dl>
@@ -237,12 +237,12 @@ implements org.bukkit.event.Listener</pre>
 <pre>public static&nbsp;boolean&nbsp;createPinata(org.bukkit.Location&nbsp;fenceLocation,
                                    org.bukkit.entity.LivingEntity&nbsp;entity,
                                    java.lang.String&nbsp;pinataName)</pre>
-<div class="block">Creates pinata at specified location using already spawned entity, name of pinata required.</div>
+<div class="block">Creates entity at specified location using already spawned entity, name of entity required.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>fenceLocation</code> - location where to spawn pinata</dd>
-<dd><code>entity</code> - entity that will be transformed to pinata</dd>
-<dd><code>pinataName</code> - name of pinata from pinatas.yml</dd>
+<dd><code>fenceLocation</code> - location where to spawn entity</dd>
+<dd><code>entity</code> - entity that will be transformed to entity</dd>
+<dd><code>pinataName</code> - name of entity from pinatas.yml</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd><b>true</b> if creation succeed, <b>false</b> if creation couldn't be completed</dd>
 </dl>
@@ -264,7 +264,7 @@ implements org.bukkit.event.Listener</pre>
 <!--   -->
 </a>
 <ul class="navList" title="Navigation">
-<li><a href="../../../../pl/plajer/pinata/pinataapi/package-summary.html">Package</a></li>
+<li><a href="../../../../pl/plajer/entity/pinataapi/package-summary.html">Package</a></li>
 <li class="navBarCell1Rev">Class</li>
 <li><a href="package-tree.html">Tree</a></li>
 <li><a href="../../../../deprecated-list.html">Deprecated</a></li>
@@ -274,11 +274,11 @@ implements org.bukkit.event.Listener</pre>
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../pl/plajer/pinata/pinataapi/PinataDeathEvent.html" title="class in pl.plajer.pinata.pinataapi"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../pl/plajer/entity/pinataapi/PinataDeathEvent.html" title="class in pl.plajer.entity.pinataapi"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li>Next&nbsp;Class</li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../index.html?pl/plajer/pinata/pinataapi/PinataFactory.html" target="_top">Frames</a></li>
+<li><a href="../../../../index.html?pl/plajer/entity/pinataapi/PinataFactory.html" target="_top">Frames</a></li>
 <li><a href="PinataFactory.html" target="_top">No&nbsp;Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_bottom">

@@ -5,27 +5,29 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import pl.plajer.pinata.pinata.Pinata;
 
 /**
- * Called when pinata is created.
+ * Called when entity is created.
  */
+//todo
 public class PinataCreateEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    private final Entity pinata;
-    private final String name;
+    private final Entity entity;
+    private final Pinata pinata;
     private Player creator = null;
     private boolean isCancelled;
 
-    public PinataCreateEvent(Player creator, Entity pinata, String pinataName) {
+    public PinataCreateEvent(Player creator, Entity entity, Pinata pinata) {
         this.creator = creator;
+        this.entity = entity;
         this.pinata = pinata;
-        this.name = pinataName;
     }
 
-    public PinataCreateEvent(Entity pinata, String pinataName) {
+    public PinataCreateEvent(Entity entity, Pinata pinata) {
+        this.entity = entity;
         this.pinata = pinata;
-        this.name = pinataName;
     }
 
     public static HandlerList getHandlerList() {
@@ -46,25 +48,21 @@ public class PinataCreateEvent extends Event implements Cancellable {
     }
 
     /**
-     * @return creator of pinata.
-     * @throws NullPointerException when pinata is created without player participation.
+     * @return creator of entity.
+     * @throws NullPointerException when entity is created without player participation.
      */
     public Player getCreator() {
         return this.creator;
     }
 
     /**
-     * @return event pinata.
+     * @return event entity.
      */
-    public Entity getPinata() {
-        return this.pinata;
+    public Entity getEntity() {
+        return this.entity;
     }
 
-    /**
-     * @return event pinata name.
-     */
-    public String getPinataName() {
-        return this.name;
+    public Pinata getPinata() {
+        return pinata;
     }
-
 }

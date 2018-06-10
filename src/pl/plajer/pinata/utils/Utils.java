@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -36,12 +37,12 @@ public class Utils {
         else return (int) ((Math.ceil(i / 9) * 9) + 9);
     }
 
-    public static boolean createPinataAtPlayer(Player p, Location l, String pinataName) {
+    public static boolean createPinataAtPlayer(Player p, Location l, Pinata pinata) {
         Location loc = l.clone().add(0, 7, 0);
-        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), EntityType.valueOf(ConfigurationManager.getConfig("pinatas").getString("pinatas." + pinataName + ".mob-type").toUpperCase()));
-        entity.setMaxHealth(ConfigurationManager.getConfig("pinatas").getDouble("pinatas." + pinataName + ".health"));
+        LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), pinata.getEntityType());
+        entity.setMaxHealth(pinata.getHealth());
         entity.setHealth(entity.getMaxHealth());
-        return PinataFactory.createPinata(loc, p, entity, pinataName);
+        return PinataFactory.createPinata(loc, p, entity, pinata);
     }
 
     public static void createPinatasGUI(String name, Player p) {
@@ -53,12 +54,12 @@ public class Utils {
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(Utils.colorRawMessage("&6") + pinata.getID());
             List<String> lore = new ArrayList<>();
-            if(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata.getID() + ".type").equals("private")) {
+            if(pinata.getPinataType() == Pinata.PinataType.PRIVATE){
                 lore.add(colorMessage("Menus.List-Menu.Pinata-Types.Type-Private"));
             } else {
                 lore.add(colorMessage("Menus.List-Menu.Pinata-Types.Type-Public"));
             }
-            if(Integer.parseInt(ConfigurationManager.getConfig("pinatas").get("pinatas." + pinata.getID() + ".cost").toString()) == -1) {
+            if(pinata.getPrice() == -1){
                 lore.add(colorMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));
             } else {
                 String cost = colorMessage("Menus.List-Menu.Pinata-Cost");

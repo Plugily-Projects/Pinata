@@ -75,6 +75,12 @@ public class CreatorMenu {
                 .lore(ChatColor.GRAY + "will be visible on the ground.")
                 //.lore(isOptionDone)
                 .build());
+        addItem(new ItemBuilder(new ItemStack(Material.COAL))
+                .name(ChatColor.GOLD + "► Set" + ChatColor.GRAY + " blindness effect")
+                .lore(ChatColor.GRAY + "Should creator have blindness effect?")
+                .lore(ChatColor.RED + "You must enable it otherwise full blindness won't work!")
+                //.lore(isOptionDone)
+                .build());
         addItem(new ItemBuilder(new ItemStack(Material.ENDER_PEARL))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.LIGHT_PURPLE + " blindness duration")
                 .lore(ChatColor.GRAY + "Set for how many seconds creator should have")
@@ -83,7 +89,7 @@ public class CreatorMenu {
                 //.lore(isOptionDone)
                 .build());
         addItem(new ItemBuilder(new ItemStack(Material.EYE_OF_ENDER))
-                .name(ChatColor.GOLD + "► Set" + ChatColor.GRAY + " blindness effect")
+                .name(ChatColor.GOLD + "► Set" + ChatColor.GRAY + " full blindness effect")
                 .lore(ChatColor.GRAY + "Should creator have full blindness effect?")
                 .lore(ChatColor.GRAY + "This is a mix of night vision and blindness.")
                 //.lore(isOptionDone)

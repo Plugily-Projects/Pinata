@@ -246,21 +246,18 @@ class PinataListeners implements Listener {
         final Player p = e.getEntity().getKiller() instanceof Player ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
         //drops won't show if killer is environment and pinata player is not assigned. This pinata will be always in our hearts [*]
         if(p == null) return;
-        if(ConfigurationManager.getConfig("pinatas").getBoolean("pinatas." + e.getEntity().getCustomName() + ".blindness-effect")) {
-            if(p.hasPotionEffect(PotionEffectType.BLINDNESS)) {
-                p.removePotionEffect(PotionEffectType.BLINDNESS);
-            }
-            if(ConfigurationManager.getConfig("pinatas").getBoolean("pinatas." + e.getEntity().getCustomName() + ".full-blindness-effect")) {
-                if(p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
-                    p.removePotionEffect(PotionEffectType.NIGHT_VISION);
-                }
-            }
-        }
-        final int timer = ConfigurationManager.getConfig("pinatas").getInt("pinatas." + e.getEntity().getCustomName() + ".timer");
         int i = 0;
         List<PinataItem> items = new ArrayList<>();
         for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
             if(pinata.getName().equals(e.getEntity().getCustomName())) {
+                if(pinata.isBlindnessEnabled()){
+                    if(p.hasPotionEffect(PotionEffectType.BLINDNESS)){
+                        p.removePotionEffect(PotionEffectType.BLINDNESS);
+                    }
+                    if(pinata.isFullBlindness()){
+                        p.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                    }
+                }
                 for(PinataItem item : pinata.getDrops()) {
                     if(ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
                         final Item dropItem = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(item.getRepresentedMaterial()));
@@ -275,7 +272,7 @@ class PinataListeners implements Listener {
                                 public void run() {
                                     ticksRun++;
                                     hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
-                                    if(ticksRun > timer * 20) {
+                                    if(ticksRun > pinata.getDropViewTime() * 20) {
                                         hologram.delete();
                                         dropItem.remove();
                                         cancel();
@@ -283,7 +280,7 @@ class PinataListeners implements Listener {
                                 }
                             }.runTaskTimer(plugin, 1L, 1L);
                         } else {
-                            Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, timer * 20);
+                            Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, pinata.getDropViewTime() * 20);
                         }
                         switch(item.getItemType()) {
                             case ITEM:
@@ -305,7 +302,7 @@ class PinataListeners implements Listener {
                     items.add(item);
                     i++;
                 }
-                PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), e.getEntity(), e.getEntity().getCustomName(), items);
+                PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), e.getEntity(), pinata, items);
                 Bukkit.getPluginManager().callEvent(pde);
                 if(i == 0) {
                     p.sendMessage(Utils.colorMessage("Pinata.Drop.No-Drops"));
