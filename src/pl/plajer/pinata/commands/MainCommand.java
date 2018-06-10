@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.creator.CreatorMenu;
 import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.utils.Utils;
 
@@ -19,9 +20,11 @@ public class MainCommand implements CommandExecutor {
     private Map<Entity, LivingPinata> pinata = new HashMap<>();
     private List<Player> users = new ArrayList<>();
     private ArgumentsManager argumentsManager;
+    private Main plugin;
 
     public MainCommand(Main plugin, boolean register) {
         if(register) {
+            this.plugin = plugin;
             argumentsManager = new ArgumentsManager(plugin);
             plugin.getCommand("pinata").setExecutor(this);
         }
@@ -67,11 +70,21 @@ public class MainCommand implements CommandExecutor {
             argumentsManager.setCrate(sender, args);
         } else if(args[0].equalsIgnoreCase("cratelist")) {
             argumentsManager.printCrateList(sender);
-        } else if(args[0].equalsIgnoreCase("createnew")){
+        } else if(args[0].equalsIgnoreCase("createnew")) {
             if(args.length == 1) {
                 sender.sendMessage("Please type pinata name!");
             } else {
                 argumentsManager.createNewPinata(sender, args[1]);
+            }
+        } else if(args[0].equalsIgnoreCase("edit")) {
+            if(args.length == 1) {
+                sender.sendMessage("Please type pinata name!");
+            } else {
+                if(plugin.getPinataManager().getPinataByName(args[1]) == null){
+                    sender.sendMessage("Pinata doesn't exist!");
+                    return true;
+                }
+                new CreatorMenu(args[1]).openInventory((Player) sender);
             }
         } else {
             sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Header"));
