@@ -1,16 +1,18 @@
 storage:
   default:
-    display-name: "default"
+    display-name: default
     timer-display: 5
-    color: RED
-    permission-string: "pinata.use.default"
+    color: WHITE
+    permission-string: pinata.use.default
     crate-buy-cost: -1
     pinata-access-type: PRIVATE
-    blindness-activated: false
-    blindness-duration: 10
+    blindness-activated: true
+    blindness-duration: 15
     full-blindness-activated: false
     crate-display-time-alive: 10
-    health-amount: 2.5
+    health-amount: 5.0
     mob-entity-type: SHEEP
     items-drop-type: DEATH
-    drops: []
+    drops:
+    - ==: org.bukkit.inventory.ItemStack
+      type: PAPER

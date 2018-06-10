@@ -335,7 +335,7 @@ public class ArgumentsManager extends MainCommand {
         config.set("storage." + pinataID + ".blindness-duration", 15);
         config.set("storage." + pinataID + ".full-blindness-activated", false);
         config.set("storage." + pinataID + ".crate-display-time-alive", 10);
-        config.set("storage." + pinataID + ".health-amount", 20.0);
+        config.set("storage." + pinataID + ".health-amount", 5.0);
         config.set("storage." + pinataID + ".mob-entity-type", "SHEEP");
         config.set("storage." + pinataID + ".items-drop-type", "DEATH");
         config.set("storage." + pinataID + ".drops",
