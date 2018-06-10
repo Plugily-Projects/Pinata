@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import pl.plajer.pinata.ConfigurationManager;
+import pl.plajer.pinata.Main;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,15 +23,20 @@ public class CreatorChatEvents implements Listener {
 
     private Map<Player, ChatReaction> chatReactions = new HashMap<>();
 
+    public CreatorChatEvents(Main plugin){
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
         if(chatReactions.containsKey(e.getPlayer())) {
             ChatReaction reaction = chatReactions.get(e.getPlayer());
             FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+            e.setCancelled(true);
             switch(reaction.getReactionType()) {
                 case SET_MOB_TYPE:
                     try {
-                        EntityType type = EntityType.valueOf(e.getMessage());
+                        EntityType type = EntityType.valueOf(e.getMessage().toUpperCase());
                         reaction.getPinata().setEntityType(type);
                         config.set("storage." + reaction.getPinata().getID() + ".mob-entity-type", type.name());
                         e.getPlayer().sendMessage("Entity type of pinata " + reaction.getPinata().getID() + " has been set to " + type.name());
@@ -43,8 +49,8 @@ public class CreatorChatEvents implements Listener {
                             mobs.append(en.getName()).append(", ");
                         }
                         e.getPlayer().sendMessage(mobs.toString());
-                        return;
                     }
+                    return;
                 case SET_HEALTH:
                     if(!NumberUtils.isNumber(e.getMessage())) {
                         e.getPlayer().sendMessage("Following message is not a number!");

@@ -29,7 +29,7 @@ public class PinataManager {
         this.plugin = plugin;
     }
 
-    public void loadPinatas3() {
+    public void loadPinatas() {
         FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
         for(String key : config.getConfigurationSection("storage").getKeys(false)) {
             String accessKey = "storage." + key + ".";

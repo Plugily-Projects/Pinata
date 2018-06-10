@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,13 +42,12 @@ public class SignManager implements Listener {
                 if(e.getLine(1).equalsIgnoreCase("all") || e.getLine(1).equalsIgnoreCase("gui")) {
                     e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Every-Pinata"));
                 } else {
-                    for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
-                        if(pinata.getID().equals(e.getLine(1))) {
-                            e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
-                            return;
-                        }
+                    Pinata pinata = plugin.getPinataManager().getPinataByName(e.getLine(1));
+                    if(pinata == null) {
+                        e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
+                        return;
                     }
-                    e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
+                    e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
                 }
             }
         }
@@ -97,8 +95,8 @@ public class SignManager implements Listener {
                     Utils.createPinatasGUI("Signs.Inventory-Name", e.getPlayer());
                 } else {
                     String pinataName = ChatColor.stripColor(s.getLine(1));
-                    for(Pinata pinata : plugin.getPinataManager().getPinataList()){
-                        if(pinata.getID().equalsIgnoreCase(pinataName)){
+                    for(Pinata pinata : plugin.getPinataManager().getPinataList()) {
+                        if(pinata.getID().equalsIgnoreCase(pinataName)) {
                             Location loc = e.getClickedBlock().getLocation().clone().add(0, 8, 0);
                             Location entityLoc = e.getClickedBlock().getLocation().clone().add(0, 3, 0);
                             LivingEntity entity = (LivingEntity) entityLoc.getWorld().spawnEntity(entityLoc, pinata.getEntityType());

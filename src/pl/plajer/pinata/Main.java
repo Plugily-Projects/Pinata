@@ -14,6 +14,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.pinata.commands.MainCommand;
 import pl.plajer.pinata.creator.CreatorChatEvents;
+import pl.plajer.pinata.creator.CreatorEvents;
 import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
@@ -49,7 +50,7 @@ public class Main extends JavaPlugin {
         new PinataListeners(this);
         pinataManager = new PinataManager(this);
         signManager = new SignManager(this);
-        creatorChatEvents = new CreatorChatEvents();
+        creatorChatEvents = new CreatorChatEvents(this);
         saveDefaultConfig();
         for(String file : filesToGenerate) {
             ConfigurationManager.getConfig(file);
@@ -71,7 +72,8 @@ public class Main extends JavaPlugin {
             getLogger().info("Pinata creation blocked at world " + world + "!");
         }
         crateManager.loadCrates();
-        pinataManager.loadPinatas3();
+        pinataManager.loadPinatas();
+        new CreatorEvents(this);
         crateManager.particleScheduler();
         if(isPluginEnabled("HolographicDisplays")) hologramScheduler();
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
