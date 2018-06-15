@@ -16,3 +16,4 @@ storage:
     drops:
     - ==: org.bukkit.inventory.ItemStack
       type: PAPER
+    other-drops: []

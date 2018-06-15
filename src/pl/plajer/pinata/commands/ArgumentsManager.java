@@ -269,32 +269,14 @@ public class ArgumentsManager extends MainCommand {
         int rows = Utils.serializeInt(pinata.getDrops().size());
         Inventory previewMenu = Bukkit.createInventory(null, rows, Utils.colorMessage("Menus.Preview-Menu.Inventory-Name"));
         int i = 0;
+        //todo cmd
         for(PinataItem item : pinata.getDrops()) {
-            ItemStack stack = new ItemStack(item.getRepresentedMaterial(), item.getAmount());
-            ItemMeta meta = stack.getItemMeta();
+            ItemMeta meta = item.getItem().getItemMeta();
             List<String> lore = new ArrayList<>();
             String dropLore = Utils.colorMessage("Menus.Preview-Menu.Drop-Chance").replaceAll("%chance%", String.valueOf(item.getDropChance()));
-            switch(item.getItemType()) {
-                case ITEM:
-                    meta.setDisplayName(item.getItem().getItemMeta().getDisplayName());
-                    if(item.getItem().getItemMeta().hasLore()) {
-                        lore.addAll(item.getItem().getItemMeta().getLore());
-                    }
-                    break;
-                case COMMAND:
-                    meta.setDisplayName(item.getHologramName());
-                    lore.add(Utils.colorMessage("Menus.Preview-Menu.Command-To-Execute").replaceAll("%command%", item.getCommand().replaceAll("%player%", sender.getName())));
-                    break;
-                case GUN:
-                    meta.setDisplayName(item.getHologramName());
-                    break;
-                case MONEY:
-                    meta.setDisplayName(item.getHologramName());
-                    lore.add(Utils.colorMessage("Menus.Preview-Menu.Money-Reward").replaceAll("%money%", String.valueOf(item.getMoneyValue())));
-                    break;
-            }
             lore.add(dropLore);
             meta.setLore(lore);
+            ItemStack stack = item.getItem();
             stack.setItemMeta(meta);
             previewMenu.setItem(i, stack);
             i++;
@@ -309,11 +291,7 @@ public class ArgumentsManager extends MainCommand {
             sender.sendMessage("This pinata already exists!");
             return;
         }
-        PinataItem item = new PinataItem(PinataItem.ItemType.ITEM, 100.0);
-        item.setRepresentedMaterial(Material.PAPER);
-        item.setItem(new ItemStack(Material.PAPER, 1));
-        item.setAmount(1);
-        item.setHologramName("Example item");
+        PinataItem item = new PinataItem(new ItemStack(Material.PAPER, 1), 100.0);
 
         Pinata pinata = new Pinata(pinataID, pinataID, EntityType.SHEEP, DyeColor.WHITE, Pinata.PinataType.PRIVATE,
                 Pinata.DropType.DEATH, 20.0, 10, -1, 5, "pinata.use." + pinataID,

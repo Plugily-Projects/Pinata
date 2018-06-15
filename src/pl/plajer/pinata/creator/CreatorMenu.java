@@ -34,7 +34,7 @@ public class CreatorMenu {
                 .lore(ChatColor.RED + "" + ChatColor.BOLD + "it and replace with new!!!")
                 .lore(isOptionDone("display-name"))
                 .build());
-        addItem(new ItemBuilder(new ItemStack(Material.LAPIS_BLOCK))
+        addItem(new ItemBuilder(new ItemStack(Material.MOB_SPAWNER))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.WHITE + " mob type")
                 .lore(ChatColor.GRAY + "Click to set mob type of pinata")
                 .lore(isOptionDone("mob-entity-type"))

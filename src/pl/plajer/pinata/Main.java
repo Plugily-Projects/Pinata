@@ -15,6 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.pinata.commands.MainCommand;
 import pl.plajer.pinata.creator.CreatorChatEvents;
 import pl.plajer.pinata.creator.CreatorEvents;
+import pl.plajer.pinata.creator.SelectorEvents;
+import pl.plajer.pinata.creator.SelectorInventories;
 import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
@@ -48,6 +50,7 @@ public class Main extends JavaPlugin {
         setupLocale();
         new MenuHandler(this);
         new PinataListeners(this);
+        new SelectorEvents(this);
         pinataManager = new PinataManager(this);
         signManager = new SignManager(this);
         creatorChatEvents = new CreatorChatEvents(this);

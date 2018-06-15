@@ -1,5 +1,6 @@
 package pl.plajer.pinata;
 
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,12 +35,28 @@ public class PinataManager {
         for(String key : config.getConfigurationSection("storage").getKeys(false)) {
             String accessKey = "storage." + key + ".";
 
-            //todo item reader
-            PinataItem item = new PinataItem(PinataItem.ItemType.ITEM, 100.0);
-            item.setRepresentedMaterial(Material.PAPER);
-            item.setItem(new ItemStack(Material.PAPER, 1));
-            item.setAmount(1);
-            item.setHologramName("item");
+            List<PinataItem> pinataItems = new ArrayList<>();
+            for(int i = 0; i < config.getList("drops", new ArrayList<>()).size(); i++) {
+                if(config.getList("drops").get(i) == null) continue;
+                ItemStack item = (ItemStack) config.getList("drops").get(i);
+                ItemMeta meta = item.getItemMeta();
+                if(meta == null || !meta.hasLore()){
+                    PinataItem pinataItem = new PinataItem(item, 100.0);
+                    Bukkit.getLogger().warning("Item " + item.getType() + " from pinata " + key + " hasn't got chance set! Using 100% by default!");
+                    pinataItems.add(pinataItem);
+                }
+                boolean found = false;
+                for(String lore : item.getItemMeta().getLore()){
+                    if(lore.contains("#!Chance:")){
+                        found = true;
+                        pinataItems.add(new PinataItem(item, Double.parseDouble(lore.replace("#!Chance:", ""))));
+                        break;
+                    }
+                }
+                if(found) continue;
+                pinataItems.add(new PinataItem(item, 100.0));
+                Bukkit.getLogger().warning("Item " + item.getType() + " from pinata " + key + " hasn't got chance set! Using 100% by default!");
+            }
 
             String name = config.getString(accessKey + "display-name");
             EntityType eType = EntityType.valueOf(config.getString(accessKey + "mob-entity-type"));
@@ -55,7 +72,7 @@ public class PinataManager {
             int bTime = config.getInt(accessKey + "blindness-duration");
             boolean fullBlind = config.getBoolean(accessKey + "full-blindness-activated");
 
-            Pinata pinata = new Pinata(key, name, eType, color, pType, dType, health, cTime, price, viewTime, perm, bEnabled, bTime, fullBlind, Collections.singletonList(item));
+            Pinata pinata = new Pinata(key, name, eType, color, pType, dType, health, cTime, price, viewTime, perm, bEnabled, bTime, fullBlind, pinataItems);
             pinataList.add(pinata);
         }
     }
@@ -66,61 +83,6 @@ public class PinataManager {
             if(pinata.getID().equals(name)) return pinata;
         }
         return null;
-    }
-
-    @Deprecated
-    private PinataItem stringToItem(String string) {
-        String[] splited = string.split(";");
-        //- item;<name of item>;<amount>;<name of item and hologram>/<lore>/<next lore>...;<chance of drop>
-        //- command;<command string>;<name of hologram>;<chance of drop>
-        //- money;<amount of money>;<name of hologram>;<chance of drop>
-        //- gun;<name of valid gun>;<name of hologram>;<change of drop>
-        PinataItem item;
-        if(splited[0].equalsIgnoreCase("item")) {
-            item = new PinataItem(PinataItem.ItemType.valueOf(splited[0].toUpperCase()), Double.valueOf(splited[4]));
-        } else {
-            item = new PinataItem(PinataItem.ItemType.valueOf(splited[0].toUpperCase()), Double.valueOf(splited[3]));
-        }
-        switch(PinataItem.ItemType.valueOf(splited[0].toUpperCase())) {
-            case ITEM:
-                ItemStack stack = new ItemStack(Material.valueOf(splited[1].toUpperCase()), Integer.valueOf(splited[2]));
-                ItemMeta meta = stack.getItemMeta();
-                String[] properties = splited[3].split("/");
-                meta.setDisplayName(Utils.colorRawMessage(properties[0]));
-                List<String> lore = new ArrayList<>();
-                for(String s : Arrays.asList(properties)) {
-                    lore.add(Utils.colorRawMessage(s));
-                }
-                lore.remove(0);
-                meta.setLore(lore);
-                stack.setItemMeta(meta);
-                item.setItem(stack);
-                item.setHologramName(stack.getItemMeta().getDisplayName());
-                item.setRepresentedMaterial(stack.getType());
-                item.setAmount(stack.getAmount());
-                break;
-            case COMMAND:
-                item.setCommand(splited[1]);
-                item.setHologramName(Utils.colorRawMessage(splited[2]));
-                item.setRepresentedMaterial(Material.valueOf(plugin.getConfig().getString("command-item").toUpperCase()));
-                item.setAmount(1);
-                break;
-            case GUN:
-                item.setGunName(splited[1]);
-                item.setHologramName(Utils.colorRawMessage(splited[2]));
-                item.setRepresentedMaterial(Material.valueOf(plugin.getConfig().getString("gun-item").toUpperCase()));
-                item.setAmount(1);
-                break;
-            case MONEY:
-                item.setMoneyValue(Double.valueOf(splited[1]));
-                item.setHologramName(splited[2]);
-                item.setRepresentedMaterial(Material.valueOf(plugin.getConfig().getString("money-item").toUpperCase()));
-                item.setAmount(1);
-                break;
-            default:
-                break;
-        }
-        return item;
     }
 
     public List<Pinata> getPinataList() {

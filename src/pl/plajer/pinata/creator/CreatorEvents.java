@@ -7,9 +7,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
+import pl.plajer.pinata.pinata.PinataItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Plajer
@@ -76,13 +83,13 @@ public class CreatorEvents implements Listener {
                     break;
                 case "► Set damage type":
                     e.setCancelled(true);
-                    e.getWhoClicked().sendMessage("soon");
                     e.getWhoClicked().closeInventory();
+                    new SelectorInventories(pinata.getID()).openInventory((Player) e.getWhoClicked(), SelectorInventories.SelectorType.DAMAGE_MODIFIER);
                     break;
                 case "► Set drop type":
                     e.setCancelled(true);
-                    e.getWhoClicked().sendMessage("soon");
                     e.getWhoClicked().closeInventory();
+                    new SelectorInventories(pinata.getID()).openInventory((Player) e.getWhoClicked(), SelectorInventories.SelectorType.DROP_MODIFIER);
                     break;
                 case "► Set health":
                     e.setCancelled(true);
@@ -122,10 +129,52 @@ public class CreatorEvents implements Listener {
                     break;
                 case "► Edit pinata drops":
                     e.setCancelled(true);
-                    e.getWhoClicked().sendMessage("soon");
                     e.getWhoClicked().closeInventory();
+                    new SelectorInventories(pinata.getID()).openInventory((Player) e.getWhoClicked(), SelectorInventories.SelectorType.ITEM_EDITOR);
                     break;
             }
+            ConfigurationManager.saveConfig(config, "pinata_storage");
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent e){
+        if(e.getInventory().getName() == null) return;
+        if(e.getInventory().getName().contains("Modify drops: ")){
+            FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+            if(e.getInventory().firstEmpty() == 0) {
+                e.getPlayer().sendMessage("no items set, aborting!");
+                return;
+            }
+            List<ItemStack> items = new ArrayList<>();
+            for(ItemStack is : e.getInventory().getContents()) {
+                if(is == null) continue;
+                items.add(is);
+            }
+            config.set("storage." + e.getInventory().getName().replaceAll("Modify drops: ", "") + ".drops", items);
+
+            Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replaceAll("Modify drops: ", ""));
+            List<PinataItem> pinataItems = new ArrayList<>();
+            for(ItemStack is : items){
+                ItemMeta im = is.getItemMeta();
+                if(im == null || im.getLore() == null){
+                    pinataItems.add(new PinataItem(is, 100.0));
+                    e.getPlayer().sendMessage("Item " + is.getType() + " hasn't got chance set! Using 100% by default!");
+                    continue;
+                }
+                boolean found = false;
+                for(String lore : is.getItemMeta().getLore()){
+                    if(lore.contains("#!Chance:")){
+                        found = true;
+                        pinataItems.add(new PinataItem(is, Double.parseDouble(lore.replace("#!Chance:", ""))));
+                        break;
+                    }
+                }
+                if(found) continue;
+                pinataItems.add(new PinataItem(is, 100.0));
+                e.getPlayer().sendMessage("Item " + is.getType() + " hasn't got chance set! Using 100% by default!");
+            }
+            e.getPlayer().sendMessage("Items modified");
             ConfigurationManager.saveConfig(config, "pinata_storage");
         }
     }
