@@ -49,6 +49,7 @@ public class ArgumentsManager extends MainCommand {
             plugin.getPinataManager().getPinataList().clear();
             plugin.getPinataManager().loadPinatas();
             plugin.setupLocale();
+            ConfigurationManager.loadProperties();
         } catch(Exception e) {
             sender.sendMessage(Utils.colorMessage("Pinata.Config.Reload-Fail"));
             return;

@@ -16,7 +16,6 @@ import pl.plajer.pinata.commands.MainCommand;
 import pl.plajer.pinata.creator.CreatorChatEvents;
 import pl.plajer.pinata.creator.CreatorEvents;
 import pl.plajer.pinata.creator.SelectorEvents;
-import pl.plajer.pinata.creator.SelectorInventories;
 import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
@@ -43,11 +42,12 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         this.getLogger().log(Level.INFO, "Crack this pinata!");
+        setupLocale();
         ConfigurationManager.init(this);
+        ConfigurationManager.loadProperties();
         new MetricsLite(this);
         crateManager = new CrateManager(this);
         commands = new MainCommand(this, true);
-        setupLocale();
         new MenuHandler(this);
         new PinataListeners(this);
         new SelectorEvents(this);
@@ -119,9 +119,6 @@ public class Main extends JavaPlugin {
     }
 
     public void setupLocale() {
-        saveResource("messages_de.yml", true);
-        saveResource("messages_pl.yml", true);
-        saveResource("messages_hu.yml", true);
         switch(getConfig().getString("locale")) {
             case "en":
                 pinataLocale = PinataLocale.ENGLISH;
@@ -139,21 +136,6 @@ public class Main extends JavaPlugin {
                 pinataLocale = PinataLocale.ENGLISH;
                 break;
         }
-        validateLocaleVersion();
-    }
-
-    private void validateLocaleVersion() {
-        if(pinataLocale == PinataLocale.ENGLISH) return;
-        if(ConfigurationManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(ConfigurationManager.getLanguageMessage("File-Version-Do-Not-Edit"))) {
-            if(ConfigurationManager.getLanguageMessage("File-Version-Do-Not-Edit").equals(ConfigurationManager.getLanguageMessage("Language-Version"))) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Loaded locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " without problems!");
-                return;
-            }
-            Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Pinata] Locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " is outdated! Not every message will be translated!");
-            return;
-        }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Locale " + pinataLocale.getFormattedName() + " by " + pinataLocale.getAuthor() + " loading failed, it's outdated! Using default instead...");
-        pinataLocale = PinataLocale.ENGLISH;
     }
 
     public PinataLocale getLocale() {
@@ -243,10 +225,10 @@ public class Main extends JavaPlugin {
     }
 
     public enum PinataLocale {
-        DEUTSCH("Deutsch", "de", "Elternbrief"),
+        DEUTSCH("Deutsch", "de_DE", "Elternbrief"),
         ENGLISH("English", "", "Plajer"),
-        POLSKI("Polski", "pl", "Plajer"),
-        HUNGARIAN("Hungarian", "hu", "montlikadani");
+        POLSKI("Polski", "pl_PL", "Plajer"),
+        HUNGARIAN("Hungarian", "hu_HU", "montlikadani");
 
         String formattedName;
         String prefix;
