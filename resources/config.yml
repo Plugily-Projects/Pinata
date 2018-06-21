@@ -11,9 +11,6 @@ update-notify: true
 #en - English (default)
 #pl - Polish / Polski
 #de - German / Deutsch
-#nl - Dutch / Nederlands
-#fr - French / Français
-#es - Spanish / Español
 #hu - Hungarian / Magyar
 locale: en
 
