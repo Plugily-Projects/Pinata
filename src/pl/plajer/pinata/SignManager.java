@@ -49,6 +49,10 @@ public class SignManager implements Listener {
                     }
                     e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
                 }
+            } else {
+                e.getPlayer().sendMessage(Utils.colorMessage("Signs.No-Permission"));
+                e.setCancelled(true);
+                return;
             }
         }
     }
@@ -58,11 +62,11 @@ public class SignManager implements Listener {
         if(e.getBlock().getType().equals(Material.SIGN) || e.getBlock().getType().equals(Material.SIGN_POST) || e.getBlock().getType().equals(Material.WALL_SIGN)) {
             Sign s = (Sign) e.getBlock().getState();
             if(s.getLine(0).equals(Utils.colorMessage("Signs.Lines.First"))) {
-                if(e.getPlayer().hasPermission("pinata.admin.sign.destroy")) {
-                    //todo wtf
-                    e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
-                } else {
+                if(!e.getPlayer().hasPermission("pinata.admin.sign.destroy")) {
                     e.getPlayer().sendMessage(Utils.colorMessage("Signs.No-Permission"));
+                    e.setCancelled(true);
+					return;
+                } else {
                 }
             }
         }
@@ -83,6 +87,7 @@ public class SignManager implements Listener {
                 }
                 if(!e.getPlayer().hasPermission("pinata.player.sign")) {
                     e.getPlayer().sendMessage(Utils.colorMessage("Sings.No-Permission"));
+                    e.setCancelled(true);
                     return;
                 }
                 if(!plugin.getConfig().getBoolean("disabled-worlds-exclusions.signs")) {
