@@ -201,12 +201,16 @@ class PinataListeners implements Listener {
                     e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("WOLF_HOWL"), 1, 1);
                 } else {
                     e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("WITHER_DEATH"), 1, 1);
+                } else {
+                    e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("BLAZE_DEATH"), 1, 1);
                 }
             } else {
                 if(r.nextBoolean()) {
                     e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WOLF_HOWL, 1, 1);
                 } else {
                     e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 1);
+                } else {
+                    e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_BLAZE_DEATH, 1, 1);
                 }
             }
             final ArrayList<Entity> bats = new ArrayList<>();
