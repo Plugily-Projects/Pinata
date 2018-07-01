@@ -63,9 +63,9 @@ public class SignManager implements Listener {
             Sign s = (Sign) e.getBlock().getState();
             if(s.getLine(0).equals(Utils.colorMessage("Signs.Lines.First"))) {
                 if(!e.getPlayer().hasPermission("pinata.admin.sign.destroy")) {
-                    e.getPlayer().sendMessage(Utils.colorMessage("Signs.No-Permission"));
-                    e.setCancelled(true);
-					return;
+		    e.getPlayer().sendMessage(Utils.colorMessage("Signs.No-Permission"));
+		    e.setCancelled(true);
+		    return;
                 } else {
                 }
             }
