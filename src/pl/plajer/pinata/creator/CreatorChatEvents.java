@@ -39,10 +39,11 @@ public class CreatorChatEvents implements Listener {
                         EntityType type = EntityType.valueOf(e.getMessage().toUpperCase());
                         reaction.getPinata().setEntityType(type);
                         config.set("storage." + reaction.getPinata().getID() + ".mob-entity-type", type.name());
-                        e.getPlayer().sendMessage("Entity type of pinata " + reaction.getPinata().getID() + " has been set to " + type.name());
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Entity-Set").replace("%pinataid%", reaction.getPinata().getID() + "")
+                                                  .replace("%name%", type.name()));
                         chatReactions.remove(e.getPlayer());
                     } catch(IllegalArgumentException ex) {
-                        e.getPlayer().sendMessage("That entity doesn't exist! Use following types:");
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Entity-Does-Not-Exist"));
                         StringBuilder mobs = new StringBuilder();
                         for(EntityType en : EntityType.values()) {
                             if(en == null || en.getName() == null) continue;
@@ -53,62 +54,68 @@ public class CreatorChatEvents implements Listener {
                     break;
                 case SET_HEALTH:
                     if(!NumberUtils.isNumber(e.getMessage())) {
-                        e.getPlayer().sendMessage("Following message is not a number!");
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Not-Number"));
                         return;
                     }
                     reaction.getPinata().setHealth(Double.parseDouble(e.getMessage()));
                     config.set("storage." + reaction.getPinata().getID() + ".health-amount", Double.parseDouble(e.getMessage()));
-                    e.getPlayer().sendMessage("Health of pinata " + reaction.getPinata().getID() + " has been set to " + e.getMessage());
+                    e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Pinata-Health-Set").replace("%pinataid%", reaction.getPinata().getID() + "")
+                                              .replace("%message%", e.getMessage()));
                     chatReactions.remove(e.getPlayer());
                     break;
                 case SET_CRATE_TIME:
                     if(!NumberUtils.isNumber(e.getMessage())) {
-                        e.getPlayer().sendMessage("Following message is not a number!");
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Not-Number"));
                         return;
                     }
                     reaction.getPinata().setCrateTime(Integer.parseInt(e.getMessage()));
                     config.set("storage." + reaction.getPinata().getID() + ".crate-display-time-alive", Integer.parseInt(e.getMessage()));
-                    e.getPlayer().sendMessage("Crate time of pinata " + reaction.getPinata().getID() + " has been set to " + e.getMessage());
+                    e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Crate-Time-Set").replace("%pinataid%", reaction.getPinata().getID() + "")
+                                              .replace("%message%", e.getMessage()));
                     chatReactions.remove(e.getPlayer());
                     break;
                 case SET_DROP_VIEW_TIME:
                     if(!NumberUtils.isNumber(e.getMessage())) {
-                        e.getPlayer().sendMessage("Following message is not a number!");
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Not-Number"));
                         return;
                     }
                     reaction.getPinata().setDropViewTime(Integer.parseInt(e.getMessage()));
                     config.set("storage." + reaction.getPinata().getID() + ".timer-display", Integer.parseInt(e.getMessage()));
-                    e.getPlayer().sendMessage("Drop view time of pinata " + reaction.getPinata().getID() + " has been set to " + e.getMessage());
+                    e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Pinata-Drop-View-Time-Set").replace("%pinataid%", reaction.getPinata().getID() + "")
+                                              .replace("%message%", e.getMessage()));
                     chatReactions.remove(e.getPlayer());
                     break;
                 case SET_BLINDNESS_DURATION:
                     if(!NumberUtils.isNumber(e.getMessage())) {
-                        e.getPlayer().sendMessage("Following message is not a number!");
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Not-Number"));
                         return;
                     }
                     reaction.getPinata().setBlindnessTime(Integer.parseInt(e.getMessage()));
                     config.set("storage." + reaction.getPinata().getID() + ".blindness-duration", Integer.parseInt(e.getMessage()));
-                    e.getPlayer().sendMessage("Blindness duration of pinata " + reaction.getPinata().getID() + " has been set to " + e.getMessage());
+                    e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Blindess-Duration-Set").replace("%pinataid%", reaction.getPinata().getID())
+                                              .replace("%message%", e.getMessage()));
                     chatReactions.remove(e.getPlayer());
                     break;
                 case SET_BLINDNESS:
                     if(BooleanUtils.toBooleanObject(e.getMessage()) == null) {
-                        e.getPlayer().sendMessage("Following message is not a boolean!");
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Not-Boolean"));
                         return;
                     }
                     reaction.getPinata().setBlindnessEnabled(BooleanUtils.toBoolean(e.getMessage()));
                     config.set("storage." + reaction.getPinata().getID() + ".blindness-activated", BooleanUtils.toBoolean(e.getMessage()));
-                    e.getPlayer().sendMessage("Blindness of of pinata " + reaction.getPinata().getID() + " has been set to " + e.getMessage());
+                    e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Blindess-Set").replace("%pinataid%", reaction.getPinata().getID())
+                                              .replace("%message%", e.getMessage()));
                     chatReactions.remove(e.getPlayer());
                     break;
                 case SET_FULL_BLINDNESS:
                     if(BooleanUtils.toBooleanObject(e.getMessage()) == null) {
-                        e.getPlayer().sendMessage("Following message is not a boolean!");
+                        e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Not-Boolean"));
                         return;
                     }
                     reaction.getPinata().setFullBlindness(BooleanUtils.toBoolean(e.getMessage()));
                     config.set("storage." + reaction.getPinata().getID() + ".full-blindness-activated", BooleanUtils.toBoolean(e.getMessage()));
-                    e.getPlayer().sendMessage("Full blindness of of pinata " + reaction.getPinata().getID() + " has been set to " + e.getMessage());
+                    e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Full-Blindess-Set").replace("%pinataid%", reaction.getPinata().getID())
+                                              .replace("%message%", e.getMessage()));
                     chatReactions.remove(e.getPlayer());
                     break;
             }
