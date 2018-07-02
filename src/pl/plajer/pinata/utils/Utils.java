@@ -74,4 +74,13 @@ public class Utils {
         p.openInventory(pinatasMenu);
     }
 
+    public static void addLore(ItemStack itemStack, String string) {
+        ItemMeta meta = itemStack.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        if(meta != null && meta.hasLore()) lore.addAll(meta.getLore());
+        lore.add(string);
+        meta.setLore(lore);
+        itemStack.setItemMeta(meta);
+    }
+
 }

@@ -1,6 +1,8 @@
 package pl.plajer.pinata.commands;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -319,6 +321,39 @@ public class ArgumentsManager extends MainCommand {
                 }});
         ConfigurationManager.saveConfig(config, "pinata_storage");
         sender.sendMessage("New pinata with ID " + pinataID + " created!");
+    }
+
+    public void applyChanceToItem(CommandSender sender, String str){
+        if(!isSenderPlayer(sender)) return;
+        if(!hasPermission(sender, "pinata.admin.setchance")) return;
+        Player p = (Player) sender;
+        if(p.getItemInHand() == null || p.getItemInHand().getType() == Material.AIR){
+            sender.sendMessage("You must hold any item!");
+            return;
+        }
+        if(!NumberUtils.isNumber(str)){
+            sender.sendMessage("Chance argument isn't a number!");
+            return;
+        }
+        double chance = Double.parseDouble(str);
+        ItemStack item = p.getItemInHand();
+        if(item.hasItemMeta() && item.getItemMeta().hasLore()) {
+            ItemMeta meta = item.getItemMeta();
+            List<String> lore = item.getItemMeta().getLore();
+            for(String search : lore) {
+                if(search.contains("#!Chance")) {
+                    lore.remove(search);
+                    break;
+                }
+            }
+            lore.add(0, "#!Chance:" + chance);
+            meta.setLore(lore);
+            item.setItemMeta(meta);
+            p.sendMessage("Chance updated to " + chance);
+        } else {
+            Utils.addLore(item, "#!Chance:" + chance);
+            p.sendMessage("Chance set to " + chance);
+        }
     }
 
 }

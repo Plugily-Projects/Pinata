@@ -2,7 +2,6 @@ package pl.plajer.pinata;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.shampaggon.crackshot.CSUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -11,7 +10,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -47,16 +45,14 @@ class PinataListeners implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         for(Entity en : Bukkit.getServer().getWorld(e.getPlayer().getWorld().getName()).getEntities()) {
-            if(en instanceof Sheep) {
-                if(plugin.getCommands().getPinata().containsKey(en)) {
-                    if(plugin.getCommands().getPinata().get(en).getPlayer().equals(e.getPlayer())) {
-                        plugin.getCommands().getPinata().get(en).getFence().getBlock().setType(Material.AIR);
-                        plugin.getCommands().getPinata().get(en).getLeash().remove();
-                        en.remove();
-                        plugin.getCommands().getPinata().remove(en);
-                        if(plugin.getCommands().getUsers().contains(e.getPlayer())) {
-                            plugin.getCommands().getUsers().remove(e.getPlayer());
-                        }
+            if(plugin.getCommands().getPinata().containsKey(en)) {
+                if(plugin.getCommands().getPinata().get(en).getPlayer().equals(e.getPlayer())) {
+                    plugin.getCommands().getPinata().get(en).getFence().getBlock().setType(Material.AIR);
+                    plugin.getCommands().getPinata().get(en).getLeash().remove();
+                    en.remove();
+                    plugin.getCommands().getPinata().remove(en);
+                    if(plugin.getCommands().getUsers().contains(e.getPlayer())) {
+                        plugin.getCommands().getUsers().remove(e.getPlayer());
                     }
                 }
             }
@@ -201,19 +197,15 @@ class PinataListeners implements Listener {
                     e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("WOLF_HOWL"), 1, 1);
                 } else {
                     e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("WITHER_DEATH"), 1, 1);
-                } else {
-                    e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("BLAZE_DEATH"), 1, 1);
                 }
             } else {
                 if(r.nextBoolean()) {
                     e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WOLF_HOWL, 1, 1);
                 } else {
                     e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 1);
-                } else {
-                    e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_BLAZE_DEATH, 1, 1);
                 }
             }
-            final ArrayList<Entity> bats = new ArrayList<>();
+            final List<Entity> bats = new ArrayList<>();
             for(int i = 0; i < 5; i++) {
                 final Entity bat = e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), EntityType.BAT);
                 bat.setCustomName(Utils.colorRawMessage("&6Halloween!"));
@@ -233,7 +225,7 @@ class PinataListeners implements Listener {
         e.setDroppedExp(0);
         plugin.getCommands().getPinata().get(e.getEntity()).getFence().getBlock().setType(Material.AIR);
         plugin.getCommands().getPinata().get(e.getEntity()).getLeash().remove();
-        final ArrayList<Item> itemsToGive = new ArrayList<>();
+        final List<Item> itemsToGive = new ArrayList<>();
         final Player p = e.getEntity().getKiller() instanceof Player ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
         //drops won't show if killer is environment and pinata player is not assigned. This pinata will be always in our hearts [*]
         if(p == null) return;
@@ -247,42 +239,44 @@ class PinataListeners implements Listener {
                 p.removePotionEffect(PotionEffectType.NIGHT_VISION);
             }
         }
-        for(PinataItem item : pinata.getDrops()) {
-            if(ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
-                final Item dropItem = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(item.getItem().getType()));
-                dropItem.setPickupDelay(1000);
-                if(plugin.isPluginEnabled("HolographicDisplays")) {
-                    final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
-                    hologram.appendTextLine(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name() + " x" + item.getItem().getAmount()));
-                    new BukkitRunnable() {
-                        int ticksRun;
+        if(pinata.getDropType() == Pinata.DropType.DEATH) {
+            for(PinataItem item : pinata.getDrops()) {
+                if(ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
+                    final Item dropItem = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(item.getItem().getType()));
+                    dropItem.setPickupDelay(1000);
+                    if(plugin.isPluginEnabled("HolographicDisplays")) {
+                        final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
+                        hologram.appendTextLine(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name() + " x" + item.getItem().getAmount()));
+                        new BukkitRunnable() {
+                            int ticksRun;
 
-                        @Override
-                        public void run() {
-                            ticksRun++;
-                            hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
-                            if(ticksRun > pinata.getDropViewTime() * 20) {
-                                hologram.delete();
-                                dropItem.remove();
-                                cancel();
+                            @Override
+                            public void run() {
+                                ticksRun++;
+                                hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
+                                if(ticksRun > pinata.getDropViewTime() * 20) {
+                                    hologram.delete();
+                                    dropItem.remove();
+                                    cancel();
+                                }
                             }
-                        }
-                    }.runTaskTimer(plugin, 1L, 1L);
-                } else {
-                    Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, pinata.getDropViewTime() * 20);
+                        }.runTaskTimer(plugin, 1L, 1L);
+                    } else {
+                        Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, pinata.getDropViewTime() * 20);
+                    }
+                    //todo cmd
+                    p.getInventory().addItem(item.getItem());
+                    p.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name()).replaceAll("%amount%", String.valueOf(item.getItem().getAmount())));
                 }
-                //todo cmd
-                p.getInventory().addItem(item.getItem());
-                p.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name()).replaceAll("%amount%", String.valueOf(item.getItem().getAmount())));
+                items.add(item);
+                i++;
             }
-            items.add(item);
-            i++;
+            if(i == 0) {
+                p.sendMessage(Utils.colorMessage("Pinata.Drop.No-Drops"));
+            }
         }
         PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), e.getEntity(), pinata, items);
         Bukkit.getPluginManager().callEvent(pde);
-        if(i == 0) {
-            p.sendMessage(Utils.colorMessage("Pinata.Drop.No-Drops"));
-        }
         plugin.getCommands().getPinata().remove(e.getEntity());
         itemsToGive.clear();
     }

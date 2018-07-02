@@ -155,11 +155,12 @@ public class CreatorEvents implements Listener {
 
             Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replaceAll("Modify drops: ", ""));
             List<PinataItem> pinataItems = new ArrayList<>();
+            int i = 1; //count from 1 not 0
             for(ItemStack is : items){
                 ItemMeta im = is.getItemMeta();
                 if(im == null || im.getLore() == null){
                     pinataItems.add(new PinataItem(is, 100.0));
-                    e.getPlayer().sendMessage("Item " + is.getType() + " hasn't got chance set! Using 100% by default!");
+                    e.getPlayer().sendMessage("Item " + is.getType() + " at position " + i + " hasn't got chance set! Using 100% by default!");
                     continue;
                 }
                 boolean found = false;
@@ -172,7 +173,8 @@ public class CreatorEvents implements Listener {
                 }
                 if(found) continue;
                 pinataItems.add(new PinataItem(is, 100.0));
-                e.getPlayer().sendMessage("Item " + is.getType() + " hasn't got chance set! Using 100% by default!");
+                e.getPlayer().sendMessage("Item " + is.getType() + " at position " + i + " hasn't got chance set! Using 100% by default!");
+                i++;
             }
             e.getPlayer().sendMessage("Items modified");
             ConfigurationManager.saveConfig(config, "pinata_storage");

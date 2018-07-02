@@ -68,7 +68,7 @@ public class ConfigurationManager {
 
     public static String getLanguageMessage(String message) {
         if(plugin.getLocale() != Main.PinataLocale.ENGLISH) {
-            return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message), "ERR_MESSAGE_NOT_FOUND");
+            return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message), "ERR_MESSAGE_NOT_FOUND access string: " + message);
         }
         return getConfig("messages").getString(message);
     }

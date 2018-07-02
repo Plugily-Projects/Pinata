@@ -2,31 +2,23 @@ package pl.plajer.pinata;
 
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
-import pl.plajer.pinata.utils.Utils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 
 public class PinataManager {
 
     private List<Pinata> pinataList = new ArrayList<>();
     private Main plugin;
 
-    PinataManager(Main plugin) {
+    public PinataManager(Main plugin) {
         this.plugin = plugin;
     }
 
@@ -36,18 +28,18 @@ public class PinataManager {
             String accessKey = "storage." + key + ".";
 
             List<PinataItem> pinataItems = new ArrayList<>();
-            for(int i = 0; i < config.getList("drops", new ArrayList<>()).size(); i++) {
-                if(config.getList("drops").get(i) == null) continue;
-                ItemStack item = (ItemStack) config.getList("drops").get(i);
+            for(int i = 0; i < config.getList(accessKey + "drops", new ArrayList<>()).size(); i++) {
+                if(config.getList(accessKey + "drops").get(i) == null) continue;
+                ItemStack item = (ItemStack) config.getList(accessKey + "drops").get(i);
                 ItemMeta meta = item.getItemMeta();
-                if(meta == null || !meta.hasLore()){
-                    PinataItem pinataItem = new PinataItem(item, 100.0);
+                if(meta == null || !meta.hasLore()) {
                     Bukkit.getLogger().warning("Item " + item.getType() + " from pinata " + key + " hasn't got chance set! Using 100% by default!");
-                    pinataItems.add(pinataItem);
+                    pinataItems.add(new PinataItem(item, 100.0));
+                    continue;
                 }
                 boolean found = false;
-                for(String lore : item.getItemMeta().getLore()){
-                    if(lore.contains("#!Chance:")){
+                for(String lore : item.getItemMeta().getLore()) {
+                    if(lore.contains("#!Chance:")) {
                         found = true;
                         pinataItems.add(new PinataItem(item, Double.parseDouble(lore.replace("#!Chance:", ""))));
                         break;
@@ -57,6 +49,7 @@ public class PinataManager {
                 pinataItems.add(new PinataItem(item, 100.0));
                 Bukkit.getLogger().warning("Item " + item.getType() + " from pinata " + key + " hasn't got chance set! Using 100% by default!");
             }
+            Bukkit.broadcastMessage(pinataItems.size() + "total");
 
             String name = config.getString(accessKey + "display-name");
             EntityType eType = EntityType.valueOf(config.getString(accessKey + "mob-entity-type"));

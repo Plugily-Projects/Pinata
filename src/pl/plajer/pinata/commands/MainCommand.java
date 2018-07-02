@@ -65,7 +65,11 @@ public class MainCommand implements CommandExecutor {
         } else if(args[0].equalsIgnoreCase("reloadconfig")) {
             argumentsManager.reloadConfig(sender);
         } else if(args[0].equalsIgnoreCase("setchance")){
-            //todo
+            if(args.length == 1) {
+                sender.sendMessage("Please type chance!");
+            } else {
+                argumentsManager.applyChanceToItem(sender, args[1]);
+            }
         } else if(args[0].equalsIgnoreCase("create")) {
             argumentsManager.createPinata(sender, args);
         } else if(args[0].equalsIgnoreCase("setcrate")) {

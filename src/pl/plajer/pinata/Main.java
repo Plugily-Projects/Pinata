@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Sheep;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.pinata.commands.MainCommand;
@@ -98,16 +97,14 @@ public class Main extends JavaPlugin {
     public void onDisable() {
         for(World world : Bukkit.getServer().getWorlds()) {
             for(Entity entity : Bukkit.getServer().getWorld(world.getName()).getEntities()) {
-                if(entity instanceof Sheep) {
-                    if(commands.getPinata().containsKey(entity)) {
-                        if(commands.getPinata().get(entity).getPlayer() != null) {
-                            commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorMessage("Pinata.Config.Reload-Removed"));
-                        }
-                        commands.getPinata().get(entity).getFence().getBlock().setType(Material.AIR);
-                        commands.getPinata().get(entity).getLeash().remove();
-                        entity.remove();
-                        commands.getPinata().remove(entity);
+                if(commands.getPinata().containsKey(entity)) {
+                    if(commands.getPinata().get(entity).getPlayer() != null) {
+                        commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorMessage("Pinata.Config.Reload-Removed"));
                     }
+                    commands.getPinata().get(entity).getFence().getBlock().setType(Material.AIR);
+                    commands.getPinata().get(entity).getLeash().remove();
+                    entity.remove();
+                    commands.getPinata().remove(entity);
                 }
             }
         }
@@ -226,7 +223,7 @@ public class Main extends JavaPlugin {
 
     public enum PinataLocale {
         DEUTSCH("Deutsch", "de_DE", "Elternbrief"),
-        ENGLISH("English", "", "Plajer"),
+        ENGLISH("English", "en_GB", "Plajer"),
         POLSKI("Polski", "pl_PL", "Plajer"),
         HUNGARIAN("Hungarian", "hu_HU", "montlikadani");
 

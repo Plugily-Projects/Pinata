@@ -34,7 +34,7 @@ public class SelectorInventories {
         backMeta.setDisplayName(ChatColor.RED + "Back to editor");
         back.setItemMeta(backMeta);
 
-        Inventory dmg = Bukkit.createInventory(null, 9, "Modify drop type: " + name);
+        Inventory dmg = Bukkit.createInventory(null, 9, "Modify damage type: " + name);
 
         ItemStack item = new ItemStack(Material.NAME_TAG, 1);
         ItemMeta meta = item.getItemMeta();
@@ -50,7 +50,7 @@ public class SelectorInventories {
         dmg.setItem(1, item);
         dmg.setItem(8, back);
 
-        Inventory drop = Bukkit.createInventory(null, 9, "Modify damage type: " + name);
+        Inventory drop = Bukkit.createInventory(null, 9, "Modify drop type: " + name);
         meta.setDisplayName(ChatColor.GOLD + "On punch");
         meta.setLore(Arrays.asList(ChatColor.GRAY + "Click to set punch drop type", ChatColor.GRAY + "Items will drop when pinata is damaged"));
         item.setItemMeta(meta);
