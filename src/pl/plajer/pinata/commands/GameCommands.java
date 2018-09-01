@@ -45,6 +45,7 @@ import pl.plajer.pinata.handlers.language.LanguageManager;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataFactory;
+import pl.plajer.pinata.utils.PinataUtils;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.MinigameUtils;
@@ -254,15 +255,11 @@ public class GameCommands extends MainCommand {
       p.sendMessage(Utils.colorMessage("Pinata.Not-Found"));
       return;
     }
-    if (pinata.getPrice() == -1) {
-      p.sendMessage(Utils.colorMessage("Pinata.Selling.Not-For-Sale"));
+    if(!PinataUtils.checkForSale(pinata, p)) {
       return;
     }
-    if (plugin.getConfig().getBoolean("using-permissions")) {
-      if (!p.hasPermission(pinata.getPermission())) {
-        p.sendMessage(Utils.colorMessage("Pinata.Create.No-Permission"));
-        return;
-      }
+    if(!PinataUtils.checkPermissions(pinata, p)) {
+      return;
     }
     if (p.hasPermission("pinata.admin.freeall")) {
       Utils.createPinataAtPlayer(p, p.getLocation(), pinata);

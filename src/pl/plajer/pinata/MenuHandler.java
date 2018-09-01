@@ -32,6 +32,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
+import pl.plajer.pinata.utils.PinataUtils;
 import pl.plajer.pinata.utils.Utils;
 
 class MenuHandler implements Listener {
@@ -55,7 +56,9 @@ class MenuHandler implements Listener {
     final ItemMeta item = e.getCurrentItem().getItemMeta();
     final String pinataName = item.getDisplayName().replaceAll(Utils.colorRawMessage("&6"), "");
     Pinata pinata = plugin.getPinataManager().getPinataByName(pinataName);
-    if (pinata == null) return;
+    if (pinata == null) {
+      return;
+    }
     if (e.getInventory().getName().equals(Utils.colorMessage("Menus.List-Menu.Inventory-Name"))) {
       e.setCancelled(true);
       if (e.getClick() == ClickType.LEFT) {
@@ -106,9 +109,7 @@ class MenuHandler implements Listener {
             return;
           }
         }
-        if (pinata.getPrice() == -1) {
-          e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Selling.Not-For-Sale"));
-          e.getWhoClicked().closeInventory();
+        if(!PinataUtils.checkForSale(pinata, (Player) e.getWhoClicked())){
           return;
         }
         if (!plugin.getCommands().getUsers().isEmpty()) {
@@ -118,12 +119,8 @@ class MenuHandler implements Listener {
             return;
           }
         }
-        if (plugin.getConfig().getBoolean("using-permissions")) {
-          if (!e.getWhoClicked().hasPermission(pinata.getPermission())) {
-            e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Create.No-Permission"));
-            e.getWhoClicked().closeInventory();
-            return;
-          }
+        if(!PinataUtils.checkPermissions(pinata, (Player) e.getWhoClicked())){
+          return;
         }
         if (e.getWhoClicked().hasPermission("pinata.admin.freeall")) {
           LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, pinata.getEntityType());
