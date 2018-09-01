@@ -63,6 +63,29 @@ public class Main extends JavaPlugin {
   private List<String> disabledWorlds = new ArrayList<>();
   private Economy econ = null;
   private boolean forceDisable = false;
+  private static boolean debug;
+
+  public static void debug(LogLevel level, String thing) {
+    if (debug) {
+      switch (level) {
+        case INFO:
+          Bukkit.getConsoleSender().sendMessage("[Pinata Debugger] " + thing);
+          break;
+        case WARN:
+          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Pinata Debugger] " + thing);
+          break;
+        case ERROR:
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata Debugger] " + thing);
+          break;
+        case WTF:
+          Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Pinata Debugger] [SEVERE]" + thing);
+          break;
+        case TASK:
+          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Pinata Debugger] Running task '" + thing + "'");
+          break;
+      }
+    }
+  }
 
   @Override
   public void onEnable() {
@@ -87,6 +110,7 @@ public class Main extends JavaPlugin {
       getServer().getPluginManager().disablePlugin(this);
       return;
     }
+    debug = getConfig().getBoolean("Debug", false);
     getLogger().log(Level.INFO, "Crack this pinata!");
     initializeClasses();
     if (isPluginEnabled("HolographicDisplays")) hologramScheduler();
@@ -106,7 +130,7 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    if(forceDisable) return;
+    if (forceDisable) return;
     for (World world : Bukkit.getServer().getWorlds()) {
       for (Entity entity : Bukkit.getServer().getWorld(world.getName()).getEntities()) {
         if (commands.getPinata().containsKey(entity)) {
@@ -232,6 +256,10 @@ public class Main extends JavaPlugin {
     }
     econ = rsp.getProvider();
     return econ != null;
+  }
+
+  public enum LogLevel {
+    INFO, WARN, ERROR, WTF /*what a terrible failure*/, TASK
   }
 
 }
