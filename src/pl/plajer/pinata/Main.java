@@ -68,29 +68,7 @@ public class Main extends JavaPlugin {
     ServiceRegistry.registerService(this);
     LanguageManager.init(this);
     getLogger().log(Level.INFO, "Crack this pinata!");
-    new MetricsLite(this);
-    crateManager = new CrateManager(this);
-    commands = new MainCommand(this, true);
-    new MenuHandler(this);
-    new PinataListeners(this);
-    new SelectorEvents(this);
-    pinataManager = new PinataManager(this);
-    signManager = new SignManager(this);
-    creatorChatEvents = new CreatorChatEvents(this);
-    saveDefaultConfig();
-    for (String file : filesToGenerate) {
-      ConfigUtils.getConfig(this, file);
-    }
-    setupDependencies();
-    //todo LanguageMigrator
-    for (String world : getConfig().getStringList("disabled-worlds")) {
-      disabledWorlds.add(world);
-      getLogger().info("Pinata creation blocked at world " + world + "!");
-    }
-    crateManager.loadCrates();
-    pinataManager.loadPinatas();
-    new CreatorEvents(this);
-    crateManager.particleScheduler();
+    initializeClasses();
     if (isPluginEnabled("HolographicDisplays")) hologramScheduler();
     String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
     if (getConfig().getBoolean("update-notify")) {
@@ -126,6 +104,32 @@ public class Main extends JavaPlugin {
     for (Hologram h : HologramsAPI.getHolograms(this)) {
       h.delete();
     }
+  }
+
+  private void initializeClasses() {
+    new MetricsLite(this);
+    crateManager = new CrateManager(this);
+    commands = new MainCommand(this, true);
+    new MenuHandler(this);
+    new PinataListeners(this);
+    new SelectorEvents(this);
+    pinataManager = new PinataManager(this);
+    signManager = new SignManager(this);
+    creatorChatEvents = new CreatorChatEvents(this);
+    saveDefaultConfig();
+    for (String file : filesToGenerate) {
+      ConfigUtils.getConfig(this, file);
+    }
+    setupDependencies();
+    //todo LanguageMigrator
+    for (String world : getConfig().getStringList("disabled-worlds")) {
+      disabledWorlds.add(world);
+      getLogger().info("Pinata creation blocked at world " + world + "!");
+    }
+    crateManager.loadCrates();
+    pinataManager.loadPinatas();
+    new CreatorEvents(this);
+    crateManager.particleScheduler();
   }
 
   public CrateManager getCrateManager() {
