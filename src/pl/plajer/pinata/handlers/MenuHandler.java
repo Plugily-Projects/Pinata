@@ -110,7 +110,7 @@ public class MenuHandler implements Listener {
             return;
           }
         }
-        if(!PinataUtils.checkForSale(pinata, (Player) e.getWhoClicked())){
+        if (!PinataUtils.checkForSale(pinata, (Player) e.getWhoClicked())) {
           return;
         }
         if (!plugin.getCommands().getUsers().isEmpty()) {
@@ -120,7 +120,7 @@ public class MenuHandler implements Listener {
             return;
           }
         }
-        if(!PinataUtils.checkPermissions(pinata, (Player) e.getWhoClicked())){
+        if (!PinataUtils.checkPermissions(pinata, (Player) e.getWhoClicked())) {
           return;
         }
         if (e.getWhoClicked().hasPermission("pinata.admin.freeall")) {

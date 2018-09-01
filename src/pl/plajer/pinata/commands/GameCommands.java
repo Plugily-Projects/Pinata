@@ -255,10 +255,10 @@ public class GameCommands extends MainCommand {
       p.sendMessage(Utils.colorMessage("Pinata.Not-Found"));
       return;
     }
-    if(!PinataUtils.checkForSale(pinata, p)) {
+    if (!PinataUtils.checkForSale(pinata, p)) {
       return;
     }
-    if(!PinataUtils.checkPermissions(pinata, p)) {
+    if (!PinataUtils.checkPermissions(pinata, p)) {
       return;
     }
     if (p.hasPermission("pinata.admin.freeall")) {
