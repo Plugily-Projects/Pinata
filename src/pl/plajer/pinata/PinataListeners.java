@@ -99,38 +99,40 @@ class PinataListeners implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPinataDamage(EntityDamageByEntityEvent e) {
     for (Pinata pinata : plugin.getPinataManager().getPinataList()) {
-      if (pinata.getName().equals(e.getEntity().getCustomName())) {
-        if (plugin.getCommands().getPinata().get(e.getEntity()) != null) {
-          if (plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() == null) {
-            //the type MUST be public, because pinata creator is not assigned
-            e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
-            e.setCancelled(false);
-            return;
-          }
-          if (pinata.getPinataType() == Pinata.PinataType.PUBLIC) {
-            e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
-            //override World Guard blocking
-            e.setCancelled(false);
-          } else /* the type is private */ {
-            if (plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager())) {
-              if (plugin.getConfig().getBoolean("halloween-mode")) {
-                if (!Bukkit.getServer().getVersion().contains("1.8")) {
-                  e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_GHAST_HURT, 1, 1);
-                }
-              }
-              e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
-              e.setCancelled(false);
-            } else {
-              e.getDamager().sendMessage(Utils.colorMessage("Pinata.Not-Own"));
-              e.setCancelled(true);
-            }
-          }
-          if (plugin.getConfig().getDouble("damage-modifier") != 0.0) {
-            e.setDamage(plugin.getConfig().getDouble("damage-modifier"));
-          }
-        }
+      if (!pinata.getName().equals(e.getEntity().getCustomName())) {
+        continue;
+      }
+      if (plugin.getCommands().getPinata().get(e.getEntity()) == null) {
+        continue;
+      }
+      if (plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() == null) {
+        //the type MUST be public, because pinata creator is not assigned
+        e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
+        e.setCancelled(false);
         return;
       }
+      if (pinata.getPinataType() == Pinata.PinataType.PUBLIC) {
+        e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
+        //override World Guard blocking
+        e.setCancelled(false);
+      } else /* the type is private */ {
+        if (plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager())) {
+          if (plugin.getConfig().getBoolean("halloween-mode")) {
+            if (!Bukkit.getServer().getVersion().contains("1.8")) {
+              e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_GHAST_HURT, 1, 1);
+            }
+          }
+          e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
+          e.setCancelled(false);
+        } else {
+          e.getDamager().sendMessage(Utils.colorMessage("Pinata.Not-Own"));
+          e.setCancelled(true);
+        }
+      }
+      if (plugin.getConfig().getDouble("damage-modifier") != 0.0) {
+        e.setDamage(plugin.getConfig().getDouble("damage-modifier"));
+      }
+      return;
     }
   }
 
