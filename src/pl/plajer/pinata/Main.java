@@ -50,8 +50,6 @@ import pl.plajerlair.core.utils.UpdateChecker;
 
 public class Main extends JavaPlugin {
 
-  private final int MESSAGES_FILE_VERSION = 10;
-  private final int CONFIG_FILE_VERSION = 5;
   private List<String> filesToGenerate = Arrays.asList("crates", "pinatas", "messages", "pinata_storage");
   private CrateManager crateManager;
   private MainCommand commands;
@@ -80,17 +78,7 @@ public class Main extends JavaPlugin {
       ConfigUtils.getConfig(this, file);
     }
     setupDependencies();
-    if (!ConfigUtils.getConfig(this, "messages").isSet("File-Version-Do-Not-Edit") || !ConfigUtils.getConfig(this, "messages").get("File-Version-Do-Not-Edit").equals(MESSAGES_FILE_VERSION)) {
-      getLogger().info("Your messages file is outdated! Updating...");
-      //todo updater methods
-      getLogger().info("File successfully updated!");
-    }
-    if (!getConfig().isSet("File-Version-Do-Not-Edit") || !getConfig().get("File-Version-Do-Not-Edit").equals(CONFIG_FILE_VERSION)) {
-      getLogger().info("Your config file is outdated! Updating...");
-      //todo updater methods
-      getLogger().info("File successfully updated!");
-      //Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Warning! Your config.yml file was updated and all comments were removed! If you want to get comments back please generate new config.yml file!");
-    }
+    //todo LanguageMigrator
     for (String world : getConfig().getStringList("disabled-worlds")) {
       disabledWorlds.add(world);
       getLogger().info("Pinata creation blocked at world " + world + "!");
