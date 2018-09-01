@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.pinata;
+package pl.plajer.pinata.handlers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +35,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.Utils;
@@ -44,7 +45,7 @@ public class SignManager implements Listener {
   private Map<Player, Location> signUsage = new HashMap<>();
   private Main plugin;
 
-  SignManager(Main plugin) {
+  public SignManager(Main plugin) {
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }

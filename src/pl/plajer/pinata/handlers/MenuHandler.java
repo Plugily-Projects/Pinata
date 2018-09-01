@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.pinata;
+package pl.plajer.pinata.handlers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,12 +30,13 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.PinataUtils;
 import pl.plajer.pinata.utils.Utils;
 
-class MenuHandler implements Listener {
+public class MenuHandler implements Listener {
 
   private Main plugin;
 
