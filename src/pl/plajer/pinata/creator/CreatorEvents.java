@@ -32,10 +32,10 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * @author Plajer
@@ -58,7 +58,7 @@ public class CreatorEvents implements Listener {
       Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replace("Editing pinata: ", ""));
       if (pinata == null) return;
       if (e.getCurrentItem().getItemMeta() == null || !e.getCurrentItem().getItemMeta().hasDisplayName()) return;
-      FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+      FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       switch (ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName())) {
         case "► Set pinata name":
           if (e.getCurrentItem().getType() == Material.NAME_TAG && e.getCursor().getType() == Material.NAME_TAG) {
@@ -152,7 +152,7 @@ public class CreatorEvents implements Listener {
           new SelectorInventories(pinata.getID()).openInventory((Player) e.getWhoClicked(), SelectorInventories.SelectorType.ITEM_EDITOR);
           break;
       }
-      ConfigurationManager.saveConfig(config, "pinata_storage");
+      ConfigUtils.saveConfig(plugin, config, "pinata_storage");
     }
   }
 
@@ -160,7 +160,7 @@ public class CreatorEvents implements Listener {
   public void onInventoryClose(InventoryCloseEvent e) {
     if (e.getInventory().getName() == null) return;
     if (e.getInventory().getName().contains("Modify drops: ")) {
-      FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+      FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       if (e.getInventory().firstEmpty() == 0) {
         e.getPlayer().sendMessage("no items set, aborting!");
         return;
@@ -196,7 +196,7 @@ public class CreatorEvents implements Listener {
         i++;
       }
       e.getPlayer().sendMessage("Items modified");
-      ConfigurationManager.saveConfig(config, "pinata_storage");
+      ConfigUtils.saveConfig(plugin, config, "pinata_storage");
     }
   }
 

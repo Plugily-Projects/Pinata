@@ -26,9 +26,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.utils.ItemBuilder;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * @author Plajer
@@ -123,7 +123,8 @@ public class CreatorMenu {
   }
 
   private static String isOptionDone(String path) {
-    return ChatColor.GOLD + "" + ChatColor.BOLD + "Currently: " + ChatColor.GRAY + ConfigurationManager.getConfig("pinata_storage").getString("storage." + pinataName + "." + path);
+    return ChatColor.GOLD + "" + ChatColor.BOLD + "Currently: " + ChatColor.GRAY + ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "pinata_storage")
+            .getString("storage." + pinataName + "." + path);
   }
 
   public void addItem(ItemStack itemStack) {

@@ -47,6 +47,7 @@ import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * @author Plajer
@@ -109,18 +110,18 @@ public class ArgumentsManager extends MainCommand {
         p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Is-Set-Here"));
         return;
       }
-      if (ConfigurationManager.getConfig("crates").isSet("crates." + args[1])) {
+      if (ConfigUtils.getConfig(plugin, "crates").isSet("crates." + args[1])) {
         p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Already-Exists"));
         return;
       }
 
-      FileConfiguration config = ConfigurationManager.getConfig("crates");
+      FileConfiguration config = ConfigUtils.getConfig(plugin, "crates");
       config.set("crates." + args[1] + ".world", l.getWorld().getName());
       config.set("crates." + args[1] + ".x", l.getX());
       config.set("crates." + args[1] + ".y", l.getY());
       config.set("crates." + args[1] + ".z", l.getZ());
       config.set("crates." + args[1] + ".name", args[1]);
-      ConfigurationManager.saveConfig(config, "crates");
+      ConfigUtils.saveConfig(plugin, config, "crates");
 
       plugin.getCrateManager().getCratesLocations().put(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ()), args[1]);
       p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Create-Success").replaceAll("%name%", args[1]));
@@ -319,7 +320,7 @@ public class ArgumentsManager extends MainCommand {
             true, 15, false, Collections.singletonList(item));
     plugin.getPinataManager().getPinataList().add(pinata);
 
-    FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
     config.set("storage." + pinataID + ".display-name", pinataID);
     config.set("storage." + pinataID + ".timer-display", 5);
     config.set("storage." + pinataID + ".color", "WHITE");
@@ -337,7 +338,7 @@ public class ArgumentsManager extends MainCommand {
             new ArrayList<ItemStack>() {{
               add(item.getItem());
             }});
-    ConfigurationManager.saveConfig(config, "pinata_storage");
+    ConfigUtils.saveConfig(plugin, config, "pinata_storage");
     sender.sendMessage("New pinata with ID " + pinataID + " created!");
   }
 

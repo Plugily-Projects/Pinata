@@ -32,6 +32,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 public class PinataManager {
 
@@ -43,7 +44,7 @@ public class PinataManager {
   }
 
   public void loadPinatas() {
-    FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
     for (String key : config.getConfigurationSection("storage").getKeys(false)) {
       String accessKey = "storage." + key + ".";
 

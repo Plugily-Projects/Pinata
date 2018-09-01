@@ -31,8 +31,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.pinata.ConfigurationManager;
+import pl.plajer.pinata.Main;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * @author Plajer
@@ -78,7 +80,7 @@ public class SelectorInventories {
     drop.setItem(1, item);
     drop.setItem(8, back);
 
-    FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+    FileConfiguration config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "pinata_storage");
     Inventory itemStorage = Bukkit.createInventory(null, 9 * 5, "Modify drops: " + name);
     for (int i = 0; i < config.getList("storage." + name + ".drops", new ArrayList<>()).size(); i++) {
       if (config.getList("storage." + name + ".drops").get(i) == null) continue;

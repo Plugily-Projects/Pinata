@@ -44,6 +44,7 @@ import pl.plajer.pinata.creator.SelectorEvents;
 import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 public class Main extends JavaPlugin {
 
@@ -76,10 +77,10 @@ public class Main extends JavaPlugin {
     creatorChatEvents = new CreatorChatEvents(this);
     saveDefaultConfig();
     for (String file : filesToGenerate) {
-      ConfigurationManager.getConfig(file);
+      ConfigUtils.getConfig(this, file);
     }
     setupDependencies();
-    if (!ConfigurationManager.getConfig("messages").isSet("File-Version-Do-Not-Edit") || !ConfigurationManager.getConfig("messages").get("File-Version-Do-Not-Edit").equals(MESSAGES_FILE_VERSION)) {
+    if (!ConfigUtils.getConfig(this, "messages").isSet("File-Version-Do-Not-Edit") || !ConfigUtils.getConfig(this, "messages").get("File-Version-Do-Not-Edit").equals(MESSAGES_FILE_VERSION)) {
       getLogger().info("Your messages file is outdated! Updating...");
       //todo updater methods
       getLogger().info("File successfully updated!");

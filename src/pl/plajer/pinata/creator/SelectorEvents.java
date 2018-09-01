@@ -24,9 +24,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * @author Plajer
@@ -48,7 +48,7 @@ public class SelectorEvents implements Listener {
       return;
     if (e.getInventory().getName().contains("Modify damage type: ")) {
       e.setCancelled(true);
-      FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+      FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replace("Modify damage type: ", ""));
       if (pinata == null) return;
       if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Private")) {
@@ -63,10 +63,10 @@ public class SelectorEvents implements Listener {
         e.getWhoClicked().closeInventory();
         new CreatorMenu(pinata.getID()).openInventory(((Player) e.getWhoClicked()));
       }
-      ConfigurationManager.saveConfig(config, "pinata_storage");
+      ConfigUtils.saveConfig(plugin, config, "pinata_storage");
     } else if (e.getInventory().getName().contains("Modify drop type: ")) {
       e.setCancelled(true);
-      FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+      FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replace("Modify drop type: ", ""));
       if (pinata == null) return;
       if (e.getCurrentItem().getItemMeta().getDisplayName().contains("On punch")) {
@@ -81,7 +81,7 @@ public class SelectorEvents implements Listener {
         e.getWhoClicked().closeInventory();
         new CreatorMenu(pinata.getID()).openInventory(((Player) e.getWhoClicked()));
       }
-      ConfigurationManager.saveConfig(config, "pinata_storage");
+      ConfigUtils.saveConfig(plugin, config, "pinata_storage");
     }
   }
 

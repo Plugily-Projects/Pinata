@@ -29,10 +29,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.utils.Utils;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * @author Plajer
@@ -51,7 +52,7 @@ public class CreatorChatEvents implements Listener {
   public void onChat(AsyncPlayerChatEvent e) {
     if (chatReactions.containsKey(e.getPlayer())) {
       ChatReaction reaction = chatReactions.get(e.getPlayer());
-      FileConfiguration config = ConfigurationManager.getConfig("pinata_storage");
+      FileConfiguration config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "pinata_storage");
       e.setCancelled(true);
       switch (reaction.getReactionType()) {
         case SET_MOB_TYPE:
@@ -139,7 +140,7 @@ public class CreatorChatEvents implements Listener {
           chatReactions.remove(e.getPlayer());
           break;
       }
-      ConfigurationManager.saveConfig(config, "pinata_storage");
+      ConfigUtils.saveConfig(JavaPlugin.getPlugin(Main.class), config, "pinata_storage");
     }
   }
 
