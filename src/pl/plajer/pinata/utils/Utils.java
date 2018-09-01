@@ -92,7 +92,7 @@ public class Utils {
         lore.add(colorMessage("Menus.List-Menu.Pinata-Cost-Not-For-Sale"));
       } else {
         String cost = colorMessage("Menus.List-Menu.Pinata-Cost");
-        lore.add(cost.replaceAll("%money%", String.valueOf(pinata.getPrice())) + "$");
+        lore.add(cost.replace("%money%", String.valueOf(pinata.getPrice())) + "$");
         lore.add(colorMessage("Menus.List-Menu.Click-Selection.Right-Click"));
       }
       lore.add(colorMessage("Menus.List-Menu.Click-Selection.Left-Click"));

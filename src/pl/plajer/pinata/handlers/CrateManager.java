@@ -111,7 +111,7 @@ public class CrateManager implements Listener {
             ConfigUtils.saveConfig(plugin, config, "crates");
             cratesLocations.remove(e.getBlock().getLocation());
             String message = Utils.colorMessage("Pinata.Crate-Creation.Destroyed");
-            e.getPlayer().sendMessage(message.replaceAll("%name%", key));
+            e.getPlayer().sendMessage(message.replace("%name%", key));
             return;
           }
         }

@@ -98,10 +98,10 @@ public class Main extends JavaPlugin {
         boolean check = UpdateChecker.checkUpdate(this, currentVersion, 46655);
         if (check) {
           String latestVersion = "v" + UpdateChecker.getLatestVersion();
-          Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
+          Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replace("%old%", currentVersion).replace("%new%", latestVersion));
         }
       } catch (Exception ex) {
-        Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+        Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replace("%error%", ex.getMessage()));
       }
     }
   }
@@ -188,7 +188,7 @@ public class Main extends JavaPlugin {
     Bukkit.getScheduler().runTaskTimer(this, () -> {
       for (Location l : crateManager.getCratesLocations().keySet()) {
         Hologram holo = HologramsAPI.createHologram(this, l.clone().add(0.5, 1.5, 0.5));
-        holo.appendTextLine(Utils.colorMessage("Hologram.Crate-Hologram").replaceAll("%name%", crateManager.getCratesLocations().get(l)));
+        holo.appendTextLine(Utils.colorMessage("Hologram.Crate-Hologram").replace("%name%", crateManager.getCratesLocations().get(l)));
         Bukkit.getScheduler().runTaskLater(this, holo::delete, (long) getConfig().getDouble("hologram-refresh") * 20);
       }
     }, (long) this.getConfig().getDouble("hologram-refresh") * 20, (long) this.getConfig().getDouble("hologram-refresh") * 20);

@@ -89,10 +89,10 @@ class PinataListeners implements Listener {
         boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 46655);
         if (check) {
           String latestVersion = "v" + UpdateChecker.getLatestVersion();
-          e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
+          e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replace("%old%", currentVersion).replace("%new%", latestVersion));
         }
       } catch (Exception ex) {
-        e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+        e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replace("%error%", ex.getMessage()));
       }
     }
   }

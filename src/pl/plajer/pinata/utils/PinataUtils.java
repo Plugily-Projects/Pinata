@@ -91,7 +91,8 @@ public class PinataUtils {
       }
       //todo cmd
       player.getInventory().addItem(item.getItem());
-      player.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name()).replaceAll("%amount%", String.valueOf(item.getItem().getAmount())));
+      player.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replace("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() :
+              item.getItem().getType().name()).replace("%amount%", String.valueOf(item.getItem().getAmount())));
     }
   }
 

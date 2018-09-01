@@ -71,7 +71,7 @@ public class PinataFactory implements Listener {
       }
       return false;
     }
-    player.sendMessage(Utils.colorMessage("Pinata.Create.Success").replaceAll("%name%", pinata.getID()));
+    player.sendMessage(Utils.colorMessage("Pinata.Create.Success").replace("%name%", pinata.getID()));
     plugin.getCommands().getUsers().add(player);
     //Max height check is to avoid problems with different server specifications
     Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);

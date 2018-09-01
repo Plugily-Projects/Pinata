@@ -88,10 +88,10 @@ public class GameCommands extends MainCommand {
         boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 46655);
         if (check) {
           String latestVersion = "v" + UpdateChecker.getLatestVersion();
-          sender.sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
+          sender.sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replace("%old%", currentVersion).replace("%new%", latestVersion));
         }
       } catch (Exception ex) {
-        sender.sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replaceAll("%error%", ex.getMessage()));
+        sender.sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replace("%error%", ex.getMessage()));
       }
     }
     sender.sendMessage(Utils.colorMessage("Pinata.Config.Reload-Success"));
@@ -125,7 +125,7 @@ public class GameCommands extends MainCommand {
       ConfigUtils.saveConfig(plugin, config, "crates");
 
       plugin.getCrateManager().getCratesLocations().put(new Location(l.getWorld(), l.getX(), l.getY(), l.getZ()), args[1]);
-      p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Create-Success").replaceAll("%name%", args[1]));
+      p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Create-Success").replace("%name%", args[1]));
     } else {
       p.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Target-Block-Not-Chest"));
     }
@@ -183,7 +183,7 @@ public class GameCommands extends MainCommand {
         entity.setMaxHealth(pinata.getHealth());
         entity.setHealth(entity.getMaxHealth());
         PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, pinata);
-        sender.sendMessage(Utils.colorMessage("Pinata.Create.Success").replaceAll("%name%", args[5]));
+        sender.sendMessage(Utils.colorMessage("Pinata.Create.Success").replace("%name%", args[5]));
         return;
       } catch (Exception e) {
         sender.sendMessage(Utils.colorMessage("Pinata.Command.Custom-Location-Create-Error"));
@@ -292,7 +292,7 @@ public class GameCommands extends MainCommand {
     for (PinataItem item : pinata.getDrops()) {
       ItemMeta meta = item.getItem().getItemMeta();
       List<String> lore = new ArrayList<>();
-      String dropLore = Utils.colorMessage("Menus.Preview-Menu.Drop-Chance").replaceAll("%chance%", String.valueOf(item.getDropChance()));
+      String dropLore = Utils.colorMessage("Menus.Preview-Menu.Drop-Chance").replace("%chance%", String.valueOf(item.getDropChance()));
       lore.add(dropLore);
       meta.setLore(lore);
       ItemStack stack = item.getItem();

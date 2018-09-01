@@ -170,9 +170,9 @@ public class CreatorEvents implements Listener {
         if (is == null) continue;
         items.add(is);
       }
-      config.set("storage." + e.getInventory().getName().replaceAll("Modify drops: ", "") + ".drops", items);
+      config.set("storage." + e.getInventory().getName().replace("Modify drops: ", "") + ".drops", items);
 
-      Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replaceAll("Modify drops: ", ""));
+      Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replace("Modify drops: ", ""));
       List<PinataItem> pinataItems = new ArrayList<>();
       int i = 1; //count from 1 not 0
       for (ItemStack is : items) {

@@ -55,7 +55,7 @@ public class MenuHandler implements Listener {
       return;
     }
     final ItemMeta item = e.getCurrentItem().getItemMeta();
-    final String pinataName = item.getDisplayName().replaceAll(Utils.colorRawMessage("&6"), "");
+    final String pinataName = item.getDisplayName().replace(Utils.colorRawMessage("&6"), "");
     Pinata pinata = plugin.getPinataManager().getPinataByName(pinataName);
     if (pinata == null) {
       return;
