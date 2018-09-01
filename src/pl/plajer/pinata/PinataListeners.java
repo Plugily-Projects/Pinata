@@ -50,6 +50,7 @@ import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataDeathEvent;
+import pl.plajer.pinata.utils.PinataUtils;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.UpdateChecker;
 
@@ -162,34 +163,7 @@ class PinataListeners implements Listener {
     }
     Player p = (Player) e.getDamager();
     for (PinataItem item : pinata.getDrops()) {
-      if (ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
-        final Item dropItem = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(item.getItem().getType()));
-        dropItem.setPickupDelay(1000);
-        if (plugin.isPluginEnabled("HolographicDisplays")) {
-          final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
-
-          hologram.appendTextLine(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name() + " x" + item.getItem().getAmount()));
-          new BukkitRunnable() {
-            int ticksRun;
-
-            @Override
-            public void run() {
-              ticksRun++;
-              hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
-              if (ticksRun > pinata.getDropViewTime() * 20) {
-                hologram.delete();
-                dropItem.remove();
-                cancel();
-              }
-            }
-          }.runTaskTimer(plugin, 1L, 1L);
-        } else {
-          Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, pinata.getDropViewTime() * 20);
-        }
-        //todo command
-        p.getInventory().addItem(item.getItem());
-        p.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name()).replaceAll("%amount%", String.valueOf(item.getItem().getAmount())));
-      }
+      PinataUtils.dropItems(item, e.getEntity(), pinata, p);
     }
   }
 
@@ -260,33 +234,7 @@ class PinataListeners implements Listener {
     }
     if (pinata.getDropType() == Pinata.DropType.DEATH) {
       for (PinataItem item : pinata.getDrops()) {
-        if (ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
-          final Item dropItem = e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(item.getItem().getType()));
-          dropItem.setPickupDelay(1000);
-          if (plugin.isPluginEnabled("HolographicDisplays")) {
-            final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
-            hologram.appendTextLine(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name() + " x" + item.getItem().getAmount()));
-            new BukkitRunnable() {
-              int ticksRun;
-
-              @Override
-              public void run() {
-                ticksRun++;
-                hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
-                if (ticksRun > pinata.getDropViewTime() * 20) {
-                  hologram.delete();
-                  dropItem.remove();
-                  cancel();
-                }
-              }
-            }.runTaskTimer(plugin, 1L, 1L);
-          } else {
-            Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, pinata.getDropViewTime() * 20);
-          }
-          //todo cmd
-          p.getInventory().addItem(item.getItem());
-          p.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name()).replaceAll("%amount%", String.valueOf(item.getItem().getAmount())));
-        }
+        PinataUtils.dropItems(item, e.getEntity(), pinata, p);
         items.add(item);
         i++;
       }

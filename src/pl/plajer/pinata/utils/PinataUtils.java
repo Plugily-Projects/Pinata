@@ -18,11 +18,22 @@
 
 package pl.plajer.pinata.utils;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+
+import java.util.concurrent.ThreadLocalRandom;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
+import pl.plajer.pinata.pinata.PinataItem;
 
 /**
  * @author Plajer
@@ -33,7 +44,7 @@ public class PinataUtils {
 
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
-  public static boolean checkPermissions(Pinata pinata, Player player){
+  public static boolean checkPermissions(Pinata pinata, Player player) {
     if (plugin.getConfig().getBoolean("using-permissions")) {
       if (!player.hasPermission(pinata.getPermission())) {
         player.sendMessage(Utils.colorMessage("Pinata.Create.No-Permission"));
@@ -51,6 +62,37 @@ public class PinataUtils {
       return false;
     }
     return true;
+  }
+
+  public static void dropItems(PinataItem item, Entity en, Pinata pinata, Player player) {
+    if (ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
+      final Item dropItem = en.getWorld().dropItemNaturally(en.getLocation(), new ItemStack(item.getItem().getType()));
+      dropItem.setPickupDelay(1000);
+      if (plugin.isPluginEnabled("HolographicDisplays")) {
+        final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
+
+        hologram.appendTextLine(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name() + " x" + item.getItem().getAmount()));
+        new BukkitRunnable() {
+          int ticksRun;
+
+          @Override
+          public void run() {
+            ticksRun++;
+            hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
+            if (ticksRun > pinata.getDropViewTime() * 20) {
+              hologram.delete();
+              dropItem.remove();
+              cancel();
+            }
+          }
+        }.runTaskTimer(plugin, 1L, 1L);
+      } else {
+        Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, pinata.getDropViewTime() * 20);
+      }
+      //todo cmd
+      player.getInventory().addItem(item.getItem());
+      player.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replaceAll("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name()).replaceAll("%amount%", String.valueOf(item.getItem().getAmount())));
+    }
   }
 
 }
