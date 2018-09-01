@@ -79,9 +79,7 @@ class PinataListeners implements Listener {
       } else /* the type is private */ {
         if (plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager())) {
           if (plugin.getConfig().getBoolean("halloween-mode")) {
-            if (!Bukkit.getServer().getVersion().contains("1.8")) {
-              e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_GHAST_HURT, 1, 1);
-            }
+            e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_GHAST_HURT, 1, 1);
           }
           e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
           e.setCancelled(false);
@@ -145,18 +143,10 @@ class PinataListeners implements Listener {
     if (plugin.getConfig().getBoolean("halloween-mode")) {
       e.getEntity().getWorld().strikeLightningEffect(e.getEntity().getLocation());
       Random r = new Random();
-      if (Bukkit.getServer().getVersion().contains("1.8")) {
-        if (r.nextBoolean()) {
-          e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("WOLF_HOWL"), 1, 1);
-        } else {
-          e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.valueOf("WITHER_DEATH"), 1, 1);
-        }
+      if (r.nextBoolean()) {
+        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WOLF_HOWL, 1, 1);
       } else {
-        if (r.nextBoolean()) {
-          e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WOLF_HOWL, 1, 1);
-        } else {
-          e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 1);
-        }
+        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 1);
       }
       final List<Entity> bats = new ArrayList<>();
       for (int i = 0; i < 5; i++) {

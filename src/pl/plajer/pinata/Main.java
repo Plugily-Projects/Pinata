@@ -62,11 +62,31 @@ public class Main extends JavaPlugin {
   private CreatorChatEvents creatorChatEvents;
   private List<String> disabledWorlds = new ArrayList<>();
   private Economy econ = null;
+  private boolean forceDisable = false;
 
   @Override
   public void onEnable() {
     ServiceRegistry.registerService(this);
+    String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     LanguageManager.init(this);
+    saveDefaultConfig();
+    if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1")
+            || version.equalsIgnoreCase("v1_12_R1"))) {
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Pinata plugin!");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
+      forceDisable = true;
+      getServer().getPluginManager().disablePlugin(this);
+      return;
+    }
+    try {
+      Class.forName("org.spigotmc.SpigotConfig");
+    } catch (Exception e) {
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Pinata plugin!");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
+      forceDisable = true;
+      getServer().getPluginManager().disablePlugin(this);
+      return;
+    }
     getLogger().log(Level.INFO, "Crack this pinata!");
     initializeClasses();
     if (isPluginEnabled("HolographicDisplays")) hologramScheduler();
@@ -86,6 +106,7 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onDisable() {
+    if(forceDisable) return;
     for (World world : Bukkit.getServer().getWorlds()) {
       for (Entity entity : Bukkit.getServer().getWorld(world.getName()).getEntities()) {
         if (commands.getPinata().containsKey(entity)) {
@@ -116,7 +137,6 @@ public class Main extends JavaPlugin {
     pinataManager = new PinataManager(this);
     signManager = new SignManager(this);
     creatorChatEvents = new CreatorChatEvents(this);
-    saveDefaultConfig();
     for (String file : filesToGenerate) {
       ConfigUtils.getConfig(this, file);
     }

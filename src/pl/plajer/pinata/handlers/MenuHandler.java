@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -125,27 +126,27 @@ public class MenuHandler implements Listener {
         }
         if (e.getWhoClicked().hasPermission("pinata.admin.freeall")) {
           LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, pinata.getEntityType());
-          entity.setMaxHealth(pinata.getHealth());
-          entity.setHealth(entity.getMaxHealth());
+          entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(pinata.getHealth());
+          entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
           plugin.getCommands().getUsers().add((Player) e.getWhoClicked());
           if (PinataFactory.createPinata(builderLocation, (Player) e.getWhoClicked(), entity, pinata)) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
               if (!(entity.isDead())) {
-                entity.damage(entity.getMaxHealth());
+                entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
               }
             }, pinata.getCrateTime() * 20);
           }
         } else if (plugin.getEco().getBalance(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId())) >= pinata.getPrice()) {
           LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, pinata.getEntityType());
-          entity.setMaxHealth(pinata.getHealth());
-          entity.setHealth(entity.getMaxHealth());
+          entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(pinata.getHealth());
+          entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
           plugin.getCommands().getUsers().add((Player) e.getWhoClicked());
           if (PinataFactory.createPinata(builderLocation, (Player) e.getWhoClicked(), entity, pinata)) {
             //Pinata created successfully, now we can withdraw $ from player.
             plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId()), pinata.getPrice());
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
               if (!(entity.isDead())) {
-                entity.damage(entity.getMaxHealth());
+                entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
               }
             }, pinata.getCrateTime() * 20);
           }

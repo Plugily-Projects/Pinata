@@ -29,6 +29,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -180,8 +181,8 @@ public class GameCommands extends MainCommand {
         }
         Location l = new Location(world, x, y, z);
         LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), pinata.getEntityType());
-        entity.setMaxHealth(pinata.getHealth());
-        entity.setHealth(entity.getMaxHealth());
+        entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(pinata.getHealth());
+        entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         PinataFactory.createPinata(l.clone().add(0, 7, 0), entity, pinata);
         sender.sendMessage(Utils.colorMessage("Pinata.Create.Success").replace("%name%", args[5]));
         return;
@@ -343,7 +344,7 @@ public class GameCommands extends MainCommand {
     if (!isSenderPlayer(sender)) return;
     if (!hasPermission(sender, "pinata.admin.setchance")) return;
     Player p = (Player) sender;
-    if (p.getItemInHand() == null || p.getItemInHand().getType() == Material.AIR) {
+    if (p.getInventory().getItemInMainHand() == null || p.getInventory().getItemInMainHand().getType() == Material.AIR) {
       sender.sendMessage("You must hold any item!");
       return;
     }
@@ -352,7 +353,7 @@ public class GameCommands extends MainCommand {
       return;
     }
     double chance = Double.parseDouble(str);
-    ItemStack item = p.getItemInHand();
+    ItemStack item = p.getInventory().getItemInMainHand();
     if (item.hasItemMeta() && item.getItemMeta().hasLore()) {
       ItemMeta meta = item.getItemMeta();
       List<String> lore = item.getItemMeta().getLore();

@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -123,13 +124,13 @@ public class SignManager implements Listener {
               Location loc = e.getClickedBlock().getLocation().clone().add(0, 8, 0);
               Location entityLoc = e.getClickedBlock().getLocation().clone().add(0, 3, 0);
               LivingEntity entity = (LivingEntity) entityLoc.getWorld().spawnEntity(entityLoc, pinata.getEntityType());
-              entity.setMaxHealth(pinata.getHealth());
-              entity.setHealth(entity.getMaxHealth());
+              entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(pinata.getHealth());
+              entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
               if (e.getPlayer().hasPermission("pinata.admin.freeall")) {
                 if (PinataFactory.createPinata(loc, e.getPlayer(), entity, pinata)) {
                   Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     if (!(entity.isDead())) {
-                      entity.damage(entity.getMaxHealth());
+                      entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
                     }
                   }, pinata.getCrateTime() * 20);
                 }
@@ -139,7 +140,7 @@ public class SignManager implements Listener {
                   plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getPlayer().getUniqueId()), pinata.getPrice());
                   Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     if (!(entity.isDead())) {
-                      entity.damage(entity.getMaxHealth());
+                      entity.damage(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
                     }
                   }, pinata.getCrateTime() * 20);
                 }

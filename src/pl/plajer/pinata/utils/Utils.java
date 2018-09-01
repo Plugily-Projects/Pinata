@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -69,8 +70,8 @@ public class Utils {
   public static boolean createPinataAtPlayer(Player p, Location l, Pinata pinata) {
     Location loc = l.clone().add(0, 7, 0);
     LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), pinata.getEntityType());
-    entity.setMaxHealth(pinata.getHealth());
-    entity.setHealth(entity.getMaxHealth());
+    entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(pinata.getHealth());
+    entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
     return PinataFactory.createPinata(loc, p, entity, pinata);
   }
 
