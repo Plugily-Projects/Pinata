@@ -41,8 +41,10 @@ import pl.plajer.pinata.commands.MainCommand;
 import pl.plajer.pinata.creator.CreatorChatEvents;
 import pl.plajer.pinata.creator.CreatorEvents;
 import pl.plajer.pinata.creator.SelectorEvents;
+import pl.plajer.pinata.handlers.language.LanguageManager;
 import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.Utils;
+import pl.plajerlair.core.services.ServiceRegistry;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.UpdateChecker;
 
@@ -51,7 +53,6 @@ public class Main extends JavaPlugin {
   private final int MESSAGES_FILE_VERSION = 10;
   private final int CONFIG_FILE_VERSION = 5;
   private List<String> filesToGenerate = Arrays.asList("crates", "pinatas", "messages", "pinata_storage");
-  private PinataLocale pinataLocale;
   private CrateManager crateManager;
   private MainCommand commands;
   private PinataManager pinataManager;
@@ -62,10 +63,9 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    this.getLogger().log(Level.INFO, "Crack this pinata!");
-    setupLocale();
-    ConfigurationManager.init(this);
-    ConfigurationManager.loadProperties();
+    ServiceRegistry.registerService(this);
+    LanguageManager.init(this);
+    getLogger().log(Level.INFO, "Crack this pinata!");
     new MetricsLite(this);
     crateManager = new CrateManager(this);
     commands = new MainCommand(this, true);
@@ -134,30 +134,6 @@ public class Main extends JavaPlugin {
     for (Hologram h : HologramsAPI.getHolograms(this)) {
       h.delete();
     }
-  }
-
-  public void setupLocale() {
-    switch (getConfig().getString("locale")) {
-      case "en":
-        pinataLocale = PinataLocale.ENGLISH;
-        break;
-      case "pl":
-        pinataLocale = PinataLocale.POLSKI;
-        break;
-      case "de":
-        pinataLocale = PinataLocale.DEUTSCH;
-        break;
-      case "hu":
-        pinataLocale = PinataLocale.HUNGARIAN;
-        break;
-      default:
-        pinataLocale = PinataLocale.ENGLISH;
-        break;
-    }
-  }
-
-  public PinataLocale getLocale() {
-    return pinataLocale;
   }
 
   public CrateManager getCrateManager() {
@@ -240,35 +216,6 @@ public class Main extends JavaPlugin {
     }
     econ = rsp.getProvider();
     return econ != null;
-  }
-
-  public enum PinataLocale {
-    DEUTSCH("Deutsch", "de_DE", "Elternbrief"),
-    ENGLISH("English", "en_GB", "Plajer"),
-    POLSKI("Polski", "pl_PL", "Plajer"),
-    HUNGARIAN("Hungarian", "hu_HU", "montlikadani");
-
-    String formattedName;
-    String prefix;
-    String author;
-
-    PinataLocale(String formattedName, String prefix, String author) {
-      this.prefix = prefix;
-      this.formattedName = formattedName;
-      this.author = author;
-    }
-
-    public String getFormattedName() {
-      return formattedName;
-    }
-
-    public String getAuthor() {
-      return author;
-    }
-
-    public String getPrefix() {
-      return prefix;
-    }
   }
 
 }

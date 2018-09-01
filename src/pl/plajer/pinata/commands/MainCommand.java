@@ -38,13 +38,13 @@ public class MainCommand implements CommandExecutor {
 
   private Map<Entity, LivingPinata> pinata = new HashMap<>();
   private List<Player> users = new ArrayList<>();
-  private ArgumentsManager argumentsManager;
+  private GameCommands argumentsManager;
   private Main plugin;
 
   public MainCommand(Main plugin, boolean register) {
     if (register) {
       this.plugin = plugin;
-      argumentsManager = new ArgumentsManager(plugin);
+      argumentsManager = new GameCommands(plugin);
       plugin.getCommand("pinata").setExecutor(this);
     }
   }

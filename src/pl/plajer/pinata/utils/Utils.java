@@ -32,10 +32,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.handlers.language.LanguageManager;
+import pl.plajer.pinata.handlers.language.Locale;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
+import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 public class Utils {
@@ -43,7 +45,21 @@ public class Utils {
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
   public static String colorMessage(String message) {
-    return ChatColor.translateAlternateColorCodes('&', ConfigurationManager.getLanguageMessage(message));
+    try {
+      return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message));
+    } catch (NullPointerException e1) {
+      new ReportedException(JavaPlugin.getPlugin(Main.class), e1);
+      e1.printStackTrace();
+      //MessageUtils.errorOccured();
+      Bukkit.getConsoleSender().sendMessage("Game message not found!");
+      if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
+        Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+      } else {
+        Bukkit.getConsoleSender().sendMessage("Locale message string not found! Please contact developer!");
+      }
+      Bukkit.getConsoleSender().sendMessage("Access string: " + message);
+      return "ERR_MESSAGE_NOT_FOUND";
+    }
   }
 
   public static String colorRawMessage(String message) {

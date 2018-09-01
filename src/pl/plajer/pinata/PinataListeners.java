@@ -71,9 +71,7 @@ class PinataListeners implements Listener {
           plugin.getCommands().getPinata().get(en).getLeash().remove();
           en.remove();
           plugin.getCommands().getPinata().remove(en);
-          if (plugin.getCommands().getUsers().contains(e.getPlayer())) {
-            plugin.getCommands().getUsers().remove(e.getPlayer());
-          }
+          plugin.getCommands().getUsers().remove(e.getPlayer());
         }
       }
     }

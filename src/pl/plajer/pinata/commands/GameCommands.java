@@ -40,8 +40,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.handlers.language.LanguageManager;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataFactory;
@@ -55,11 +55,11 @@ import pl.plajerlair.core.utils.UpdateChecker;
  * <p>
  * Created at 02.06.2018
  */
-public class ArgumentsManager extends MainCommand {
+public class GameCommands extends MainCommand {
 
   private Main plugin;
 
-  public ArgumentsManager(Main plugin) {
+  public GameCommands(Main plugin) {
     super(plugin, false);
     this.plugin = plugin;
   }
@@ -70,8 +70,8 @@ public class ArgumentsManager extends MainCommand {
       plugin.reloadConfig();
       plugin.getPinataManager().getPinataList().clear();
       plugin.getPinataManager().loadPinatas();
-      plugin.setupLocale();
-      ConfigurationManager.loadProperties();
+      //todo hmm???
+      LanguageManager.init(plugin);
     } catch (Exception e) {
       sender.sendMessage(Utils.colorMessage("Pinata.Config.Reload-Fail"));
       return;
