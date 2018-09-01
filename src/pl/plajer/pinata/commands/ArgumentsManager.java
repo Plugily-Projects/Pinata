@@ -45,9 +45,9 @@ import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataFactory;
-import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.UpdateChecker;
 
 /**
  * @author Plajer
@@ -80,13 +80,12 @@ public class ArgumentsManager extends MainCommand {
       plugin.getDisabledWorlds().add(world);
       plugin.getLogger().info("Pinata creation blocked at world " + world + "!");
     }
-    String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
     if (plugin.getConfig().getBoolean("update-notify")) {
       try {
-        UpdateChecker.checkUpdate(currentVersion);
-        String latestVersion = UpdateChecker.getLatestVersion();
-        if (latestVersion != null) {
-          latestVersion = "v" + latestVersion;
+        String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
+        boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 46655);
+        if (check) {
+          String latestVersion = "v" + UpdateChecker.getLatestVersion();
           sender.sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
         }
       } catch (Exception ex) {

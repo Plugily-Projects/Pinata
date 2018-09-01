@@ -50,8 +50,8 @@ import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataDeathEvent;
-import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
+import pl.plajerlair.core.utils.UpdateChecker;
 
 class PinataListeners implements Listener {
 
@@ -84,13 +84,12 @@ class PinataListeners implements Listener {
     if (!e.getPlayer().hasPermission("pinata.admin.notify")) {
       return;
     }
-    String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
     if (plugin.getConfig().getBoolean("update-notify")) {
       try {
-        UpdateChecker.checkUpdate(currentVersion);
-        String latestVersion = UpdateChecker.getLatestVersion();
-        if (latestVersion != null) {
-          latestVersion = "v" + latestVersion;
+        String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
+        boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 46655);
+        if (check) {
+          String latestVersion = "v" + UpdateChecker.getLatestVersion();
           e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
         }
       } catch (Exception ex) {

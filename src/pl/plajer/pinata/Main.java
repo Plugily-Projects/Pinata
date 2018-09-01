@@ -42,9 +42,9 @@ import pl.plajer.pinata.creator.CreatorChatEvents;
 import pl.plajer.pinata.creator.CreatorEvents;
 import pl.plajer.pinata.creator.SelectorEvents;
 import pl.plajer.pinata.utils.MetricsLite;
-import pl.plajer.pinata.utils.UpdateChecker;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.UpdateChecker;
 
 public class Main extends JavaPlugin {
 
@@ -103,10 +103,9 @@ public class Main extends JavaPlugin {
     String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
     if (getConfig().getBoolean("update-notify")) {
       try {
-        UpdateChecker.checkUpdate(currentVersion);
-        String latestVersion = UpdateChecker.getLatestVersion();
-        if (latestVersion != null) {
-          latestVersion = "v" + latestVersion;
+        boolean check = UpdateChecker.checkUpdate(this, currentVersion, 46655);
+        if (check) {
+          String latestVersion = "v" + UpdateChecker.getLatestVersion();
           Bukkit.getConsoleSender().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
         }
       } catch (Exception ex) {
