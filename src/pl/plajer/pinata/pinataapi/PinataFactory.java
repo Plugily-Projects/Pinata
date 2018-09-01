@@ -1,7 +1,6 @@
 package pl.plajer.pinata.pinataapi;
 
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -13,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.pinata.Pinata;

@@ -49,7 +49,6 @@ public class PinataManager {
                 pinataItems.add(new PinataItem(item, 100.0));
                 Bukkit.getLogger().warning("Item " + item.getType() + " from pinata " + key + " hasn't got chance set! Using 100% by default!");
             }
-            Bukkit.broadcastMessage(pinataItems.size() + "total");
 
             String name = config.getString(accessKey + "display-name");
             EntityType eType = EntityType.valueOf(config.getString(accessKey + "mob-entity-type"));

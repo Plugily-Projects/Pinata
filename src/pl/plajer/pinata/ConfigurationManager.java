@@ -1,6 +1,5 @@
 package pl.plajer.pinata;
 
-import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -10,11 +9,8 @@ import org.bukkit.craftbukkit.libs.jline.internal.InputStreamReader;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.Properties;
-import java.util.Scanner;
 
 public class ConfigurationManager {
 
