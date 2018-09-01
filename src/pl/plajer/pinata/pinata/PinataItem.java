@@ -9,22 +9,22 @@ import org.bukkit.inventory.ItemStack;
  */
 public class PinataItem {
 
-    private double dropChance;
-    private ItemStack item;
-    //private String command;
+  private double dropChance;
+  private ItemStack item;
+  //private String command;
 
-    public PinataItem(ItemStack item, double dropChance) {
-        this.item = item;
-        this.dropChance = dropChance;
-    }
+  public PinataItem(ItemStack item, double dropChance) {
+    this.item = item;
+    this.dropChance = dropChance;
+  }
 
-    public double getDropChance() {
-        return dropChance;
-    }
+  public double getDropChance() {
+    return dropChance;
+  }
 
-    public ItemStack getItem() {
-        return item;
-    }
+  public ItemStack getItem() {
+    return item;
+  }
 
     /*public String getCommand() {
         return command;
