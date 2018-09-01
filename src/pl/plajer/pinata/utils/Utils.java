@@ -36,6 +36,7 @@ import pl.plajer.pinata.ConfigurationManager;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
+import pl.plajerlair.core.utils.MinigameUtils;
 
 public class Utils {
 
@@ -49,11 +50,6 @@ public class Utils {
     return ChatColor.translateAlternateColorCodes('&', message);
   }
 
-  public static int serializeInt(Integer i) {
-    if ((i % 9) == 0) return i;
-    else return (int) ((Math.ceil(i / 9) * 9) + 9);
-  }
-
   public static boolean createPinataAtPlayer(Player p, Location l, Pinata pinata) {
     Location loc = l.clone().add(0, 7, 0);
     LivingEntity entity = (LivingEntity) l.getWorld().spawnEntity(l.clone().add(0, 2, 0), pinata.getEntityType());
@@ -63,7 +59,7 @@ public class Utils {
   }
 
   public static void createPinatasGUI(String name, Player p) {
-    int rows = serializeInt(plugin.getPinataManager().getPinataList().size());
+    int rows = MinigameUtils.serializeInt(plugin.getPinataManager().getPinataList().size());
     Inventory pinatasMenu = Bukkit.createInventory(null, rows, Utils.colorMessage(name));
     for (int i = 0; i < plugin.getPinataManager().getPinataList().size(); i++) {
       Pinata pinata = plugin.getPinataManager().getPinataList().get(i);
@@ -89,15 +85,6 @@ public class Utils {
       pinatasMenu.setItem(i, item);
     }
     p.openInventory(pinatasMenu);
-  }
-
-  public static void addLore(ItemStack itemStack, String string) {
-    ItemMeta meta = itemStack.getItemMeta();
-    List<String> lore = new ArrayList<>();
-    if (meta != null && meta.hasLore()) lore.addAll(meta.getLore());
-    lore.add(string);
-    meta.setLore(lore);
-    itemStack.setItemMeta(meta);
   }
 
 }

@@ -47,6 +47,7 @@ import pl.plajer.pinata.pinata.PinataItem;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.MinigameUtils;
 import pl.plajerlair.core.utils.UpdateChecker;
 
 /**
@@ -287,7 +288,7 @@ public class ArgumentsManager extends MainCommand {
       sender.sendMessage(Utils.colorMessage("Pinata.Not-Found"));
       return;
     }
-    int rows = Utils.serializeInt(pinata.getDrops().size());
+    int rows = MinigameUtils.serializeInt(pinata.getDrops().size());
     Inventory previewMenu = Bukkit.createInventory(null, rows, Utils.colorMessage("Menus.Preview-Menu.Inventory-Name"));
     int i = 0;
     //todo cmd
@@ -369,7 +370,7 @@ public class ArgumentsManager extends MainCommand {
       item.setItemMeta(meta);
       p.sendMessage("Chance updated to " + chance);
     } else {
-      Utils.addLore(item, "#!Chance:" + chance);
+      MinigameUtils.addLore(item, "#!Chance:" + chance);
       p.sendMessage("Chance set to " + chance);
     }
   }
