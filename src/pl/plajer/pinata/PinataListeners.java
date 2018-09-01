@@ -57,40 +57,6 @@ class PinataListeners implements Listener {
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
-  @EventHandler
-  public void onQuit(PlayerQuitEvent e) {
-    for (Entity en : Bukkit.getServer().getWorld(e.getPlayer().getWorld().getName()).getEntities()) {
-      if (plugin.getCommands().getPinata().containsKey(en)) {
-        if (plugin.getCommands().getPinata().get(en).getPlayer().equals(e.getPlayer())) {
-          plugin.getCommands().getPinata().get(en).getFence().getBlock().setType(Material.AIR);
-          plugin.getCommands().getPinata().get(en).getLeash().remove();
-          en.remove();
-          plugin.getCommands().getPinata().remove(en);
-          plugin.getCommands().getUsers().remove(e.getPlayer());
-        }
-      }
-    }
-  }
-
-  @EventHandler
-  public void onJoin(PlayerJoinEvent e) {
-    if (!e.getPlayer().hasPermission("pinata.admin.notify")) {
-      return;
-    }
-    if (plugin.getConfig().getBoolean("update-notify")) {
-      try {
-        String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
-        boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 46655);
-        if (check) {
-          String latestVersion = "v" + UpdateChecker.getLatestVersion();
-          e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replace("%old%", currentVersion).replace("%new%", latestVersion));
-        }
-      } catch (Exception ex) {
-        e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replace("%error%", ex.getMessage()));
-      }
-    }
-  }
-
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPinataDamage(EntityDamageByEntityEvent e) {
     for (Pinata pinata : plugin.getPinataManager().getPinataList()) {
@@ -241,4 +207,39 @@ class PinataListeners implements Listener {
     plugin.getCommands().getPinata().remove(e.getEntity());
     itemsToGive.clear();
   }
+
+  @EventHandler
+  public void onQuit(PlayerQuitEvent e) {
+    for (Entity en : Bukkit.getServer().getWorld(e.getPlayer().getWorld().getName()).getEntities()) {
+      if (plugin.getCommands().getPinata().containsKey(en)) {
+        if (plugin.getCommands().getPinata().get(en).getPlayer().equals(e.getPlayer())) {
+          plugin.getCommands().getPinata().get(en).getFence().getBlock().setType(Material.AIR);
+          plugin.getCommands().getPinata().get(en).getLeash().remove();
+          en.remove();
+          plugin.getCommands().getPinata().remove(en);
+          plugin.getCommands().getUsers().remove(e.getPlayer());
+        }
+      }
+    }
+  }
+
+  @EventHandler
+  public void onJoin(PlayerJoinEvent e) {
+    if (!e.getPlayer().hasPermission("pinata.admin.notify")) {
+      return;
+    }
+    if (plugin.getConfig().getBoolean("update-notify")) {
+      try {
+        String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
+        boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 46655);
+        if (check) {
+          String latestVersion = "v" + UpdateChecker.getLatestVersion();
+          e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replace("%old%", currentVersion).replace("%new%", latestVersion));
+        }
+      } catch (Exception ex) {
+        e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replace("%error%", ex.getMessage()));
+      }
+    }
+  }
+
 }
