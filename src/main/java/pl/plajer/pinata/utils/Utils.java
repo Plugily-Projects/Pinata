@@ -21,6 +21,9 @@ package pl.plajer.pinata.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -47,11 +50,14 @@ public class Utils {
 
   public static String colorMessage(String message) {
     try {
-      return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message));
+      String formatted = LanguageManager.getLanguageMessage(message);
+      formatted = StringUtils.replace(formatted, "%prefix%", LanguageManager.getLanguageMessage("Prefix"));
+      formatted = ChatColor.translateAlternateColorCodes('&', formatted);
+      return formatted;
     } catch (NullPointerException e1) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), e1);
       e1.printStackTrace();
-      //MessageUtils.errorOccured();
+      MessageUtils.errorOccurred();
       Bukkit.getConsoleSender().sendMessage("Game message not found!");
       if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
         Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
@@ -63,8 +69,32 @@ public class Utils {
     }
   }
 
+  /*If we want to add PlaceHolderAPI
+  public static String setPlaceholders(final Player p, String str) {
+    String formatted = str;
+    if(plugin.isPlaceholderAPIEnabled()) {
+      formatted = PlaceholderAPI.setPlaceholders(p, str);
+    }
+    formatted = StringUtils.replace(formatted, "%prefix%", LanguageManager.getLanguageMessage("Prefix"));
+    formatted = StringUtils.replace(formatted, "%player%", p.getName());
+    formatted = StringUtils.replace(formatted, "%pinata-player-displayname%", p.getDisplayName());
+    formatted = StringUtils.replace(formatted, "%pinata-player-uuid%", p.getUniqueId().toString());
+    formatted = StringUtils.replace(formatted, "%pinata-player-gamemode%", p.getGameMode().name());
+    formatted = StringUtils.replace(formatted, "%pinata-world%", p.getWorld().getName());
+    formatted = StringUtils.replace(formatted, "%pinata-player-health%", String.valueOf(p.getHealth()));
+    formatted = StringUtils.replace(formatted, "%pinata-player-max-health%", String.valueOf(p.getMaxHealth()));
+    formatted = StringUtils.replace(formatted, "%pinata-max-players%", String.valueOf(Bukkit.getServer().getMaxPlayers()));
+    formatted = StringUtils.replace(formatted, "%pinata-online-players%", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
+    formatted = ChatColor.translateAlternateColorCodes('&', formatted);
+    return formatted;
+  }*/
+
+
   public static String colorRawMessage(String message) {
-    return ChatColor.translateAlternateColorCodes('&', message);
+    String formatted = message;
+    formatted = StringUtils.replace(formatted, "%prefix%", LanguageManager.getLanguageMessage("Prefix"));
+    formatted = ChatColor.translateAlternateColorCodes('&', formatted);
+    return formatted;
   }
 
   public static boolean createPinataAtPlayer(Player p, Location l, Pinata pinata) {

@@ -68,6 +68,7 @@ public class Main extends JavaPlugin {
   private boolean needBetaUpdate = false;
   private static boolean debug;
   private String newestVersion;
+  private boolean placeholderAPI;
 
   public static void debug(LogLevel level, String thing) {
     if (debug) {
@@ -95,7 +96,6 @@ public class Main extends JavaPlugin {
   public void onEnable() {
     ServiceRegistry.registerService(this);
     String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-    Bukkit.broadcastMessage(version);
     LanguageManager.init(this);
     saveDefaultConfig();
     if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1")
@@ -226,6 +226,15 @@ public class Main extends JavaPlugin {
       Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Detected Holographic Displays plugin!");
       Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Enabling holograms support.");
     }
+    /* if we want PlaceHolderAPI
+    if (!isPluginEnabled("PlaceholderAPI")) {
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] §c✖ §4PlaceholderAPI");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] Disabling PlaceholderAPI support.");
+      placeholderAPI = false;
+    } else {
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + " §a✔ §ePlaceholderAPI §7| §aVersion§7:§e " + PlaceholderAPIPlugin.getInstance().getDescription().getVersion());
+      placeholderAPI = true;
+    }*/
   }
 
   /**
@@ -292,6 +301,10 @@ public class Main extends JavaPlugin {
 
   public String getNewestVersion() {
     return newestVersion;
+  }
+
+  public boolean isPlaceholderAPIEnabled() {
+    return placeholderAPI;
   }
 
   public enum LogLevel {
