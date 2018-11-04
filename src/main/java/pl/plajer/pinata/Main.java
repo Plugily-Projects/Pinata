@@ -103,6 +103,8 @@ public class Main extends JavaPlugin {
     if (ConfigUtils.getFile(this, "messages.yml").exists()) {
       LanguageMigrator.migrateToNewFormat();
     }
+    LanguageMigrator.configUpdate();
+    LanguageMigrator.languageFileUpdate();
     if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1")
         || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2"))) {
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Pinata plugin!");
