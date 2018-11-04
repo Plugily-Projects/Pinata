@@ -47,7 +47,6 @@ import pl.plajer.pinata.handlers.PinataManager;
 import pl.plajer.pinata.handlers.SignManager;
 import pl.plajer.pinata.handlers.language.LanguageManager;
 import pl.plajer.pinata.utils.MessageUtils;
-import pl.plajer.pinata.utils.MetricsLite;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.services.ServiceRegistry;
 import pl.plajerlair.core.services.update.UpdateChecker;
@@ -151,7 +150,6 @@ public class Main extends JavaPlugin {
   }
 
   private void initializeClasses() {
-    new MetricsLite(this);
     crateManager = new CrateManager(this);
     commands = new MainCommand(this, true);
     new MenuHandler(this);

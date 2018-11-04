@@ -1,5 +1,10 @@
 # Pinata plugin changelog
 
+### 3.0.0 update (1X.11.2018)
+* Added maven
+* Updated updatecheck
+* Removed bStats
+
 ### 2.6.0 update (15.03.2018)
 * Code changes
 * Edited getDrops in PinataDeathEvent
