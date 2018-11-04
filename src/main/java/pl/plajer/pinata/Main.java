@@ -47,6 +47,7 @@ import pl.plajer.pinata.handlers.MenuHandler;
 import pl.plajer.pinata.handlers.PinataManager;
 import pl.plajer.pinata.handlers.SignManager;
 import pl.plajer.pinata.handlers.language.LanguageManager;
+import pl.plajer.pinata.handlers.language.LanguageMigrator;
 import pl.plajer.pinata.utils.MessageUtils;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.services.ServiceRegistry;
@@ -98,6 +99,10 @@ public class Main extends JavaPlugin {
     String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     LanguageManager.init(this);
     saveDefaultConfig();
+    //check if using releases before 3.0.0
+    if (ConfigUtils.getFile(this, "messages.yml").exists()) {
+      LanguageMigrator.migrateToNewFormat();
+    }
     if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1")
         || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2"))) {
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Pinata plugin!");
