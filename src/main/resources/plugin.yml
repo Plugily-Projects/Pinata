@@ -5,7 +5,6 @@ description: Awesome pinata sheep mobs for your server!
 website: https://www.spigotmc.org/resources/pi%C3%B1ata-1-8-1-12.46655/
 main: pl.plajer.pinata.Main
 softdepend: [HolographicDisplays, Vault]
-loadbefore: [HolographicDisplays, Vault]
 
 commands:
   pinata:

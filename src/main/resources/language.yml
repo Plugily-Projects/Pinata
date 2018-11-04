@@ -2,6 +2,7 @@
 #Language: English (en-GB)
 
 Pinata:
+  Prefix: "&6&lPinata &a>> "
   Specify-Name: "&6&lPinata &a>> &cPlease specify pinata name!"
   Not-Found: "&6&lPinata &a>> &cPinata not found!"
   Not-Own: "&6&lPinata &a>> &cThat's not your pinata!"

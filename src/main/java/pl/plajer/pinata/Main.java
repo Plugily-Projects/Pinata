@@ -55,7 +55,7 @@ import pl.plajerlair.core.utils.ConfigUtils;
 
 public class Main extends JavaPlugin {
 
-  private List<String> filesToGenerate = Arrays.asList("crates", "pinatas", "messages", "pinata_storage");
+  private List<String> filesToGenerate = Arrays.asList("crates", "config", "language", "pinata_storage");
   private CrateManager crateManager;
   private MainCommand commands;
   private PinataManager pinataManager;
@@ -95,10 +95,11 @@ public class Main extends JavaPlugin {
   public void onEnable() {
     ServiceRegistry.registerService(this);
     String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+    Bukkit.broadcastMessage(version);
     LanguageManager.init(this);
     saveDefaultConfig();
     if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1")
-        || version.equalsIgnoreCase("v1_12_R1"))) {
+        || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2"))) {
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Pinata plugin!");
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
       forceDisable = true;

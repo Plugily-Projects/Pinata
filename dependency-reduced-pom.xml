@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>pl.plajer</groupId>
   <artifactId>pinata</artifactId>
-  <version>3.0.0c</version>
+  <version>3.0.0</version>
   <licenses>
     <license>
       <name>GNU General Public License v3</name>
