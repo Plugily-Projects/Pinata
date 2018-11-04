@@ -27,8 +27,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.pinata.Main;
-import pl.plajer.pinata.utils.ItemBuilder;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.ItemBuilder;
 
 /**
  * @author Plajer
@@ -127,7 +127,7 @@ public class CreatorMenu {
             .getString("storage." + pinataName + "." + path);
   }
 
-  public void addItem(ItemStack itemStack) {
+  private void addItem(ItemStack itemStack) {
     inventory.addItem(itemStack);
   }
 
