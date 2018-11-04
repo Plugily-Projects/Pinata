@@ -28,8 +28,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.pinata.Main;
-import pl.plajerlair.core.services.LocaleService;
 import pl.plajerlair.core.services.ServiceRegistry;
+import pl.plajerlair.core.services.locale.LocaleService;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**

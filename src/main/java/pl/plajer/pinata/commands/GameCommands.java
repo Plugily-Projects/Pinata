@@ -50,7 +50,6 @@ import pl.plajer.pinata.utils.PinataUtils;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.MinigameUtils;
-import pl.plajerlair.core.utils.UpdateChecker;
 
 /**
  * @author Plajer
@@ -83,17 +82,8 @@ public class GameCommands extends MainCommand {
       plugin.getDisabledWorlds().add(world);
       plugin.getLogger().info("Pinata creation blocked at world " + world + "!");
     }
-    if (plugin.getConfig().getBoolean("update-notify")) {
-      try {
-        String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("Pinata").getDescription().getVersion();
-        boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 46655);
-        if (check) {
-          String latestVersion = "v" + UpdateChecker.getLatestVersion();
-          sender.sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replace("%old%", currentVersion).replace("%new%", latestVersion));
-        }
-      } catch (Exception ex) {
-        sender.sendMessage(Utils.colorMessage("Other.Plugin-Update-Check-Failed").replace("%error%", ex.getMessage()));
-      }
+    if (plugin.isNormalUpdate()) {
+      sender.sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replace("%old%", plugin.getDescription().getVersion()).replace("%new%", plugin.getNewestVersion()));
     }
     sender.sendMessage(Utils.colorMessage("Pinata.Config.Reload-Success"));
   }

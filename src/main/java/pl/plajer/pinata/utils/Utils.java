@@ -38,7 +38,7 @@ import pl.plajer.pinata.handlers.language.LanguageManager;
 import pl.plajer.pinata.handlers.language.Locale;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 public class Utils {

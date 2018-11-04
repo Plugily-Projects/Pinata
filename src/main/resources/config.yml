@@ -4,7 +4,9 @@
 using-permissions: true
 
 #Notify about plugin updates?
-update-notify: true
+Update-Notifier:
+  Enabled: true
+  Notify-Beta-Versions: true
 
 #You can modify default locale of plugin here.
 #Available locales:
