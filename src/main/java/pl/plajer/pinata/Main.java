@@ -28,6 +28,7 @@ import java.util.logging.Level;
 
 import net.milkbowl.vault.economy.Economy;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -150,6 +151,7 @@ public class Main extends JavaPlugin {
   }
 
   private void initializeClasses() {
+    new Metrics(this);
     crateManager = new CrateManager(this);
     commands = new MainCommand(this, true);
     new MenuHandler(this);
