@@ -4,6 +4,7 @@ authors: [Tigerpanzer, Plajer]
 description: Awesome pinata sheep mobs for your server!
 website: https://www.spigotmc.org/resources/pi%C3%B1ata-1-8-1-12.46655/
 main: pl.plajer.pinata.Main
+api-version: 1.13
 softdepend: [HolographicDisplays, Vault]
 
 commands:
