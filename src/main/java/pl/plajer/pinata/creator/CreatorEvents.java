@@ -80,13 +80,13 @@ public class CreatorEvents implements Listener {
             pinata.setName(e.getCursor().getItemMeta().getDisplayName());
             config.set("storage." + pinata.getID() + ".display-name", e.getCursor().getItemMeta().getDisplayName());
             //todo
-            e.getWhoClicked().sendMessage("Pinata display name set to " + e.getCursor().getItemMeta().getDisplayName());
+            e.getWhoClicked().sendMessage("§aPinata display name set to " + e.getCursor().getItemMeta().getDisplayName());
           }
           break;
         case "► Set mob type":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_MOB_TYPE, pinata));
-          e.getWhoClicked().sendMessage("Type valid mob type in chat!");
+          e.getWhoClicked().sendMessage("§eType valid mob type in chat!");
           e.getWhoClicked().closeInventory();
           break;
         case "► Set pinata permission":
@@ -103,7 +103,7 @@ public class CreatorEvents implements Listener {
             pinata.setPermission(e.getCursor().getItemMeta().getDisplayName());
             config.set("storage." + pinata.getID() + ".permission-string", e.getCursor().getItemMeta().getDisplayName());
             //todo
-            e.getWhoClicked().sendMessage("Pinata access permission set to " + e.getCursor().getItemMeta().getDisplayName());
+            e.getWhoClicked().sendMessage("§aPinata access permission set to " + e.getCursor().getItemMeta().getDisplayName());
           }
           break;
         case "► Set damage type":
@@ -119,37 +119,37 @@ public class CreatorEvents implements Listener {
         case "► Set health":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_HEALTH, pinata));
-          e.getWhoClicked().sendMessage("Type health amount of pinata");
+          e.getWhoClicked().sendMessage("§eType health amount of pinata");
           e.getWhoClicked().closeInventory();
           break;
         case "► Set crate alive time":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_CRATE_TIME, pinata));
-          e.getWhoClicked().sendMessage("Type crate time in chat");
+          e.getWhoClicked().sendMessage("§eType crate time in chat");
           e.getWhoClicked().closeInventory();
           break;
         case "► Set drop view time":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_DROP_VIEW_TIME, pinata));
-          e.getWhoClicked().sendMessage("Type drop view time in chat");
+          e.getWhoClicked().sendMessage("§eType drop view time in chat");
           e.getWhoClicked().closeInventory();
           break;
         case "► Set blindness effect":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_BLINDNESS, pinata));
-          e.getWhoClicked().sendMessage("Type true or false to set blindness enabled/disabled");
+          e.getWhoClicked().sendMessage("§eType §atrue §eor §cfalse §eto set blindness §aenabled§e/§cdisabled");
           e.getWhoClicked().closeInventory();
           break;
         case "► Set blindness duration":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_BLINDNESS_DURATION, pinata));
-          e.getWhoClicked().sendMessage("Type blindness duration in chat");
+          e.getWhoClicked().sendMessage("§eType blindness duration in chat");
           e.getWhoClicked().closeInventory();
           break;
         case "► Set full blindness effect":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_FULL_BLINDNESS, pinata));
-          e.getWhoClicked().sendMessage("Type true or false to set full blindness effect");
+          e.getWhoClicked().sendMessage("§eType §atrue §eor §cfalse §eto set full blindness effect");
           e.getWhoClicked().closeInventory();
           break;
         case "► Edit pinata drops":
@@ -170,7 +170,7 @@ public class CreatorEvents implements Listener {
     if (e.getInventory().getName().contains("Modify drops: ")) {
       FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       if (e.getInventory().firstEmpty() == 0) {
-        e.getPlayer().sendMessage("no items set, aborting!");
+        e.getPlayer().sendMessage("§cNo items set, aborting!");
         return;
       }
       List<ItemStack> items = new ArrayList<>();
@@ -189,7 +189,7 @@ public class CreatorEvents implements Listener {
         ItemMeta im = is.getItemMeta();
         if (im == null || im.getLore() == null) {
           pinataItems.add(new PinataItem(is, 100.0));
-          e.getPlayer().sendMessage("Item " + is.getType() + " at position " + i + " hasn't got chance set! Using 100% by default!");
+          e.getPlayer().sendMessage("§aItem " + is.getType() + "§e at position " + i + " §chasn't got chance set§e! Using §a100%§e by default!");
           continue;
         }
         boolean found = false;
@@ -204,10 +204,10 @@ public class CreatorEvents implements Listener {
               continue;
           }
         pinataItems.add(new PinataItem(is, 100.0));
-        e.getPlayer().sendMessage("Item " + is.getType() + " at position " + i + " hasn't got chance set! Using 100% by default!");
+        e.getPlayer().sendMessage("§aItem " + is.getType() + "§e at position " + i + " §chasn't got chance set§e! Using §a100%§e by default!");
         i++;
       }
-      e.getPlayer().sendMessage("Items modified");
+      e.getPlayer().sendMessage("§aItems modified");
       ConfigUtils.saveConfig(plugin, config, "pinata_storage");
     }
   }
