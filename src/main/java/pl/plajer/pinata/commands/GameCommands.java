@@ -349,12 +349,6 @@ public class GameCommands extends MainCommand {
   }
 
   public void applyChanceToItem(CommandSender sender, String str) {
-    if (!isSenderPlayer(sender)) {
-      return;
-    }
-    if (!hasPermission(sender, "pinata.admin.setchance")) {
-      return;
-    }
     Player p = (Player) sender;
     if (p.getInventory().getItemInMainHand() == null || p.getInventory().getItemInMainHand().getType() == Material.AIR) {
       sender.sendMessage("You must hold any item!");

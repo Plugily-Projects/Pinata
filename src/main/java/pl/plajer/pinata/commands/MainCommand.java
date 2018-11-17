@@ -90,6 +90,12 @@ public class MainCommand implements CommandExecutor {
     } else if (args[0].equalsIgnoreCase("reloadconfig")) {
       argumentsManager.reloadConfig(sender);
     } else if (args[0].equalsIgnoreCase("setchance")) {
+      if (!isSenderPlayer(sender)) {
+        return true;
+      }
+      if (!hasPermission(sender, "pinata.admin.setchance")) {
+        return true;
+      }
       if (args.length == 1) {
         sender.sendMessage("Please type chance!");
       } else {
