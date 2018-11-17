@@ -35,6 +35,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
+import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -53,57 +54,57 @@ public class CreatorEvents implements Listener {
 
   @EventHandler
   public void onInventoryClick(InventoryClickEvent e) {
-      if (e.getInventory().getName() == null || e.getCurrentItem() == null) {
-          return;
-      }
+    if (e.getInventory().getName() == null || e.getCurrentItem() == null) {
+      return;
+    }
     if (e.getInventory().getName().contains("Editing pinata: ")) {
       Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replace("Editing pinata: ", ""));
-        if (pinata == null) {
-            return;
-        }
-        if (e.getCurrentItem().getItemMeta() == null || !e.getCurrentItem().getItemMeta().hasDisplayName()) {
-            return;
-        }
+      if (pinata == null) {
+        return;
+      }
+      if (e.getCurrentItem().getItemMeta() == null || !e.getCurrentItem().getItemMeta().hasDisplayName()) {
+        return;
+      }
       FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       switch (ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName())) {
         case "► Set pinata name":
           if (e.getCurrentItem().getType() == Material.NAME_TAG && e.getCursor().getType() == Material.NAME_TAG) {
             e.setCancelled(true);
             if (!e.getCursor().hasItemMeta()) {
-              e.getWhoClicked().sendMessage("%prefix% §cThis item doesn't has a name!");
+              e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.RED + "This item doesn't has a name!"));
               break;
             }
             if (!e.getCursor().getItemMeta().hasDisplayName()) {
-              e.getWhoClicked().sendMessage("%prefix% §cThis item doesn't has a name!");
+              e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.RED + "This item doesn't has a name!"));
               break;
             }
             pinata.setName(e.getCursor().getItemMeta().getDisplayName());
             config.set("storage." + pinata.getID() + ".display-name", e.getCursor().getItemMeta().getDisplayName());
             //todo
-            e.getWhoClicked().sendMessage("%prefix% §aPinata display name set to " + e.getCursor().getItemMeta().getDisplayName());
+            e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.GREEN + "Pinata display name set to " + e.getCursor().getItemMeta().getDisplayName()));
           }
           break;
         case "► Set mob type":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_MOB_TYPE, pinata));
-          e.getWhoClicked().sendMessage("%prefix% §eType valid mob type in chat!");
+          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type valid mob type in chat!"));
           e.getWhoClicked().closeInventory();
           break;
         case "► Set pinata permission":
           if (e.getCurrentItem().getType() == Material.NAME_TAG && e.getCursor().getType() == Material.NAME_TAG) {
             e.setCancelled(true);
             if (!e.getCursor().hasItemMeta()) {
-              e.getWhoClicked().sendMessage("%prefix% §cThis item doesn't has a name!");
+              e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.RED + "This item doesn't has a name!"));
               break;
             }
             if (!e.getCursor().getItemMeta().hasDisplayName()) {
-              e.getWhoClicked().sendMessage("%prefix% §cThis item doesn't has a name!");
+              e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.RED + "This item doesn't has a name!"));
               break;
             }
             pinata.setPermission(e.getCursor().getItemMeta().getDisplayName());
             config.set("storage." + pinata.getID() + ".permission-string", e.getCursor().getItemMeta().getDisplayName());
             //todo
-            e.getWhoClicked().sendMessage("%prefix% §aPinata access permission set to " + e.getCursor().getItemMeta().getDisplayName());
+            e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.GREEN + "Pinata access permission set to " + e.getCursor().getItemMeta().getDisplayName()));
           }
           break;
         case "► Set damage type":
@@ -119,37 +120,39 @@ public class CreatorEvents implements Listener {
         case "► Set health":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_HEALTH, pinata));
-          e.getWhoClicked().sendMessage("%prefix% §eType health amount of pinata");
+          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type health amount of pinata"));
           e.getWhoClicked().closeInventory();
           break;
         case "► Set crate alive time":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_CRATE_TIME, pinata));
-          e.getWhoClicked().sendMessage("%prefix% §eType crate time in chat");
+          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type crate time in chat"));
           e.getWhoClicked().closeInventory();
           break;
         case "► Set drop view time":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_DROP_VIEW_TIME, pinata));
-          e.getWhoClicked().sendMessage("%prefix% §eType drop view time in chat");
+          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type drop view time in chat"));
           e.getWhoClicked().closeInventory();
           break;
         case "► Set blindness effect":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_BLINDNESS, pinata));
-          e.getWhoClicked().sendMessage("%prefix% §eType §atrue §eor §cfalse §eto set blindness §aenabled§e/§cdisabled");
+          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type" + ChatColor.GREEN + "true" + ChatColor.YELLOW + "or" + ChatColor.RED + "false" + ChatColor.YELLOW + "to set " +
+              "blindness" + ChatColor.GREEN + "enabled" + ChatColor.YELLOW + "/" + ChatColor.RED + "disabled"));
           e.getWhoClicked().closeInventory();
           break;
         case "► Set blindness duration":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_BLINDNESS_DURATION, pinata));
-          e.getWhoClicked().sendMessage("%prefix% §eType blindness duration in chat");
+          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type blindness duration in chat"));
           e.getWhoClicked().closeInventory();
           break;
         case "► Set full blindness effect":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_FULL_BLINDNESS, pinata));
-          e.getWhoClicked().sendMessage("%prefix% §eType §atrue §eor §cfalse §eto set full blindness effect");
+          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type" + ChatColor.GREEN + "true" + ChatColor.YELLOW + "or" + ChatColor.RED + "false" + ChatColor.YELLOW + "to set " +
+              "full blindness effect"));
           e.getWhoClicked().closeInventory();
           break;
         case "► Edit pinata drops":
@@ -164,20 +167,20 @@ public class CreatorEvents implements Listener {
 
   @EventHandler
   public void onInventoryClose(InventoryCloseEvent e) {
-      if (e.getInventory().getName() == null) {
-          return;
-      }
+    if (e.getInventory().getName() == null) {
+      return;
+    }
     if (e.getInventory().getName().contains("Modify drops: ")) {
       FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       if (e.getInventory().firstEmpty() == 0) {
-        e.getPlayer().sendMessage("%prefix% §cNo items set, aborting!");
+        e.getPlayer().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.RED + "No items set, aborting!"));
         return;
       }
       List<ItemStack> items = new ArrayList<>();
       for (ItemStack is : e.getInventory().getContents()) {
-          if (is == null) {
-              continue;
-          }
+        if (is == null) {
+          continue;
+        }
         items.add(is);
       }
       config.set("storage." + e.getInventory().getName().replace("Modify drops: ", "") + ".drops", items);
@@ -189,7 +192,8 @@ public class CreatorEvents implements Listener {
         ItemMeta im = is.getItemMeta();
         if (im == null || im.getLore() == null) {
           pinataItems.add(new PinataItem(is, 100.0));
-          e.getPlayer().sendMessage("%prefix% §aItem " + is.getType() + "§e at position " + i + " §chasn't got chance set§e! Using §a100%§e by default!");
+          e.getPlayer().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.GREEN + "Item " + is.getType() + ChatColor.YELLOW + " at position " + i + ChatColor.RED + "hasn't got chance " +
+              "set" + ChatColor.YELLOW + "! Using" + ChatColor.GREEN + "100%" + ChatColor.YELLOW + " by default!"));
           continue;
         }
         boolean found = false;
@@ -200,14 +204,15 @@ public class CreatorEvents implements Listener {
             break;
           }
         }
-          if (found) {
-              continue;
-          }
+        if (found) {
+          continue;
+        }
         pinataItems.add(new PinataItem(is, 100.0));
-        e.getPlayer().sendMessage("%prefix% §aItem " + is.getType() + "§e at position " + i + " §chasn't got chance set§e! Using §a100%§e by default!");
+        e.getPlayer().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.GREEN + "Item " + is.getType() + ChatColor.YELLOW + " at position " + i + ChatColor.RED + "hasn't got chance set" + ChatColor.YELLOW + "! Using" + ChatColor.GREEN +
+            "100%" + ChatColor.YELLOW + " by default!"));
         i++;
       }
-      e.getPlayer().sendMessage("%prefix% §aItems modified");
+      e.getPlayer().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.GREEN + "Items modified"));
       ConfigUtils.saveConfig(plugin, config, "pinata_storage");
     }
   }
