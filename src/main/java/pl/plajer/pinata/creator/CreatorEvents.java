@@ -53,11 +53,17 @@ public class CreatorEvents implements Listener {
 
   @EventHandler
   public void onInventoryClick(InventoryClickEvent e) {
-    if (e.getInventory().getName() == null || e.getCurrentItem() == null) return;
+      if (e.getInventory().getName() == null || e.getCurrentItem() == null) {
+          return;
+      }
     if (e.getInventory().getName().contains("Editing pinata: ")) {
       Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replace("Editing pinata: ", ""));
-      if (pinata == null) return;
-      if (e.getCurrentItem().getItemMeta() == null || !e.getCurrentItem().getItemMeta().hasDisplayName()) return;
+        if (pinata == null) {
+            return;
+        }
+        if (e.getCurrentItem().getItemMeta() == null || !e.getCurrentItem().getItemMeta().hasDisplayName()) {
+            return;
+        }
       FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       switch (ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName())) {
         case "► Set pinata name":
@@ -158,7 +164,9 @@ public class CreatorEvents implements Listener {
 
   @EventHandler
   public void onInventoryClose(InventoryCloseEvent e) {
-    if (e.getInventory().getName() == null) return;
+      if (e.getInventory().getName() == null) {
+          return;
+      }
     if (e.getInventory().getName().contains("Modify drops: ")) {
       FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       if (e.getInventory().firstEmpty() == 0) {
@@ -167,7 +175,9 @@ public class CreatorEvents implements Listener {
       }
       List<ItemStack> items = new ArrayList<>();
       for (ItemStack is : e.getInventory().getContents()) {
-        if (is == null) continue;
+          if (is == null) {
+              continue;
+          }
         items.add(is);
       }
       config.set("storage." + e.getInventory().getName().replace("Modify drops: ", "") + ".drops", items);
@@ -190,7 +200,9 @@ public class CreatorEvents implements Listener {
             break;
           }
         }
-        if (found) continue;
+          if (found) {
+              continue;
+          }
         pinataItems.add(new PinataItem(is, 100.0));
         e.getPlayer().sendMessage("Item " + is.getType() + " at position " + i + " hasn't got chance set! Using 100% by default!");
         i++;

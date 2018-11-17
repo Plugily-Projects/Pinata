@@ -31,8 +31,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.plajer.pinata.Main;
-import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.api.PinataFactory;
+import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.utils.PinataUtils;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.XMaterial;

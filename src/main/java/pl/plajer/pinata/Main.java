@@ -56,6 +56,7 @@ import pl.plajerlair.core.utils.ConfigUtils;
 
 public class Main extends JavaPlugin {
 
+  private static boolean debug;
   private List<String> filesToGenerate = Arrays.asList("crates", "config", "language", "pinata_storage");
   private CrateManager crateManager;
   private MainCommand commands;
@@ -67,7 +68,6 @@ public class Main extends JavaPlugin {
   private boolean forceDisable = false;
   private boolean needNormalUpdate = false;
   private boolean needBetaUpdate = false;
-  private static boolean debug;
   private String newestVersion;
   private boolean placeholderAPI;
 

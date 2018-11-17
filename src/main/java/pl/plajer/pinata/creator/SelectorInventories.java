@@ -83,7 +83,9 @@ public class SelectorInventories {
     FileConfiguration config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "pinata_storage");
     Inventory itemStorage = Bukkit.createInventory(null, 9 * 5, "Modify drops: " + name);
     for (int i = 0; i < config.getList("storage." + name + ".drops", new ArrayList<>()).size(); i++) {
-      if (config.getList("storage." + name + ".drops").get(i) == null) continue;
+      if (config.getList("storage." + name + ".drops").get(i) == null) {
+        continue;
+      }
       ItemStack stack = (ItemStack) config.getList("storage." + name + ".drops").get(i);
       itemStorage.addItem(stack);
     }

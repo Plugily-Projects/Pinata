@@ -51,7 +51,9 @@ public class PinataManager {
 
       List<PinataItem> pinataItems = new ArrayList<>();
       for (int i = 0; i < config.getList(accessKey + "drops", new ArrayList<>()).size(); i++) {
-        if (config.getList(accessKey + "drops").get(i) == null) continue;
+        if (config.getList(accessKey + "drops").get(i) == null) {
+          continue;
+        }
         ItemStack item = (ItemStack) config.getList(accessKey + "drops").get(i);
         ItemMeta meta = item.getItemMeta();
         if (meta == null || !meta.hasLore()) {
@@ -67,7 +69,9 @@ public class PinataManager {
             break;
           }
         }
-        if (found) continue;
+        if (found) {
+          continue;
+        }
         pinataItems.add(new PinataItem(item, 100.0));
         Bukkit.getLogger().warning("Item " + item.getType() + " from pinata " + key + " hasn't got chance set! Using 100% by default!");
       }
@@ -94,7 +98,9 @@ public class PinataManager {
   @Nullable
   public Pinata getPinataByName(String name) {
     for (Pinata pinata : pinataList) {
-      if (pinata.getID().equals(name)) return pinata;
+      if (pinata.getID().equals(name)) {
+        return pinata;
+      }
     }
     return null;
   }

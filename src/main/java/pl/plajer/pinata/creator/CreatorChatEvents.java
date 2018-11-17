@@ -61,13 +61,15 @@ public class CreatorChatEvents implements Listener {
             reaction.getPinata().setEntityType(type);
             config.set("storage." + reaction.getPinata().getID() + ".mob-entity-type", type.name());
             e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Entity-Set").replace("%pinataid%", reaction.getPinata().getID() + "")
-                    .replace("%name%", type.name()));
+                .replace("%name%", type.name()));
             chatReactions.remove(e.getPlayer());
           } catch (IllegalArgumentException ex) {
             e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Entity-Does-Not-Exist"));
             StringBuilder mobs = new StringBuilder();
             for (EntityType en : EntityType.values()) {
-              if (en == null || en.getName() == null) continue;
+                if (en == null || en.getName() == null) {
+                    continue;
+                }
               mobs.append(en.getName()).append(", ");
             }
             e.getPlayer().sendMessage(mobs.toString());
@@ -81,7 +83,7 @@ public class CreatorChatEvents implements Listener {
           reaction.getPinata().setHealth(Double.parseDouble(e.getMessage()));
           config.set("storage." + reaction.getPinata().getID() + ".health-amount", Double.parseDouble(e.getMessage()));
           e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Pinata-Health-Set").replace("%pinataid%", reaction.getPinata().getID() + "")
-                  .replace("%message%", e.getMessage()));
+              .replace("%message%", e.getMessage()));
           chatReactions.remove(e.getPlayer());
           break;
         case SET_CRATE_TIME:
@@ -92,7 +94,7 @@ public class CreatorChatEvents implements Listener {
           reaction.getPinata().setCrateTime(Integer.parseInt(e.getMessage()));
           config.set("storage." + reaction.getPinata().getID() + ".crate-display-time-alive", Integer.parseInt(e.getMessage()));
           e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Crate-Time-Set").replace("%pinataid%", reaction.getPinata().getID() + "")
-                  .replace("%message%", e.getMessage()));
+              .replace("%message%", e.getMessage()));
           chatReactions.remove(e.getPlayer());
           break;
         case SET_DROP_VIEW_TIME:
@@ -103,7 +105,7 @@ public class CreatorChatEvents implements Listener {
           reaction.getPinata().setDropViewTime(Integer.parseInt(e.getMessage()));
           config.set("storage." + reaction.getPinata().getID() + ".timer-display", Integer.parseInt(e.getMessage()));
           e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Pinata-Drop-View-Time-Set").replace("%pinataid%", reaction.getPinata().getID() + "")
-                  .replace("%message%", e.getMessage()));
+              .replace("%message%", e.getMessage()));
           chatReactions.remove(e.getPlayer());
           break;
         case SET_BLINDNESS_DURATION:
@@ -114,7 +116,7 @@ public class CreatorChatEvents implements Listener {
           reaction.getPinata().setBlindnessTime(Integer.parseInt(e.getMessage()));
           config.set("storage." + reaction.getPinata().getID() + ".blindness-duration", Integer.parseInt(e.getMessage()));
           e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Blindess-Duration-Set").replace("%pinataid%", reaction.getPinata().getID())
-                  .replace("%message%", e.getMessage()));
+              .replace("%message%", e.getMessage()));
           chatReactions.remove(e.getPlayer());
           break;
         case SET_BLINDNESS:
@@ -125,7 +127,7 @@ public class CreatorChatEvents implements Listener {
           reaction.getPinata().setBlindnessEnabled(BooleanUtils.toBoolean(e.getMessage()));
           config.set("storage." + reaction.getPinata().getID() + ".blindness-activated", BooleanUtils.toBoolean(e.getMessage()));
           e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Blindess-Set").replace("%pinataid%", reaction.getPinata().getID())
-                  .replace("%message%", e.getMessage()));
+              .replace("%message%", e.getMessage()));
           chatReactions.remove(e.getPlayer());
           break;
         case SET_FULL_BLINDNESS:
@@ -136,7 +138,7 @@ public class CreatorChatEvents implements Listener {
           reaction.getPinata().setFullBlindness(BooleanUtils.toBoolean(e.getMessage()));
           config.set("storage." + reaction.getPinata().getID() + ".full-blindness-activated", BooleanUtils.toBoolean(e.getMessage()));
           e.getPlayer().sendMessage(Utils.colorMessage("Pinata.Full-Blindess-Set").replace("%pinataid%", reaction.getPinata().getID())
-                  .replace("%message%", e.getMessage()));
+              .replace("%message%", e.getMessage()));
           chatReactions.remove(e.getPlayer());
           break;
       }

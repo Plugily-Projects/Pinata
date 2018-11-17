@@ -34,10 +34,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.api.PinataFactory;
 import pl.plajer.pinata.handlers.language.LanguageManager;
 import pl.plajer.pinata.handlers.language.Locale;
 import pl.plajer.pinata.pinata.Pinata;
-import pl.plajer.pinata.api.PinataFactory;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 import pl.plajerlair.core.utils.XMaterial;

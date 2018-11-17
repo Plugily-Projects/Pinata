@@ -67,15 +67,21 @@ public class MainCommand implements CommandExecutor {
 
   @Override
   public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
-    if (!hasPermission(sender, "pinata.command")) return true;
+    if (!hasPermission(sender, "pinata.command")) {
+      return true;
+    }
     if (args.length == 0) {
       sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Header"));
       sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Description"));
       return true;
     }
     if (args[0].equalsIgnoreCase("list")) {
-      if (!isSenderPlayer(sender)) return true;
-      if (!hasPermission(sender, "pinata.command.list")) return true;
+      if (!isSenderPlayer(sender)) {
+        return true;
+      }
+      if (!hasPermission(sender, "pinata.command.list")) {
+        return true;
+      }
       Utils.createPinatasGUI("Menus.List-Menu.Inventory-Name", (Player) sender);
     } else if (args[0].equalsIgnoreCase("preview")) {
       argumentsManager.openPreviewMenu(sender, args);
@@ -96,16 +102,24 @@ public class MainCommand implements CommandExecutor {
     } else if (args[0].equalsIgnoreCase("cratelist")) {
       argumentsManager.printCrateList(sender);
     } else if (args[0].equalsIgnoreCase("createnew")) {
-      if (!isSenderPlayer(sender)) return true;
-      if (!hasPermission(sender, "pinata.admin.createpinata")) return true;
+      if (!isSenderPlayer(sender)) {
+        return true;
+      }
+      if (!hasPermission(sender, "pinata.admin.createpinata")) {
+        return true;
+      }
       if (args.length == 1) {
         sender.sendMessage("Please type pinata name!");
       } else {
         argumentsManager.createNewPinata(sender, args[1]);
       }
     } else if (args[0].equalsIgnoreCase("edit")) {
-      if (!isSenderPlayer(sender)) return true;
-      if (!hasPermission(sender, "pinata.admin.edit")) return true;
+      if (!isSenderPlayer(sender)) {
+        return true;
+      }
+      if (!hasPermission(sender, "pinata.admin.edit")) {
+        return true;
+      }
       if (args.length == 1) {
         sender.sendMessage("Please type pinata name!");
       } else {

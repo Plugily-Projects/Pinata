@@ -42,10 +42,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.api.PinataFactory;
 import pl.plajer.pinata.handlers.language.LanguageManager;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
-import pl.plajer.pinata.api.PinataFactory;
 import pl.plajer.pinata.utils.PinataUtils;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -66,7 +66,9 @@ public class GameCommands extends MainCommand {
   }
 
   public void reloadConfig(CommandSender sender) {
-    if (!hasPermission(sender, "pinata.admin.reload")) return;
+    if (!hasPermission(sender, "pinata.admin.reload")) {
+      return;
+    }
     try {
       plugin.reloadConfig();
       plugin.getPinataManager().getPinataList().clear();
@@ -89,8 +91,12 @@ public class GameCommands extends MainCommand {
   }
 
   public void setCrate(CommandSender sender, String[] args) {
-    if (!hasPermission(sender, "pinata.admin.crate.set")) return;
-    if (!isSenderPlayer(sender)) return;
+    if (!hasPermission(sender, "pinata.admin.crate.set")) {
+      return;
+    }
+    if (!isSenderPlayer(sender)) {
+      return;
+    }
     if (args.length != 2) {
       sender.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.Specify-Name"));
       return;
@@ -123,7 +129,9 @@ public class GameCommands extends MainCommand {
   }
 
   public void printCrateList(CommandSender sender) {
-    if (!hasPermission(sender, "pinata.admin.crate.list")) return;
+    if (!hasPermission(sender, "pinata.admin.crate.list")) {
+      return;
+    }
     int num = 0;
     sender.sendMessage(Utils.colorMessage("Pinata.Crate-Creation.List"));
     for (Location l : plugin.getCrateManager().getCratesLocations().keySet()) {
@@ -136,7 +144,9 @@ public class GameCommands extends MainCommand {
   }
 
   public void createPinata(CommandSender sender, String[] args) {
-    if (!hasPermission(sender, "pinata.admin.create")) return;
+    if (!hasPermission(sender, "pinata.admin.create")) {
+      return;
+    }
     if (args.length == 6) {
       //custom location is used
       try {
@@ -199,7 +209,9 @@ public class GameCommands extends MainCommand {
         return;
       }
     } else {
-      if (!hasPermission(sender, "pinata.admin.create.others")) return;
+      if (!hasPermission(sender, "pinata.admin.create.others")) {
+        return;
+      }
       if (args.length != 3) {
         user = (Player) sender;
       } else {
@@ -220,13 +232,17 @@ public class GameCommands extends MainCommand {
   }
 
   public void buyPinata(CommandSender sender, String[] args) {
-    if (!isSenderPlayer(sender)) return;
+    if (!isSenderPlayer(sender)) {
+      return;
+    }
     final Player p = (Player) sender;
     if (!plugin.isPluginEnabled("Vault")) {
       p.sendMessage(Utils.colorMessage("Pinata.Command.Vault-Not-Detected"));
       return;
     }
-    if (!hasPermission(sender, "pinata.command.buy")) return;
+    if (!hasPermission(sender, "pinata.command.buy")) {
+      return;
+    }
     if (!super.getUsers().isEmpty()) {
       if (super.getUsers().contains(p)) {
         p.sendMessage(Utils.colorMessage("Pinata.Create.Already-Created"));
@@ -265,8 +281,12 @@ public class GameCommands extends MainCommand {
 
 
   public void openPreviewMenu(CommandSender sender, String[] args) {
-    if (!isSenderPlayer(sender)) return;
-    if (!hasPermission(sender, "pinata.command.preview")) return;
+    if (!isSenderPlayer(sender)) {
+      return;
+    }
+    if (!hasPermission(sender, "pinata.command.preview")) {
+      return;
+    }
     if (args.length == 1) {
       sender.sendMessage(Utils.colorMessage("Pinata.Specify-Name"));
       return;
@@ -302,8 +322,8 @@ public class GameCommands extends MainCommand {
     PinataItem item = new PinataItem(new ItemStack(Material.PAPER, 1), 100.0);
 
     Pinata pinata = new Pinata(pinataID, pinataID, EntityType.SHEEP, DyeColor.WHITE, Pinata.PinataType.PRIVATE,
-            Pinata.DropType.DEATH, 20.0, 10, -1, 5, "pinata.use." + pinataID,
-            true, 15, false, Collections.singletonList(item));
+        Pinata.DropType.DEATH, 20.0, 10, -1, 5, "pinata.use." + pinataID,
+        true, 15, false, Collections.singletonList(item));
     plugin.getPinataManager().getPinataList().add(pinata);
 
     FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
@@ -321,16 +341,20 @@ public class GameCommands extends MainCommand {
     config.set("storage." + pinataID + ".mob-entity-type", "SHEEP");
     config.set("storage." + pinataID + ".items-drop-type", "DEATH");
     config.set("storage." + pinataID + ".drops",
-            new ArrayList<ItemStack>() {{
-              add(item.getItem());
-            }});
+        new ArrayList<ItemStack>() {{
+          add(item.getItem());
+        }});
     ConfigUtils.saveConfig(plugin, config, "pinata_storage");
     sender.sendMessage("New pinata with ID " + pinataID + " created!");
   }
 
   public void applyChanceToItem(CommandSender sender, String str) {
-    if (!isSenderPlayer(sender)) return;
-    if (!hasPermission(sender, "pinata.admin.setchance")) return;
+    if (!isSenderPlayer(sender)) {
+      return;
+    }
+    if (!hasPermission(sender, "pinata.admin.setchance")) {
+      return;
+    }
     Player p = (Player) sender;
     if (p.getInventory().getItemInMainHand() == null || p.getInventory().getItemInMainHand().getType() == Material.AIR) {
       sender.sendMessage("You must hold any item!");

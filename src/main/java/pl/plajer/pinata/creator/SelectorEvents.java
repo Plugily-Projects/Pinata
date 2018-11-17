@@ -44,13 +44,16 @@ public class SelectorEvents implements Listener {
 
   @EventHandler
   public void onInventoryClick(InventoryClickEvent e) {
-    if (e.getInventory().getName() == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasDisplayName())
+    if (e.getInventory().getName() == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasDisplayName()) {
       return;
+    }
     if (e.getInventory().getName().contains("Modify damage type: ")) {
       e.setCancelled(true);
       FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replace("Modify damage type: ", ""));
-      if (pinata == null) return;
+      if (pinata == null) {
+        return;
+      }
       if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Private")) {
         pinata.setPinataType(Pinata.PinataType.PRIVATE);
         config.set("storage." + pinata.getID() + ".pinata-access-type", "PRIVATE");
@@ -68,7 +71,9 @@ public class SelectorEvents implements Listener {
       e.setCancelled(true);
       FileConfiguration config = ConfigUtils.getConfig(plugin, "pinata_storage");
       Pinata pinata = plugin.getPinataManager().getPinataByName(e.getInventory().getName().replace("Modify drop type: ", ""));
-      if (pinata == null) return;
+      if (pinata == null) {
+        return;
+      }
       if (e.getCurrentItem().getItemMeta().getDisplayName().contains("On punch")) {
         pinata.setDropType(Pinata.DropType.PUNCH);
         config.set("storage." + pinata.getID() + ".items-drop-type", "PUNCH");
