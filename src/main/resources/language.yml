@@ -35,10 +35,13 @@ Pinata:
     Help-Command:
       Header: "&8&m===========[&r &9&lP&a&li&c&ln&e&la&3&lt&b&la&5&ls &8&m]==========="
       Description: " &a/pinata create &6- Create existing pinata (admin command)\n
+        &a/pinata createnew &6- Create a new pinata\n
+        &a/pinata edit &6- Edit pinata\n
         &a/pinata reloadconfig &6- Reload pinata configs (admin command)\n
         &a/pinata list &6- List of all pinatas\n
         &a/pinata buy &6- Buy pinata (Requires Vault)\n
         &a/pinata preview &6- Preview pinata drops\n
+        &a/pinata cratelist &6- Edit pinata\n
         &a/pinata setcrate &6- Sets pinata crate location (admin command)"
   Validate:
     Success: "%prefix% &aPinata %name% loaded!"

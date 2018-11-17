@@ -96,12 +96,16 @@ public class MainCommand implements CommandExecutor {
     } else if (args[0].equalsIgnoreCase("cratelist")) {
       argumentsManager.printCrateList(sender);
     } else if (args[0].equalsIgnoreCase("createnew")) {
+      if (!isSenderPlayer(sender)) return true;
+      if (!hasPermission(sender, "pinata.admin.createpinata")) return true;
       if (args.length == 1) {
         sender.sendMessage("Please type pinata name!");
       } else {
         argumentsManager.createNewPinata(sender, args[1]);
       }
     } else if (args[0].equalsIgnoreCase("edit")) {
+      if (!isSenderPlayer(sender)) return true;
+      if (!hasPermission(sender, "pinata.admin.edit")) return true;
       if (args.length == 1) {
         sender.sendMessage("Please type pinata name!");
       } else {

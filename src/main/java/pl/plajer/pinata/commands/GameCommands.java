@@ -295,8 +295,6 @@ public class GameCommands extends MainCommand {
   }
 
   public void createNewPinata(CommandSender sender, String pinataID) {
-    //todo perm check
-    //todo console check
     if (plugin.getPinataManager().getPinataByName(pinataID) != null) {
       sender.sendMessage("This pinata already exists!");
       return;

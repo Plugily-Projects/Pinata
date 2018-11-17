@@ -11,7 +11,7 @@ commands:
   pinata:
     aliases: [pin]
     description: Command for pinata plugin.
-    usage: "§cCorrect usage: /<command> buy/list/preview/create/reloadconfig/setcrate"
+    usage: "§cCorrect usage: /<command> create/edit/buy/list/preview/create/reloadconfig/setcrate/cratelist"
 
 permissions:
   pinata.player.*:
@@ -45,6 +45,8 @@ permissions:
       pinata.admin.sign.set: true
       pinata.admin.sign.destroy: true
       pinata.admin.setchance: true
+      pinata.admin.createpinata: true
+      pinata.admin.edit: true
   pinata.*:
     description: Gives you all permissions for every pinata command.
     children:
