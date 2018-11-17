@@ -38,7 +38,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
-import pl.plajer.pinata.pinataapi.PinataFactory;
+import pl.plajer.pinata.api.PinataFactory;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.XMaterial;
 

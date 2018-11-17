@@ -43,7 +43,7 @@ import org.bukkit.potion.PotionEffectType;
 import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
-import pl.plajer.pinata.pinataapi.PinataDeathEvent;
+import pl.plajer.pinata.api.PinataDeathEvent;
 import pl.plajer.pinata.utils.PinataUtils;
 import pl.plajer.pinata.utils.Utils;
 

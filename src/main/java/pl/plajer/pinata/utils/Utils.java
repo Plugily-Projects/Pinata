@@ -21,13 +21,10 @@ package pl.plajer.pinata.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.clip.placeholderapi.PlaceholderAPI;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -40,7 +37,7 @@ import pl.plajer.pinata.Main;
 import pl.plajer.pinata.handlers.language.LanguageManager;
 import pl.plajer.pinata.handlers.language.Locale;
 import pl.plajer.pinata.pinata.Pinata;
-import pl.plajer.pinata.pinataapi.PinataFactory;
+import pl.plajer.pinata.api.PinataFactory;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 import pl.plajerlair.core.utils.XMaterial;
