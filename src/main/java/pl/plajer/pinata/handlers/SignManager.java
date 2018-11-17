@@ -40,6 +40,7 @@ import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.Utils;
+import pl.plajerlair.core.utils.XMaterial;
 
 public class SignManager implements Listener {
 
@@ -79,7 +80,7 @@ public class SignManager implements Listener {
 
   @EventHandler
   public void onSignDestroy(BlockBreakEvent e) {
-    if (e.getBlock().getType().equals(Material.SIGN) || e.getBlock().getType().equals(Material.SIGN_POST) || e.getBlock().getType().equals(Material.WALL_SIGN)) {
+    if (e.getBlock().getType().equals(Material.SIGN) || e.getBlock().getType().equals(XMaterial.SIGN.parseMaterial()) || e.getBlock().getType().equals(XMaterial.WALL_SIGN.parseMaterial())) {
       Sign s = (Sign) e.getBlock().getState();
       if (s.getLine(0).equals(Utils.colorMessage("Signs.Lines.First"))) {
         if (!e.getPlayer().hasPermission("pinata.admin.sign.destroy")) {
@@ -96,7 +97,7 @@ public class SignManager implements Listener {
     if (e.getClickedBlock() == null || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
       return;
     }
-    if (e.getClickedBlock().getType().equals(Material.SIGN) || e.getClickedBlock().getType().equals(Material.SIGN_POST) || e.getClickedBlock().getType().equals(Material.WALL_SIGN)) {
+    if (e.getClickedBlock().getType().equals(Material.SIGN) || e.getClickedBlock().getType().equals(XMaterial.SIGN.parseMaterial()) || e.getClickedBlock().getType().equals(XMaterial.WALL_SIGN.parseMaterial())) {
       Sign s = (Sign) e.getClickedBlock().getState();
       if (s.getLine(0).equals(Utils.colorMessage("Signs.Lines.First"))) {
         if (!plugin.isPluginEnabled("Vault")) {

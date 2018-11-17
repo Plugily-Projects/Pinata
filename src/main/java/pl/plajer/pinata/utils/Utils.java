@@ -43,6 +43,7 @@ import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.core.utils.XMaterial;
 
 public class Utils {
 
@@ -51,7 +52,7 @@ public class Utils {
   public static String colorMessage(String message) {
     try {
       String formatted = LanguageManager.getLanguageMessage(message);
-      formatted = StringUtils.replace(formatted, "%prefix%", LanguageManager.getLanguageMessage("Prefix"));
+      formatted = StringUtils.replace(formatted, "%prefix%", LanguageManager.getLanguageMessage("Pinata.Prefix"));
       formatted = ChatColor.translateAlternateColorCodes('&', formatted);
       return formatted;
     } catch (NullPointerException e1) {
@@ -92,7 +93,7 @@ public class Utils {
 
   public static String colorRawMessage(String message) {
     String formatted = message;
-    formatted = StringUtils.replace(formatted, "%prefix%", LanguageManager.getLanguageMessage("Prefix"));
+    formatted = StringUtils.replace(formatted, "%prefix%", LanguageManager.getLanguageMessage("Pinata.Prefix"));
     formatted = ChatColor.translateAlternateColorCodes('&', formatted);
     return formatted;
   }
@@ -110,7 +111,7 @@ public class Utils {
     Inventory pinatasMenu = Bukkit.createInventory(null, rows, Utils.colorMessage(name));
     for (int i = 0; i < plugin.getPinataManager().getPinataList().size(); i++) {
       Pinata pinata = plugin.getPinataManager().getPinataList().get(i);
-      ItemStack item = new ItemStack(Material.WOOL, 1);
+      ItemStack item = new ItemStack(XMaterial.WHITE_WOOL.parseMaterial(), 1);
       ItemMeta meta = item.getItemMeta();
       meta.setDisplayName(Utils.colorRawMessage("&6") + pinata.getID());
       List<String> lore = new ArrayList<>();

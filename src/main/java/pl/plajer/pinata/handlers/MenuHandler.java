@@ -36,6 +36,7 @@ import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinataapi.PinataFactory;
 import pl.plajer.pinata.utils.PinataUtils;
 import pl.plajer.pinata.utils.Utils;
+import pl.plajerlair.core.utils.XMaterial;
 
 public class MenuHandler implements Listener {
 
@@ -52,7 +53,7 @@ public class MenuHandler implements Listener {
       e.setCancelled(true);
       return;
     }
-    if (e.getCurrentItem() == null || !e.getCurrentItem().getType().equals(Material.WOOL)) {
+    if (e.getCurrentItem() == null || !e.getCurrentItem().getType().equals(XMaterial.WHITE_WOOL.parseMaterial())) {
       return;
     }
     final ItemMeta item = e.getCurrentItem().getItemMeta();

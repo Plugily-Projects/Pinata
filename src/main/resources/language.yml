@@ -37,6 +37,7 @@ Pinata:
       Description: " &a/pinata create &6- Create existing pinata (admin command)\n
         &a/pinata createnew &6- Create a new pinata (admin command)\n
         &a/pinata edit &6- Edit pinata (admin command)\n
+        &a/pinata preview &6- Preview pinata (admin command)\n
         &a/pinata reloadconfig &6- Reload pinata configs (admin command)\n
         &a/pinata list &6- List of all pinatas\n
         &a/pinata buy &6- Buy pinata (Requires Vault)\n

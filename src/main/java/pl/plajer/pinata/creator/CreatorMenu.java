@@ -29,6 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.pinata.Main;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.ItemBuilder;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * @author Plajer
@@ -53,7 +54,7 @@ public class CreatorMenu {
             .lore(ChatColor.RED + "" + ChatColor.BOLD + "it and replace with new!!!")
             .lore(isOptionDone("display-name"))
             .build());
-    addItem(new ItemBuilder(new ItemStack(Material.MOB_SPAWNER))
+    addItem(new ItemBuilder(new ItemStack(XMaterial.SPAWNER.parseItem()))
             .name(ChatColor.GOLD + "► Set" + ChatColor.WHITE + " mob type")
             .lore(ChatColor.GRAY + "Click to set mob type of pinata")
             .lore(isOptionDone("mob-entity-type"))
@@ -66,7 +67,7 @@ public class CreatorMenu {
             .lore(ChatColor.RED + "" + ChatColor.BOLD + "it and replace with new!!!")
             .lore(isOptionDone("permission-string"))
             .build());
-    addItem(new ItemBuilder(new ItemStack(Material.RAW_FISH))
+    addItem(new ItemBuilder(new ItemStack(XMaterial.TROPICAL_FISH.parseItem()))
             .name(ChatColor.GOLD + "► Set" + ChatColor.DARK_GREEN + " damage type")
             .lore(ChatColor.GRAY + "Click to set damage type of pinata")
             .lore(ChatColor.GRAY + "(can be damaged by everyone or by creator)")
@@ -78,7 +79,7 @@ public class CreatorMenu {
             .lore(ChatColor.GRAY + "(drop items when punched or when dead)")
             .lore(isOptionDone("items-drop-type"))
             .build());
-    addItem(new ItemBuilder(new ItemStack(Material.RED_ROSE))
+    addItem(new ItemBuilder(new ItemStack(XMaterial.ROSE_RED.parseItem()))
             .name(ChatColor.GOLD + "► Set" + ChatColor.DARK_RED + " health")
             .lore(ChatColor.GRAY + "Set max health of pinata.")
             .lore(ChatColor.GRAY + "More health = more damage to kill.")
@@ -91,7 +92,7 @@ public class CreatorMenu {
             .lore(ChatColor.GRAY + "alive after spawning in crate.")
             .lore(isOptionDone("crate-display-time-alive"))
             .build());
-    addItem(new ItemBuilder(new ItemStack(Material.DOUBLE_PLANT))
+    addItem(new ItemBuilder(new ItemStack(XMaterial.CHORUS_PLANT.parseItem()))
             .name(ChatColor.GOLD + "► Set" + ChatColor.DARK_PURPLE + " drop view time")
             .lore(ChatColor.GRAY + "Set how many seconds drops of pinata")
             .lore(ChatColor.GRAY + "will be visible on the ground.")
@@ -110,7 +111,7 @@ public class CreatorMenu {
             .lore(ChatColor.GRAY + "Set 0 to disable.")
             .lore(isOptionDone("blindness-duration"))
             .build());
-    addItem(new ItemBuilder(new ItemStack(Material.EYE_OF_ENDER))
+    addItem(new ItemBuilder(new ItemStack(XMaterial.ENDER_EYE.parseItem()))
             .name(ChatColor.GOLD + "► Set" + ChatColor.GRAY + " full blindness effect")
             .lore(ChatColor.GRAY + "Should creator have full blindness effect?")
             .lore(ChatColor.GRAY + "This is a mix of night vision and blindness.")

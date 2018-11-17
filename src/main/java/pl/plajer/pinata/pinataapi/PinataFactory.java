@@ -35,6 +35,7 @@ import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.utils.Utils;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Class with pinata creation methods.
@@ -58,7 +59,7 @@ public class PinataFactory implements Listener {
     Bukkit.getPluginManager().callEvent(pce);
     if (pce.isCancelled()) {
       entity.remove();
-      if (fenceLocation.getBlock().getType().equals(Material.FENCE)) {
+      if (fenceLocation.getBlock().getType().equals(XMaterial.OAK_FENCE.parseMaterial())) {
         fenceLocation.getBlock().setType(Material.AIR);
       }
       return false;
@@ -66,7 +67,7 @@ public class PinataFactory implements Listener {
     if (!(fenceLocation.getBlock().getType().equals(Material.AIR))) {
       player.sendMessage(Utils.colorMessage("Pinata.Create.Fail"));
       entity.remove();
-      if (fenceLocation.getBlock().getType().equals(Material.FENCE)) {
+      if (fenceLocation.getBlock().getType().equals(XMaterial.OAK_FENCE.parseMaterial())) {
         fenceLocation.getBlock().setType(Material.AIR);
       }
       return false;
@@ -77,11 +78,11 @@ public class PinataFactory implements Listener {
     Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);
     Location safestone = new Location(player.getWorld(), 4, player.getWorld().getMaxHeight() - 1, 2);
     Material blocksafe = safefence.getBlock().getType();
-    safefence.getBlock().setType(Material.FENCE);
+    safefence.getBlock().setType(XMaterial.OAK_FENCE.parseMaterial());
     safestone.getBlock().setType(Material.STONE);
     final LeashHitch hitch = (LeashHitch) safefence.getWorld().spawnEntity(safefence, EntityType.LEASH_HITCH);
     safestone.getBlock().setType(Material.AIR);
-    fenceLocation.getBlock().setType(Material.FENCE);
+    fenceLocation.getBlock().setType(XMaterial.OAK_FENCE.parseMaterial());
     hitch.teleport(fenceLocation);
     safefence.getBlock().setType(blocksafe);
     plugin.getCommands().getPinata().put(entity, new LivingPinata(player, fenceLocation, hitch, pinata));
@@ -114,14 +115,14 @@ public class PinataFactory implements Listener {
     Bukkit.getPluginManager().callEvent(pce);
     if (pce.isCancelled()) {
       entity.remove();
-      if (fenceLocation.getBlock().getType().equals(Material.FENCE)) {
+      if (fenceLocation.getBlock().getType().equals(XMaterial.OAK_FENCE.parseMaterial())) {
         fenceLocation.getBlock().setType(Material.AIR);
       }
       return false;
     }
     if (!(fenceLocation.getBlock().getType().equals(Material.AIR))) {
       entity.remove();
-      if (fenceLocation.getBlock().getType().equals(Material.FENCE)) {
+      if (fenceLocation.getBlock().getType().equals(XMaterial.OAK_FENCE.parseMaterial())) {
         fenceLocation.getBlock().setType(Material.AIR);
       }
       return false;
@@ -130,11 +131,11 @@ public class PinataFactory implements Listener {
     Location safefence = new Location(fenceLocation.getWorld(), 3, fenceLocation.getWorld().getMaxHeight() - 1, 2);
     Location safestone = new Location(fenceLocation.getWorld(), 4, fenceLocation.getWorld().getMaxHeight() - 1, 2);
     Material blocksafe = safefence.getBlock().getType();
-    safefence.getBlock().setType(Material.FENCE);
+    safefence.getBlock().setType(XMaterial.OAK_FENCE.parseMaterial());
     safestone.getBlock().setType(Material.STONE);
     final LeashHitch hitch = (LeashHitch) safefence.getWorld().spawnEntity(safefence, EntityType.LEASH_HITCH);
     safestone.getBlock().setType(Material.AIR);
-    fenceLocation.getBlock().setType(Material.FENCE);
+    fenceLocation.getBlock().setType(XMaterial.OAK_FENCE.parseMaterial());
     hitch.teleport(fenceLocation);
     safefence.getBlock().setType(blocksafe);
     plugin.getCommands().getPinata().put(entity, new LivingPinata(fenceLocation, hitch, pinata));
