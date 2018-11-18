@@ -11,8 +11,6 @@
 * New permission pinata.admin.edit
 * Added pinata create
 * Added pinata edit
-* Added pinata cratelist
-* Added ArgumentsRegistry
 
 ### 2.6.3 update (27.03.2018)
 * Some code changes
