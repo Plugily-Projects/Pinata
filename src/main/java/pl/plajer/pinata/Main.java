@@ -38,6 +38,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import pl.plajer.pinata.commands.ArgumentsRegistry;
 import pl.plajer.pinata.commands.MainCommand;
 import pl.plajer.pinata.creator.CreatorChatEvents;
 import pl.plajer.pinata.creator.CreatorEvents;
@@ -165,6 +166,7 @@ public class Main extends JavaPlugin {
     new MenuHandler(this);
     new PinataListeners(this);
     new SelectorEvents(this);
+    new ArgumentsRegistry(this);
     pinataManager = new PinataManager(this);
     signManager = new SignManager(this);
     creatorChatEvents = new CreatorChatEvents(this);
