@@ -57,7 +57,7 @@ public class LanguageMigrator {
     for (int i = version; i < CONFIG_FILE_VERSION; i++) {
       switch (version) {
         case 5:
-          MigratorUtils.removeLineFromFile(file, "update-notify: true");
+          MigratorUtils.removeLineFromFile(file, "update-notify:");
           MigratorUtils.insertAfterLine(file, "#Notify about plugin updates?", "Update-Notifier:\n" +
               "  Enabled: true\n" +
               "  Notify-Beta-Versions: true\n\n");
