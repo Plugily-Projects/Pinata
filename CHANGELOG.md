@@ -9,7 +9,6 @@
 * Added language migrator
 * New permission pinata.admin.createpinata
 * New permission pinata.admin.edit
-* Added pinata create
 * Added pinata edit
 
 ### 2.6.3 update (27.03.2018)
