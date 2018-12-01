@@ -28,6 +28,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -90,9 +91,16 @@ public class PinataUtils {
         Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, pinata.getDropViewTime() * 20);
       }
       //todo cmd
+
+      //Adds color
+      ItemMeta meta = item.getItem().getItemMeta();
+      meta.setDisplayName(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() :
+          item.getItem().getType().name()));
+      item.getItem().setItemMeta(meta);
+
       player.getInventory().addItem(item.getItem());
-      player.sendMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replace("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() :
-          item.getItem().getType().name()).replace("%amount%", String.valueOf(item.getItem().getAmount())));
+      player.sendMessage(Utils.colorRawMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replace("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() :
+          item.getItem().getType().name()).replace("%amount%", String.valueOf(item.getItem().getAmount()))));
     }
   }
 

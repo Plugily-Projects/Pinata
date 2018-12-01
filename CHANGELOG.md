@@ -10,6 +10,7 @@
 * New permission pinata.admin.createpinata
 * New permission pinata.admin.edit
 * Added pinata edit
+* Added color support for pinata name and drops
 
 ### 2.6.3 update (27.03.2018)
 * Some code changes

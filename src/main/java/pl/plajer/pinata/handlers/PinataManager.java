@@ -33,6 +33,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.pinata.Main;
 import pl.plajer.pinata.pinata.Pinata;
 import pl.plajer.pinata.pinata.PinataItem;
+import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 public class PinataManager {
@@ -76,7 +77,7 @@ public class PinataManager {
         Bukkit.getLogger().warning("Item " + item.getType() + " from pinata " + key + " hasn't got chance set! Using 100% by default!");
       }
 
-      String name = config.getString(accessKey + "display-name");
+      String name = Utils.colorRawMessage(config.getString(accessKey + "display-name"));
       EntityType eType = EntityType.valueOf(config.getString(accessKey + "mob-entity-type"));
       DyeColor color = DyeColor.valueOf(config.getString(accessKey + "color"));
       Pinata.PinataType pType = Pinata.PinataType.valueOf(config.getString(accessKey + "pinata-access-type"));
