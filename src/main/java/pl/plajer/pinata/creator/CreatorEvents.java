@@ -138,7 +138,7 @@ public class CreatorEvents implements Listener {
         case "► Set blindness effect":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_BLINDNESS, pinata));
-          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type" + ChatColor.GREEN + "true" + ChatColor.YELLOW + "or" + ChatColor.RED + "false" + ChatColor.YELLOW + "to set " +
+          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type" + ChatColor.GREEN + " true" + ChatColor.YELLOW + " or" + ChatColor.RED + " false" + ChatColor.YELLOW + " to set " +
               "blindness" + ChatColor.GREEN + "enabled" + ChatColor.YELLOW + "/" + ChatColor.RED + "disabled"));
           e.getWhoClicked().closeInventory();
           break;
@@ -151,7 +151,7 @@ public class CreatorEvents implements Listener {
         case "► Set full blindness effect":
           e.setCancelled(true);
           plugin.getCreatorChatEvents().getChatReactions().put((Player) e.getWhoClicked(), new ChatReaction(ChatReaction.ReactionType.SET_FULL_BLINDNESS, pinata));
-          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type" + ChatColor.GREEN + "true" + ChatColor.YELLOW + "or" + ChatColor.RED + "false" + ChatColor.YELLOW + "to set " +
+          e.getWhoClicked().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.YELLOW + "Type" + ChatColor.GREEN + " true" + ChatColor.YELLOW + " or" + ChatColor.RED + " false" + ChatColor.YELLOW + " to set " +
               "full blindness effect"));
           e.getWhoClicked().closeInventory();
           break;
@@ -192,7 +192,7 @@ public class CreatorEvents implements Listener {
         ItemMeta im = is.getItemMeta();
         if (im == null || im.getLore() == null) {
           pinataItems.add(new PinataItem(is, 100.0));
-          e.getPlayer().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.GREEN + "Item " + is.getType() + ChatColor.YELLOW + " at position " + i + ChatColor.RED + "hasn't got chance " +
+          e.getPlayer().sendMessage(Utils.colorRawMessage("%prefix%" + ChatColor.GREEN + "Item " + is.getType() + ChatColor.YELLOW + " at position " + i + ChatColor.RED + " hasn't got chance " +
               "set" + ChatColor.YELLOW + "! Using" + ChatColor.GREEN + "100%" + ChatColor.YELLOW + " by default!"));
           continue;
         }
