@@ -14,45 +14,29 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+ */package pl.plajer.pinata.commands.arguments.data;
 
-package pl.plajer.pinata.commands;
-
-import org.bukkit.command.CommandSender;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * @author Plajer
  * <p>
- * Created at 31.10.2018
+ * Created at 25.11.2018
  */
-public class CommandArgument {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Command {
 
-  private String argumentName;
-  private String permission;
-  private ExecutorType validExecutors;
+  Type type();
 
-  public CommandArgument(String argumentName, String permission, ExecutorType validExecutors) {
-    this.argumentName = argumentName;
-    this.permission = permission;
-    this.validExecutors = validExecutors;
-  }
+  String argument();
 
-  public String getArgumentName() {
-    return argumentName;
-  }
+  String[] permissions();
 
-  public String getPermission() {
-    return permission;
-  }
+  String usage();
 
-  public ExecutorType getValidExecutors() {
-    return validExecutors;
-  }
-
-  public void execute(CommandSender sender, String[] args) {}
-
-  public enum ExecutorType {
-    BOTH, CONSOLE, PLAYER
+  enum Type {
+    MAIN, ADMIN
   }
 
 }

@@ -38,7 +38,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.pinata.commands.ArgumentsRegistry;
+import pl.plajer.pinata.commands.arguments.ArgumentsRegistry;
 import pl.plajer.pinata.commands.MainCommand;
 import pl.plajer.pinata.creator.CreatorChatEvents;
 import pl.plajer.pinata.creator.CreatorEvents;
@@ -174,7 +174,6 @@ public class Main extends JavaPlugin {
       ConfigUtils.getConfig(this, file);
     }
     setupDependencies();
-    //todo LanguageMigrator
     for (String world : getConfig().getStringList("disabled-worlds")) {
       disabledWorlds.add(world);
       getLogger().info("Pinata creation blocked at world " + world + "!");

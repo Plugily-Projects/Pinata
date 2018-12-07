@@ -14,44 +14,55 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-package pl.plajer.pinata.commands;
+ */package pl.plajer.pinata.commands.arguments.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import pl.plajer.pinata.Main;
-import pl.plajer.pinata.creator.CreatorMenu;
 import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.utils.Utils;
 
-public class MainCommand{
-
+/**
+ * @author Plajer
+ * <p>
+ * Created at 03.05.2018
+ */
+public class LabelData {
   private Map<Entity, LivingPinata> pinata = new HashMap<>();
   private List<Player> users = new ArrayList<>();
-  private Main plugin;
+  private String text;
+  private String command;
+  private String description;
 
-  public MainCommand(Main plugin, boolean register) {
-    if (register) {
-      this.plugin = plugin;
-    }
+  public LabelData(String text, String command, String description) {
+    this.text = Utils.colorRawMessage(text);
+    this.command = command;
+    this.description = Utils.colorRawMessage(description);
   }
 
-  public boolean hasPermission(CommandSender sender, String permission) {
-    if (!sender.hasPermission(permission)) {
-      sender.sendMessage(Utils.colorMessage("Pinata.Command.No-Permission"));
-      return false;
-    }
-    return true;
+  public String getText() {
+    return text;
+  }
+
+  public String getCommand() {
+    return command;
+  }
+
+  public void setCommand(String command) {
+    this.command = command;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public Map<Entity, LivingPinata> getPinata() {
