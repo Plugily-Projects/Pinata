@@ -26,6 +26,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -93,6 +94,14 @@ public class Utils {
     formatted = StringUtils.replace(formatted, "%prefix%", LanguageManager.getLanguageMessage("Pinata.Prefix"));
     formatted = ChatColor.translateAlternateColorCodes('&', formatted);
     return formatted;
+  }
+
+  public static boolean hasPermission(CommandSender sender, String perm) {
+    if (sender.hasPermission(perm)) {
+      return true;
+    }
+    sender.sendMessage(colorMessage("Pinata.Commands.No-Permission"));
+    return false;
   }
 
   public static boolean createPinataAtPlayer(Player p, Location l, Pinata pinata) {

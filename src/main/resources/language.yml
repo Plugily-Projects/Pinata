@@ -25,6 +25,7 @@ Pinata:
     No-Permission: "%prefix% &cYou don't have permission to use this pinata!"
     Disabled-World: "%prefix% &cYou can't create pinatas in this world!"
   Command:
+    Did-You-Mean: "&6Did you mean &e/%command%&6?"
     No-Permission: "%prefix% &cYou don't have permission to use this command!"
     Only-Player: "%prefix% &cYou can only execute this command as a player!"
     Player-Specify-Name: "%prefix% &cPlease specify pinata name!"
@@ -35,7 +36,7 @@ Pinata:
     Help-Command:
       Header: "&8&m===========[&r &9&lP&a&li&c&ln&e&la&3&lt&b&la&5&ls &8&m]==========="
       Description: " &a/pinata create &6- Create existing pinata (admin command)\n
-        &a/pinata createnew &6- Create a new pinata (admin command)\n
+        &a/pinata new &6- Create a new pinata (admin command)\n
         &a/pinata edit &6- Edit pinata (admin command)\n
         &a/pinata preview &6- Preview pinata (admin command)\n
         &a/pinata reloadconfig &6- Reload pinata configs (admin command)\n

@@ -28,6 +28,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.pinata.Main;
+import pl.plajer.pinata.utils.MessageUtils;
 import pl.plajerlair.core.services.ServiceRegistry;
 import pl.plajerlair.core.services.locale.LocaleService;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -105,7 +106,7 @@ public class LanguageManager {
     if (ConfigUtils.getConfig(plugin, "language").isSet(message)) {
       return ConfigUtils.getConfig(plugin, "language").getString(message);
     }
-    //MessageUtils.errorOccured();
+    MessageUtils.errorOccurred();
     Bukkit.getConsoleSender().sendMessage("Game message not found!");
     Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
     Bukkit.getConsoleSender().sendMessage("Access string: " + message);
@@ -117,7 +118,7 @@ public class LanguageManager {
       try {
         return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message));
       } catch (NullPointerException ex) {
-        //MessageUtils.errorOccured();
+        MessageUtils.errorOccurred();
         Bukkit.getConsoleSender().sendMessage("Game message not found!");
         Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
         Bukkit.getConsoleSender().sendMessage("Access string: " + message);
