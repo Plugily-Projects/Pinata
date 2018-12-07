@@ -45,7 +45,7 @@ permissions:
       pinata.admin.sign.set: true
       pinata.admin.sign.destroy: true
       pinata.admin.setchance: true
-      pinata.admin.createpinata: true
+      pinata.admin.newpinata: true
       pinata.admin.edit: true
   pinata.*:
     description: Gives you all permissions for every pinata command.
