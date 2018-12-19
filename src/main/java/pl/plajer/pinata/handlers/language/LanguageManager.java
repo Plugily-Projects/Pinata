@@ -89,6 +89,8 @@ public class LanguageManager {
         return ConfigUtils.getConfig(plugin, "language_es").getString(message, "ERR_MESSAGE_NOT_FOUND");
       case "nl":
         return ConfigUtils.getConfig(plugin, "language_nl").getString(message, "ERR_MESSAGE_NOT_FOUND");
+      case "de":
+        return ConfigUtils.getConfig(plugin, "language_de").getString(message, "ERR_MESSAGE_NOT_FOUND");
     }
     return ConfigUtils.getConfig(plugin, "language").getString(message);
   }
