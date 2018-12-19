@@ -1,0 +1,55 @@
+name: Pinata
+version: ${project.version}
+authors: [Tigerpanzer, Plajer]
+description: Awesome pinata sheep mobs for your server!
+website: https://www.spigotmc.org/resources/pi%C3%B1ata-1-8-1-12.46655/
+main: pl.plajer.pinata.Main
+api-version: 1.13
+softdepend: [HolographicDisplays, Vault]
+
+commands:
+  pinata:
+    aliases: [pin]
+    description: Command for pinata plugin.
+    usage: "§cCorrect usage: /<command> create/edit/buy/list/preview/create/reloadconfig/setcrate/cratelist"
+
+permissions:
+  pinata.player.*:
+    description: Gives you all permissions for player commands etc.
+    children:
+      pinata.command: true
+      pinata.command.list: true
+      pinata.command.buy: true
+      pinata.command.preview: true
+      pinata.player.crate: true
+      pinata.player.sign: true
+  pinata.command.*:
+    description: Gives you all permissions for commands.
+    children:
+      pinata.command: true
+      pinata.command.list: true
+      pinata.command.buy: true
+      pinata.command.preview: true
+  pinata.admin.*:
+    description: Gives you all permissions for admin commands.
+    default: op
+    children:
+      pinata.admin.create: true
+      pinata.admin.create.others: true
+      pinata.admin.reload: true
+      pinata.admin.notify: true
+      pinata.admin.freeall: true
+      pinata.admin.crate.destory: true
+      pinata.admin.crate.list: true
+      pinata.admin.crate.set: true
+      pinata.admin.sign.set: true
+      pinata.admin.sign.destroy: true
+      pinata.admin.setchance: true
+      pinata.admin.newpinata: true
+      pinata.admin.edit: true
+  pinata.*:
+    description: Gives you all permissions for every pinata command.
+    children:
+      pinata.player.*: true
+      pinata.command.*: true
+      pinata.admin.*: true

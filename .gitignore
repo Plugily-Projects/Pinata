@@ -1,3 +1,7 @@
 /out/
 /.idea/
 *.iml
+/minecraft/
+/lib/
+/docs/
+/target/
