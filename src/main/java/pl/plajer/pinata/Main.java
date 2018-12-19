@@ -96,7 +96,8 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    ServiceRegistry.registerService(this);
+    //removed since plcore will not support it
+    //ServiceRegistry.registerService(this);
     String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     LanguageManager.init(this);
     saveDefaultConfig();
