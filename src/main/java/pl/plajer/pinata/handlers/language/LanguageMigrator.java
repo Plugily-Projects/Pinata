@@ -45,7 +45,7 @@ public class LanguageMigrator {
   private static List<String> migratable = Arrays.asList("config", "language");
 
   public static void configUpdate() {
-    if (plugin.getConfig().getInt("Version") == CONFIG_FILE_VERSION) {
+    if (plugin.getConfig().getInt("File-Version-Do-Not-Edit") == CONFIG_FILE_VERSION) {
       return;
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Pinata] System notify >> Your config file is outdated! Updating...");
@@ -111,13 +111,13 @@ public class LanguageMigrator {
   private static void updateLanguageVersionControl(int oldVersion) {
     File file = new File(plugin.getDataFolder() + "/language.yml");
     MigratorUtils.removeLineFromFile(file, "File-Version-Do-Not-Edit: " + oldVersion);
-    MigratorUtils.addNewLines(file, "File-Version-Do-Not-Edit: " + LANGUAGE_FILE_VERSION + "\r\n");
+    MigratorUtils.addNewLines(file, "File-Version-Do-Not-Edit: " + LANGUAGE_FILE_VERSION);
   }
 
   private static void updateConfigVersionControl(int oldVersion) {
     File file = new File(plugin.getDataFolder() + "/config.yml");
     MigratorUtils.removeLineFromFile(file, "File-Version-Do-Not-Edit: " + oldVersion);
-    MigratorUtils.addNewLines(file, "File-Version-Do-Not-Edit: " + CONFIG_FILE_VERSION + "\r\n");
+    MigratorUtils.addNewLines(file, "File-Version-Do-Not-Edit: " + CONFIG_FILE_VERSION);
   }
 
 }
