@@ -1,6 +1,6 @@
 # Pinata plugin changelog
 
-### 3.0.0 update (1X.11.2018)
+### 3.0.0 update (19.12.2018)
 * Added maven
 * Updated update check
 * Added support for 1.13 and 1.13.2
