@@ -11,6 +11,8 @@
 * New permission pinata.admin.edit
 * Added pinata edit
 * Added color support for pinata name and drops
+* Reworked language support/compatible
+* Dropped support for 1.8
 
 ### 2.6.3 update (27.03.2018)
 * Some code changes

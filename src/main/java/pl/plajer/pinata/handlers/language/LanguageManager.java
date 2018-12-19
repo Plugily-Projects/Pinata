@@ -21,6 +21,7 @@ package pl.plajer.pinata.handlers.language;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import org.bukkit.Bukkit;
@@ -41,63 +42,30 @@ import pl.plajerlair.core.utils.ConfigUtils;
 public class LanguageManager {
 
   private static Main plugin;
-  private static Locale pluginLocale;
-  private static Properties properties = new Properties();
 
   public static void init(Main pl) {
     plugin = pl;
     if (!new File(plugin.getDataFolder() + File.separator + "language.yml").exists()) {
       plugin.saveResource("language.yml", false);
     }
-    setupLocale();
-  }
-
-  private static void loadProperties() {
-    if (pluginLocale == Locale.ENGLISH) {
-      return;
+    if (!new File(plugin.getDataFolder() + "/locales/" + "language_pl.yml").exists()) {
+      plugin.saveResource("language_pl.yml", false);
     }
-    LocaleService service = ServiceRegistry.getLocaleService(plugin);
-    if (service.isValidVersion()) {
-      LocaleService.DownloadStatus status = service.demandLocaleDownload(pluginLocale.getPrefix());
-      if (status == LocaleService.DownloadStatus.FAIL) {
-        pluginLocale = Locale.ENGLISH;
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Locale service couldn't download latest locale for plugin! English locale will be used instead!");
-        return;
-      } else if (status == LocaleService.DownloadStatus.SUCCESS) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Downloaded locale " + pluginLocale.getPrefix() + " properly!");
-      } else if (status == LocaleService.DownloadStatus.LATEST) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Locale " + pluginLocale.getPrefix() + " is latest! Awesome!");
-      }
-    } else {
-      pluginLocale = Locale.ENGLISH;
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Your plugin version is too old to use latest locale! Please update plugin to access latest updates of locale!");
-      return;
+    if (!new File(plugin.getDataFolder() + "/locales/" + "language_fr.yml").exists()) {
+      plugin.saveResource("language_fr.yml", false);
     }
-    try {
-      properties.load(new FileReader(new File(plugin.getDataFolder() + "/locales/" + pluginLocale.getPrefix() + ".properties")));
-    } catch (IOException e) {
-      e.printStackTrace();
+    if (!new File(plugin.getDataFolder() + "/locales/" + "language_de.yml").exists()) {
+      plugin.saveResource("language_de.yml", false);
+    }
+    if (!new File(plugin.getDataFolder() + "/locales/" + "language_nl.yml").exists()) {
+      plugin.saveResource("language_nl.yml", false);
+    }
+    if (!new File(plugin.getDataFolder() + "/locales/" + "language_es.yml").exists()) {
+      plugin.saveResource("language_es.yml", false);
     }
   }
 
-  private static void setupLocale() {
-    String localeName = plugin.getConfig().getString("locale", "default").toLowerCase();
-    for (Locale locale : Locale.values()) {
-      for (String alias : locale.getAliases()) {
-        if (alias.equals(localeName)) {
-          pluginLocale = locale;
-          break;
-        }
-      }
-    }
-    if (pluginLocale == null) {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Plugin locale is invalid! Using default one...");
-      pluginLocale = Locale.ENGLISH;
-    }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Loaded locale " + pluginLocale.getFormattedName() + " (" + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
-    loadProperties();
-  }
-
+  /*Maybe needed code for future updates
   public static FileConfiguration getLanguageFile() {
     return ConfigUtils.getConfig(plugin, "language");
   }
@@ -113,23 +81,29 @@ public class LanguageManager {
     return "ERR_MESSAGE_NOT_FOUND";
   }
 
+  public static List<String> getLanguageList(String path) {
+    if(plugin.getConfig().get("locale").equals("de"))  {
+      return ConfigUtils.getConfig(plugin, "language_de").getStringList(path);
+    }
+    return ConfigUtils.getConfig(plugin, "language").getStringList(path);
+  }*/
+
   public static String getLanguageMessage(String message) {
-    if (pluginLocale != Locale.ENGLISH) {
-      try {
-        return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message));
-      } catch (NullPointerException ex) {
-        MessageUtils.errorOccurred();
-        Bukkit.getConsoleSender().sendMessage("Game message not found!");
-        Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
-        Bukkit.getConsoleSender().sendMessage("Access string: " + message);
-        return "ERR_MESSAGE_NOT_FOUND";
-      }
+    if (plugin.getConfig().get("locale").equals("pl")) {
+      return ConfigUtils.getConfig(plugin, "language_pl").getString(message, "ERR_MESSAGE_NOT_FOUND");
+    }
+    if (plugin.getConfig().get("locale").equals("fr")) {
+      return ConfigUtils.getConfig(plugin, "language_fr").getString(message, "ERR_MESSAGE_NOT_FOUND");
+    }
+    if (plugin.getConfig().get("locale").equals("de")) {
+      return ConfigUtils.getConfig(plugin, "language_de").getString(message, "ERR_MESSAGE_NOT_FOUND");
+    }
+    if (plugin.getConfig().get("locale").equals("nl")) {
+      return ConfigUtils.getConfig(plugin, "language_nl").getString(message, "ERR_MESSAGE_NOT_FOUND");
+    }
+    if (plugin.getConfig().get("locale").equals("es")) {
+      return ConfigUtils.getConfig(plugin, "language_es").getString(message, "ERR_MESSAGE_NOT_FOUND");
     }
     return ConfigUtils.getConfig(plugin, "language").getString(message);
   }
-
-  public static Locale getPluginLocale() {
-    return pluginLocale;
-  }
-
 }
