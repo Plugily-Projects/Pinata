@@ -1,0 +1,136 @@
+#Pinata plugin messages file
+#Language: Hungarian (hu-HU)
+#Translated by: montlikadani
+
+Pinata:
+  Prefix: "&6&lPinata &a>>"
+  Specify-Name: "%prefix% &cKérlek, add meg a pinata nevét!"
+  Not-Found: "%prefix% &cA pinata nem található!"
+  Not-Own: "%prefix% &cEz nem a te pinatad!"
+  Buy-Error: "%prefix% &cHiba lépett fel! Kérlek, próbáld később!"
+  Entity-Set: "&aEntitás típus&e %pinataid%&a beállítva&r %name%"
+  Entity-Does-Not-Exist: "&cEz az entitás nem taláható! Használd a következő típusokat:"
+  Not-Number: "&cA következő üzenet nem szám!"
+  Not-Boolean: "&cA következő üzenet nem boolean!"
+  Pinata-Health-Set: "&aA pinata élete&e %pinataid%&a beállítva&r %message%"
+  Crate-Time-Set: "&aA pinata idézési ideje&e %pinataid%&a beállítva&r %message%"
+  Pinata-Drop-View-Time-Set: "&aA pinata ledobási ideje&e %pinataid%&a beállítva&r %message%"
+  Blindess-Duration-Set: "&aA pinata vakság ideje&e %pinataid%&a beállítva&r %message%"
+  Blindess-Set: "&aA pinata vaksága&e %pinataid%&a beállítva&r %message%"
+  Full-Blindess-Set: "&aTeljes vakság a pinatanak&e %pinataid%&a beállítva&r %message%"
+  Create:
+    Success: "%prefix% &aA pinata &e%name% &asikeresen létrehozva!"
+    Fail: "%prefix% &cNem használhatod a pinatat itt!"
+    By-Console: "%prefix% &aA pinatad létrehozva a konsolon keresztül!"
+    Already-Created: "%prefix% &cMár megvásároltad a pinatat!"
+    No-Permission: "%prefix% &cNincs jogod ehhez, hogy használd a pinatat!"
+    Disabled-World: "%prefix% &cNem hozhatsz létre pinatat ebben a világban!"
+  Command:
+    Did-You-Mean: "&6Úgy érted &e/%command%&6?"
+    No-Permission: "%prefix% &cNincs jogod ehhez a parancshoz!"
+    Only-Player: "%prefix% &cEzt a parancsot csak játékoson belül hajthatod végre!"
+    Player-Specify-Name: "%prefix% &cKérlek, add meg a pinata nevét!"
+    Player-Not-Found: "%prefix% &cEz a játékos nem elérhető!"
+    Console-Specify-Player: "&cKérlek, add meg a játékos nevét!"
+    Vault-Not-Detected: "%prefix% &cVault nincs észlelve! Megszakítás!"
+    Custom-Location-Create-Error: "%prefix% &cValami elromlott! Győződjön meg arról, hogy érvényes értékeket állított be: &eworld, x, y, z, pinata név&c!"
+    Help-Command:
+      Header: "&8&m===========[&r &9&lP&a&li&c&ln&e&la&3&lt&b&la&5&ls &8&m]==========="
+      Description: " &a/pinata create &6- Létrehoz egy létező pinatat (admin parancs)\n
+        &a/pinata new &6- Létrehoz egy új pinatat (admin parancs)\n
+        &a/pinata create &6- Létrehoz egy pinatat egy egyedi helyen (admin parancs)\n
+        &a/pinata edit &6- Pinata szerkesztése (admin parancs)\n
+        &a/pinata preview &6- Pinata előnézete (admin parancs)\n
+        &a/pinata reloadconfig &6- Pinata konfigurációk újratöltése (admin parancs)\n
+        &a/pinata list &6- Összes pinata listázása\n
+        &a/pinata buy &6- Pinata vásárlása (Szükséges Vault)\n
+        &a/pinata setchance &6- Pinata esés esély beállítás\n
+        &a/pinata cratelist &6- Pinata szerkesztése\n
+        &a/pinata setcrate &6- Pinata doboz hely beállítása (admin parancs)"
+  Validate:
+    Success: "%prefix% &aPinata %name% betöltve!"
+    Fail: "%prefix% &cPinata %name% betöltve hibákkal! Megszakítás!"
+  Config:
+    Reload-Success: "%prefix% &eA konfiguráció újratöltve! Ellenőrizd a konsolt a hibákért!"
+    Reload-Fail: "%prefix% &cA konfigurációt nem lehetett újratölteni! Kérjük, töltsd közvetlenül a plugint vagy a szervert!"
+    Reload-Removed: "%prefix% &cA plugin újratöltés törölte a pinatad!"
+  Drop:
+    DropMsg: "%prefix% &aEldobtál %item% x%amount%&a!"
+    No-Drops: "%prefix% &cMost szerencstélen vagy!"
+  Selling:
+    Not-For-Sale: "%prefix% &cEz a pinata nem eladható!"
+    Cannot-Afford: "%prefix% &cEzt nem engedheted meg magadnak!"
+  Crate-Creation:
+    Specify-Name: "%prefix% &cKérlek, adj meg egy doboz nevet!"
+    Is-Set-Here:  "%prefix% &cDoboz ezen a helyen beállítva!"
+    Already-Exists: "%prefix% &cA doboz ezzel a névvel már létezik!"
+    Create-Success: "%prefix% &aA doboz %name% sikeresen létrehozva!"
+    Destroyed: "%prefix% &aA doboz %name% megsemmisítve!"
+    Target-Block-Not-Chest: "%prefix% &cA cél blokk nem egy láda!"
+    No-Permission: "%prefix% &cNincs jogod ehhez!"
+    List: "%prefix% Összes elérhető doboz listázása:"
+    List-Empty: "%prefix% &cNincs egy doboz sem!"
+  Creator:
+    Already-Exists: "%prefix% &cPinata ezzel a névvel már létezik!"
+
+Menus:
+  List-Menu:
+    Inventory-Name: "&lÖsszes pinata listázása"
+    Pinata-Cost: "&ePinata ára: &7%money%"
+    Pinata-Cost-Not-For-Sale: "&cEz a pinata nem eladható!"
+    Pinata-Types:
+      Type-Public: "&6Pinata típus: &aNyilvános"
+      Type-Private: "&6Pinata típus: &cPrivát"
+    Click-Selection:
+      Left-Click: "&c< &eBal klikk eldobás előnézete"
+      Right-Click: "&c> &eJobb klikk pinata vásárlás"
+  Preview-Menu:
+    Inventory-Name: "&lPinata előnézet menü"
+    Drop-Chance: "&3Dobás esélye &7%chance%%"
+    Command-To-Execute: "&eFuttatott parancs: &7%command%"
+    Money-Reward: "&ePénz jutalom: &7%money%"
+  Crate-Menu:
+    Inventory-Name: "&lPinata doboz menü"
+  Creator-Menu:
+    Inventory-Name: "&lLétrehozó menü"
+
+#Hologram above pinata crate
+Hologram:
+  Crate-Hologram: "&aDoboz &e%name%"
+
+#Signs module. Sign can be created starting with '[pinata]' at first line and 'all' or 'gui' or existing pinata name at second line
+Signs:
+  Invalid-Pinata: "%prefix% &cA pinata a második sorban érvénytelen! Használd az 'all' vagy a 'gui' nevet, hogy minden pinata GUI-táblát készítsen"
+  Sign-Created: "%prefix% &aA pinata tábla sikeresen létrehozva!"
+  Sign-Destroyed: "%prefix% &aA pinata tábla megsemmisítve!"
+  No-Permission: "%prefix% &cNincs jogod ehhez!"
+  Inventory-Name: "&lPinata tábla menü"
+  Lines:
+    First: "&6Pinata vásárlás"
+    Second-Specific-Pinata-Color: "&e"
+    Second-Every-Pinata: "&aKlikk a GUI-hoz"
+
+
+#Validator console messages.
+#You don't need to translate them because they don't show to your players :)
+Validator:
+  Invalid-Configuration: "A pinata %name% nincs megfelelően konfigurálva! Érvénytelen elemsor: %number%"
+  Invalid-Item: "A pinata eleme %name% nincs megfelelően konfigurálva! Érvénytelen elemsor: %number%"
+  Invalid-Item-Type: "A pinata eleme %name% nem elem és parancs! Érvénytelen elemsor: %number%"
+  Invalid-Chance: "A pinata eleme %name% soha nem dobható! Érvénytelen elemsor: %number%"
+  Invalid-Permission: "A pinata joga %name% nincs beállítva!"
+  Invalid-Timer: "A pinata időzítője %name% nincs beállítva!"
+  Invalid-Type: "A pinata típusa %name% nem nyilvános, sem privát!"
+  Invalid-Color: "A pinata színe %name% nem érvényes!"
+  Invalid-Crate-Time: "A pinata doboz ideje %name% nincs beállítva!"
+  Invalid-Health: "A pinata élete %name% érvénytelen!"
+  Invalid-Drop-Type: "A pinata dobási típusa %name% érvénytelen!"
+  Invalid-Mob-Type: "A pinata mob %name% érvénytelen!"
+  Invalid-Blindness: "Vakság értékei a pinatanak %name% érvénytelen!"
+  Vault-Abandoned: "A pinata %name% nem használ Vault-ot! (használd a -1 értéket, hogy megelőzze a pinata vásárlását)"
+
+Other:
+  Plugin-Up-To-Date: "&e[Pinata] Van egy plugin frissítés! Veziód: %old%, új verzió: %new%"
+  Plugin-Update-Check-Failed: "&c[Pinata] Nem sikerült ellenőrizni a frissítésr: %error%"
+
+File-Version-Do-Not-Edit: 11
