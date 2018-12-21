@@ -19,19 +19,8 @@
 package pl.plajer.pinata.handlers.language;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.pinata.Main;
-import pl.plajer.pinata.utils.MessageUtils;
-import pl.plajerlair.core.services.ServiceRegistry;
-import pl.plajerlair.core.services.locale.LocaleService;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -48,20 +37,20 @@ public class LanguageManager {
     if (!new File(plugin.getDataFolder() + File.separator + "language.yml").exists()) {
       plugin.saveResource("language.yml", false);
     }
-    if (!new File(plugin.getDataFolder() + "/locales/" + "language_pl.yml").exists()) {
-      plugin.saveResource("language_pl.yml", false);
+    if (!new File(plugin.getDataFolder() + "/locales/language_pl.yml").exists()) {
+      plugin.saveResource("locales/language_pl.yml", false);
     }
-    if (!new File(plugin.getDataFolder() + "/locales/" + "language_fr.yml").exists()) {
-      plugin.saveResource("language_fr.yml", false);
+    if (!new File(plugin.getDataFolder() + "/locales/language_fr.yml").exists()) {
+      plugin.saveResource("locales/language_fr.yml", false);
     }
-    if (!new File(plugin.getDataFolder() + "/locales/" + "language_de.yml").exists()) {
-      plugin.saveResource("language_de.yml", false);
+    if (!new File(plugin.getDataFolder() + "/locales/language_de.yml").exists()) {
+      plugin.saveResource("locales/language_de.yml", false);
     }
-    if (!new File(plugin.getDataFolder() + "/locales/" + "language_nl.yml").exists()) {
-      plugin.saveResource("language_nl.yml", false);
+    if (!new File(plugin.getDataFolder() + "/locales/language_nl.yml").exists()) {
+      plugin.saveResource("locales/language_nl.yml", false);
     }
-    if (!new File(plugin.getDataFolder() + "/locales/" + "language_es.yml").exists()) {
-      plugin.saveResource("language_es.yml", false);
+    if (!new File(plugin.getDataFolder() + "/locales/language_es.yml").exists()) {
+      plugin.saveResource("locales/language_es.yml", false);
     }
   }
 
@@ -89,21 +78,21 @@ public class LanguageManager {
   }*/
 
   public static String getLanguageMessage(String message) {
-    if (plugin.getConfig().get("locale").equals("pl")) {
-      return ConfigUtils.getConfig(plugin, "language_pl").getString(message, "ERR_MESSAGE_NOT_FOUND");
-    }
-    if (plugin.getConfig().get("locale").equals("fr")) {
-      return ConfigUtils.getConfig(plugin, "language_fr").getString(message, "ERR_MESSAGE_NOT_FOUND");
-    }
-    if (plugin.getConfig().get("locale").equals("de")) {
-      return ConfigUtils.getConfig(plugin, "language_de").getString(message, "ERR_MESSAGE_NOT_FOUND");
-    }
-    if (plugin.getConfig().get("locale").equals("nl")) {
-      return ConfigUtils.getConfig(plugin, "language_nl").getString(message, "ERR_MESSAGE_NOT_FOUND");
-    }
-    if (plugin.getConfig().get("locale").equals("es")) {
-      return ConfigUtils.getConfig(plugin, "language_es").getString(message, "ERR_MESSAGE_NOT_FOUND");
+    switch (plugin.getConfig().getString("locale").toLowerCase()) {
+      case "pl":
+        return ConfigUtils.getConfig(plugin, "language_pl").getString(message, "ERR_MESSAGE_NOT_FOUND");
+      case "fr":
+        return ConfigUtils.getConfig(plugin, "language_fr").getString(message, "ERR_MESSAGE_NOT_FOUND");
+      case "en":
+        return ConfigUtils.getConfig(plugin, "language").getString(message);
+      case "es":
+        return ConfigUtils.getConfig(plugin, "language_es").getString(message, "ERR_MESSAGE_NOT_FOUND");
+      case "nl":
+        return ConfigUtils.getConfig(plugin, "language_nl").getString(message, "ERR_MESSAGE_NOT_FOUND");
+      case "de":
+        return ConfigUtils.getConfig(plugin, "language_de").getString(message, "ERR_MESSAGE_NOT_FOUND");
     }
     return ConfigUtils.getConfig(plugin, "language").getString(message);
   }
 }
+

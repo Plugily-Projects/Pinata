@@ -8,6 +8,6 @@ Unique crate like plugin for 1.9 - 1.13 Minecraft servers.
 Create your own pinata mob, spawn it and kill (or punch) to get your configured drops!
 See more here: https://www.spigotmc.org/resources/46655/
 
-### 👾 Join our discord to be up to date with updates and developement beta builds!
+### 👾 Join our discord to be up to date with updates and development beta builds!
 https://discord.gg/UXzUdTP
 
