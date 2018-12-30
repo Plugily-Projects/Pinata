@@ -54,39 +54,40 @@ public class SignManager implements Listener {
 
   @EventHandler
   public void onSignChange(SignChangeEvent e) {
-    if (e.getLine(0).equalsIgnoreCase("[pinata]")) {
-      if (e.getPlayer().hasPermission("pinata.admin.sign.set")) {
-        if (e.getLine(1).isEmpty()) {
-          e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
-          return;
-        }
-        e.setLine(0, Utils.colorMessage("Signs.Lines.First"));
-        if (e.getLine(1).equalsIgnoreCase("all") || e.getLine(1).equalsIgnoreCase("gui")) {
-          e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Every-Pinata"));
-        } else {
-          Pinata pinata = plugin.getPinataManager().getPinataByName(e.getLine(1));
-          if (pinata == null) {
-            e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
-            return;
-          }
-          e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
-        }
-      } else {
-        e.getPlayer().sendMessage(Utils.colorMessage("Signs.No-Permission"));
-        e.setCancelled(true);
-      }
+    if (!e.getLine(0).equalsIgnoreCase("[pinata]")) {
+      return;
     }
+    if (!e.getPlayer().hasPermission("pinata.admin.sign.set")) {
+      e.getPlayer().sendMessage(Utils.colorMessage("Signs.No-Permission"));
+      e.setCancelled(true);
+    }
+    if (e.getLine(1).isEmpty()) {
+      e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
+      return;
+    }
+    e.setLine(0, Utils.colorMessage("Signs.Lines.First"));
+    if (e.getLine(1).equalsIgnoreCase("all") || e.getLine(1).equalsIgnoreCase("gui")) {
+      e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Every-Pinata"));
+      return;
+    }
+    Pinata pinata = plugin.getPinataManager().getPinataByName(e.getLine(1));
+    if (pinata == null) {
+      e.getPlayer().sendMessage(Utils.colorMessage("Signs.Invalid-Pinata"));
+      return;
+    }
+    e.setLine(1, Utils.colorMessage("Signs.Lines.Second-Specific-Pinata-Color") + e.getLine(1));
   }
 
   @EventHandler
   public void onSignDestroy(BlockBreakEvent e) {
     if (e.getBlock().getType().equals(Material.SIGN) || e.getBlock().getType().equals(XMaterial.SIGN.parseMaterial()) || e.getBlock().getType().equals(XMaterial.WALL_SIGN.parseMaterial())) {
       Sign s = (Sign) e.getBlock().getState();
-      if (s.getLine(0).equals(Utils.colorMessage("Signs.Lines.First"))) {
-        if (!e.getPlayer().hasPermission("pinata.admin.sign.destroy")) {
-          e.getPlayer().sendMessage(Utils.colorMessage("Signs.No-Permission"));
-          e.setCancelled(true);
-        }
+      if (!s.getLine(0).equals(Utils.colorMessage("Signs.Lines.First"))) {
+        return;
+      }
+      if (!e.getPlayer().hasPermission("pinata.admin.sign.destroy")) {
+        e.getPlayer().sendMessage(Utils.colorMessage("Signs.No-Permission"));
+        e.setCancelled(true);
       }
     }
   }

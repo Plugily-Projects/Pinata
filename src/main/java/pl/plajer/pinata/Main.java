@@ -38,8 +38,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.pinata.commands.arguments.ArgumentsRegistry;
 import pl.plajer.pinata.commands.MainCommand;
+import pl.plajer.pinata.commands.arguments.ArgumentsRegistry;
 import pl.plajer.pinata.creator.CreatorChatEvents;
 import pl.plajer.pinata.creator.CreatorEvents;
 import pl.plajer.pinata.creator.SelectorEvents;
@@ -51,13 +51,11 @@ import pl.plajer.pinata.handlers.language.LanguageManager;
 import pl.plajer.pinata.handlers.language.LanguageMigrator;
 import pl.plajer.pinata.utils.MessageUtils;
 import pl.plajer.pinata.utils.Utils;
-import pl.plajerlair.core.services.ServiceRegistry;
 import pl.plajerlair.core.services.update.UpdateChecker;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 public class Main extends JavaPlugin {
 
-  private static boolean debug;
   private List<String> filesToGenerate = Arrays.asList("crates", "config", "language", "pinata_storage");
   private CrateManager crateManager;
   private MainCommand commands;
@@ -71,28 +69,6 @@ public class Main extends JavaPlugin {
   private boolean needBetaUpdate = false;
   private String newestVersion;
   private boolean placeholderAPI;
-
-  public static void debug(LogLevel level, String thing) {
-    if (debug) {
-      switch (level) {
-        case INFO:
-          Bukkit.getConsoleSender().sendMessage("[Pinata Debugger] " + thing);
-          break;
-        case WARN:
-          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Pinata Debugger] " + thing);
-          break;
-        case ERROR:
-          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata Debugger] " + thing);
-          break;
-        case WTF:
-          Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Pinata Debugger] [SEVERE]" + thing);
-          break;
-        case TASK:
-          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Pinata Debugger] Running task '" + thing + "'");
-          break;
-      }
-    }
-  }
 
   @Override
   public void onEnable() {
@@ -124,7 +100,6 @@ public class Main extends JavaPlugin {
       getServer().getPluginManager().disablePlugin(this);
       return;
     }
-    debug = getConfig().getBoolean("Debug", false);
     getLogger().log(Level.INFO, "Crack this pinata!");
     initializeClasses();
     if (isPluginEnabled("HolographicDisplays")) {
@@ -314,10 +289,6 @@ public class Main extends JavaPlugin {
 
   public boolean isPlaceholderAPIEnabled() {
     return placeholderAPI;
-  }
-
-  public enum LogLevel {
-    INFO, WARN, ERROR, WTF /*what a terrible failure*/, TASK
   }
 
 }

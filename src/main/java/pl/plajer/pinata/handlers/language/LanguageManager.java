@@ -83,21 +83,21 @@ public class LanguageManager {
   public static String getLanguageMessage(String message) {
     switch (plugin.getConfig().getString("locale").toLowerCase()) {
       case "pl":
-        return ConfigUtils.getConfig(plugin, "language_pl").getString(message, "ERR_MESSAGE_NOT_FOUND");
+        return ConfigUtils.getConfig(plugin, "locales/language_pl").getString(message, "ERR_MESSAGE_NOT_FOUND");
       case "fr":
-        return ConfigUtils.getConfig(plugin, "language_fr").getString(message, "ERR_MESSAGE_NOT_FOUND");
+        return ConfigUtils.getConfig(plugin, "locales/language_fr").getString(message, "ERR_MESSAGE_NOT_FOUND");
       case "hu":
-        return ConfigUtils.getConfig(plugin, "language_hu").getString(message, "ERR_MESSAGE_NOT_FOUND");
+        return ConfigUtils.getConfig(plugin, "locales/language_hu").getString(message, "ERR_MESSAGE_NOT_FOUND");
       case "en":
-        return ConfigUtils.getConfig(plugin, "language").getString(message);
+        return ConfigUtils.getConfig(plugin, "language").getString(message, "ERR_MESSAGE_NOT_FOUND");
       case "es":
-        return ConfigUtils.getConfig(plugin, "language_es").getString(message, "ERR_MESSAGE_NOT_FOUND");
+        return ConfigUtils.getConfig(plugin, "locales/language_es").getString(message, "ERR_MESSAGE_NOT_FOUND");
       case "nl":
-        return ConfigUtils.getConfig(plugin, "language_nl").getString(message, "ERR_MESSAGE_NOT_FOUND");
+        return ConfigUtils.getConfig(plugin, "locales/language_nl").getString(message, "ERR_MESSAGE_NOT_FOUND");
       case "de":
-        return ConfigUtils.getConfig(plugin, "language_de").getString(message, "ERR_MESSAGE_NOT_FOUND");
+        return ConfigUtils.getConfig(plugin, "locales/language_de").getString(message, "ERR_MESSAGE_NOT_FOUND");
     }
-    return ConfigUtils.getConfig(plugin, "language").getString(message);
+    return ConfigUtils.getConfig(plugin, "language").getString(message, "ERR_MESSAGE_NOT_FOUND");
   }
 }
 

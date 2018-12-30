@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>pl.plajer</groupId>
   <artifactId>pinata</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
   <licenses>
     <license>
       <name>GNU General Public License v3</name>
@@ -119,6 +119,10 @@
           <groupId>com.googlecode.json-simple</groupId>
         </exclusion>
         <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+        <exclusion>
           <artifactId>gson</artifactId>
           <groupId>com.google.code.gson</groupId>
         </exclusion>
@@ -145,6 +149,10 @@
         <exclusion>
           <artifactId>json-simple</artifactId>
           <groupId>com.googlecode.json-simple</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
         </exclusion>
         <exclusion>
           <artifactId>gson</artifactId>
@@ -178,12 +186,6 @@
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
       <version>3.0.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.5</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
