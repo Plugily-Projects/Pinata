@@ -43,6 +43,9 @@ public class LanguageManager {
     if (!new File(plugin.getDataFolder() + "/locales/language_fr.yml").exists()) {
       plugin.saveResource("locales/language_fr.yml", false);
     }
+    if (!new File(plugin.getDataFolder() + "/locales/language_hu.yml").exists()) {
+      plugin.saveResource("locales/language_hu.yml", false);
+    }
     if (!new File(plugin.getDataFolder() + "/locales/language_de.yml").exists()) {
       plugin.saveResource("locales/language_de.yml", false);
     }
@@ -83,6 +86,8 @@ public class LanguageManager {
         return ConfigUtils.getConfig(plugin, "language_pl").getString(message, "ERR_MESSAGE_NOT_FOUND");
       case "fr":
         return ConfigUtils.getConfig(plugin, "language_fr").getString(message, "ERR_MESSAGE_NOT_FOUND");
+      case "hu":
+        return ConfigUtils.getConfig(plugin, "language_hu").getString(message, "ERR_MESSAGE_NOT_FOUND");
       case "en":
         return ConfigUtils.getConfig(plugin, "language").getString(message);
       case "es":
