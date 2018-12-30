@@ -6,7 +6,7 @@
 
     <groupId>pl.plajer</groupId>
     <artifactId>pinata</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 
     <properties>
         <java.version>1.8</java.version>
