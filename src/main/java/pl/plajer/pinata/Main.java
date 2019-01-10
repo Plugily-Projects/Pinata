@@ -189,26 +189,10 @@ public class Main extends JavaPlugin {
   }
 
   private void setupDependencies() {
-    if (isPluginEnabled("CrackShot")) {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Detected CrackShot plugin!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Enabling CrackShot support.");
-    } else {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] CrackShot plugin isn't installed!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] Disabling CrackShot support.");
-    }
-    if (!setupEconomy()) {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] Vault plugin isn't installed!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] Disabling Vault support.");
-    } else {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Detected Vault plugin!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Enabling economy support.");
-    }
-    if (!isPluginEnabled("HolographicDisplays")) {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] Holographic Displays plugin isn't installed!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] Disabling holograms support.");
-    } else {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Detected Holographic Displays plugin!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Enabling holograms support.");
+    setupDependency("CrackShot");
+    setupDependency("HolographicDisplays");
+    if(setupEconomy()) {
+      setupDependency("Vault");
     }
     /* if we want PlaceHolderAPI
     if (!isPluginEnabled("PlaceholderAPI")) {
@@ -219,6 +203,16 @@ public class Main extends JavaPlugin {
       Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + " §a✔ §ePlaceholderAPI §7| §aVersion§7:§e " + PlaceholderAPIPlugin.getInstance().getDescription().getVersion());
       placeholderAPI = true;
     }*/
+  }
+
+  private void setupDependency(String plugin) {
+    if (!isPluginEnabled(plugin)) {
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] " + plugin + " plugin isn't installed!");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "[Pinata] Disabling " + plugin + " support.");
+    } else {
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Detected " + plugin + " plugin!");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Pinata] Enabling " + plugin + " support.");
+    }
   }
 
   /**
@@ -254,23 +248,25 @@ public class Main extends JavaPlugin {
   private void checkUpdate() {
     if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
       UpdateChecker.init(this, 46655).requestUpdateCheck().whenComplete((result, exception) -> {
-        if (result.requiresUpdate()) {
-          newestVersion = result.getNewestVersion();
-          if (result.getNewestVersion().contains("b")) {
-            if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
-              needBetaUpdate = true;
-              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
-              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
-                  result.getNewestVersion()));
-            }
+        if (!result.requiresUpdate()) {
+          return;
+        }
+        newestVersion = result.getNewestVersion();
+        if (result.getNewestVersion().contains("b")) {
+          if (!getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
             return;
           }
-          MessageUtils.updateIsHere();
-          needNormalUpdate = true;
-          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Pinata plugin is outdated! Download it to keep with latest changes and fixes.");
-          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
-          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
+          needBetaUpdate = true;
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
+              result.getNewestVersion()));
+          return;
         }
+        MessageUtils.updateIsHere();
+        needNormalUpdate = true;
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Pinata plugin is outdated! Download it to keep with latest changes and fixes.");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
       });
     }
   }
