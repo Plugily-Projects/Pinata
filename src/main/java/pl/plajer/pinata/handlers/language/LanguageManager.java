@@ -54,6 +54,7 @@ public class LanguageManager {
       case "es":
       case "nl":
       case "de":
+      case "br":
         languageConfig = ConfigUtils.getConfig(plugin, "locales/language_" + locale);
         break;
       case "en":
