@@ -1,0 +1,135 @@
+#Pinata plugin messages file
+#Language: Brazil (br)
+
+Pinata:
+  Prefix: "&6&lPinhata &a>>"
+  Specify-Name: "%prefix% &cPor favor, coloque o nome na Pinhata!"
+  Not-Found: "%prefix% &cPinhata não encontrada!"
+  Not-Own: "%prefix% &cEsta não é sua Pinhata!"
+  Buy-Error: "%prefix% &cUm erro ocorreu! Por favor, tente novamente!"
+  Entity-Set: "&aO tipo de entidade da Pinhata&e %pinataid% &afoi alterada para&r %name%"
+  Entity-Does-Not-Exist: "&cEsta entidade não existe! Você pode usar as seguintes:"
+  Not-Number: "&cA mensagem não é um número!"
+  Not-Boolean: "&cA mensagem não é um boolean!"
+  Pinata-Health-Set: "&aA vida da Pinhata&e %pinataid%&a foi alterada para&r %message%"
+  Crate-Time-Set: "&aO tempo da Crate da Pinhata&e %pinataid%&a foi alterada para&r %message%"
+  Pinata-Drop-View-Time-Set: "&aTempo de exibição de queda da Pinhata&e %pinataid%&a foi alterada para&r %message%"
+  Blindess-Duration-Set: "&aDuração da cegueira da Pinhata&e %pinataid%&a foi alterada para&r %message%"
+  Blindess-Set: "&aCegueira da Pinhata&e %pinataid%&a foi alterada para&r %message%"
+  Full-Blindess-Set: "&aCegueira total da Pinhata&e %pinataid%&a foi alterada para&r %message%"
+  Create:
+    Success: "%prefix% &aPinhata &e%name% &acriada com sucesso!"
+    Fail: "%prefix% &cVocê não pode fazer isto aqui!"
+    By-Console: "%prefix% &aSua pinhata foi criada pelo console!"
+    Already-Created: "%prefix% &cVocê já comprou está Pinhata!"
+    No-Permission: "%prefix% &cVocê não tem permissão!"
+    Disabled-World: "%prefix% &cVocê não pode criar Pinhatas neste mundo!"
+  Command:
+    Did-You-Mean: "&6Você quis dizer &e/%command%&6?"
+    No-Permission: "%prefix% &cVocê não tem permissão!"
+    Only-Player: "%prefix% &cVocê não é um jogador!"
+    Player-Specify-Name: "%prefix% &cColoque o nome de uma Pinhata!"
+    Player-Not-Found: "%prefix% &cEste jogador não está online!"
+    Console-Specify-Player: "&cPor favor, coloque o nick de um jogador!"
+    Vault-Not-Detected: "%prefix% &cO plugin Vault não foi detectado! Abortando!"
+    Custom-Location-Create-Error: "%prefix% &cAlgo de errado aconteceu! Tenha certeza que você usou: &emundo, x, y, z, nome da pinhata&c!"
+    Help-Command:
+      Header: "&8&m===========[&r &9&lP&a&li&c&ln&e&la&3&lt&b&la&5&ls &8&m]==========="
+      Description: " &a/pinata create &6- Cria uma pinhata (comando administrativo)\n
+        &a/pinata new &6- Creia uma nova Pinhata (comando administrativo)\n
+        &a/pinata create &6- Crie uma pinata em um local personalizado (comando administrativo)\n
+        &a/pinata edit &6- Editar pinhata (comando administrativo)\n
+        &a/pinata preview &6- Prevê a Pinhata (comando administrativo)\n
+        &a/pinata reloadconfig &6- Recarrega a configuração das Pinhatas (comando administrativo)\n
+        &a/pinata list &6- Te informa todas as Pinhatas\n
+        &a/pinata buy &6- Comprar Pinhata (Requer Vault)\n
+        &a/pinata setchance &6- Definir chance de queda de pinata\n
+        &a/pinata cratelist &6- Editar Pinhata\n
+        &a/pinata setcrate &6- Define a localização da caixa da Pinhata (comando administrativo)"
+  Validate:
+    Success: "%prefix% &aPinhata %name% carregada!"
+    Fail: "%prefix% &cPinhata %name% carregada com erros! Abortando!"
+  Config:
+    Reload-Success: "%prefix% &eConfiguração recarregada! Cheque o console para ver os erros!"
+    Reload-Fail: "%prefix% &cA configuração não pode ser recarregada! Recarregue o plugin o servidor!"
+    Reload-Removed: "%prefix% &cO reiniciamento do plugin fez com que sua pinhata fosse removida!"
+  Drop:
+    DropMsg: "%prefix% &aVocê dropou %item% x%amount%&a!"
+    No-Drops: "%prefix% &cVocê está sem sorte neste momento!"
+  Selling:
+    Not-For-Sale: "%prefix% &cEsta pinhata não está a venda!"
+    Cannot-Afford: "%prefix% &cVocê não pode comprar isto!"
+  Crate-Creation:
+    Specify-Name: "%prefix% &cColoque o nome da Crate!"
+    Is-Set-Here:  "%prefix% &cA caixa neste local foi definida!"
+    Already-Exists: "%prefix% &cUma crate com este nome já existe!"
+    Create-Success: "%prefix% &aCrate %name% criada com sucesso!"
+    Destroyed: "%prefix% &aCrate %name% destruida!"
+    Target-Block-Not-Chest: "%prefix% &cO bloco-alvo não é um baú!"
+    No-Permission: "%prefix% &cVocê não tem permissao!"
+    List: "%prefix% Lista de todas as Crates:"
+    List-Empty: "%prefix% &cTNão há crates!"
+  Creator:
+    Already-Exists: "%prefix% &cPinata with that name already exists!"
+
+Menus:
+  List-Menu:
+    Inventory-Name: "&lLista de Pinhatas"
+    Pinata-Cost: "&eCusto da Pinhata: &7%money%"
+    Pinata-Cost-Not-For-Sale: "&cEsta pinhata não está a venda!"
+    Pinata-Types:
+      Type-Public: "&6Tipo da Pinhata: &aPública"
+      Type-Private: "&6Tipo da Pinhata: &cPrivada"
+    Click-Selection:
+      Left-Click: "&c◄ &eClique direito para ver os drops"
+      Right-Click: "&c► &eClique esquerdo para comprar"
+  Preview-Menu:
+    Inventory-Name: "&lMenu da Prévia da Pinhata "
+    Drop-Chance: "&3Chance de drop &7%chance%%"
+    Command-To-Execute: "&eComando executado: &7%command%"
+    Money-Reward: "&eRecompensa em Dinheiro: &7%money%"
+  Crate-Menu:
+    Inventory-Name: "&lMenu de Crates da Pinhata"
+  Creator-Menu:
+    Inventory-Name: "&lMenu de Criação"
+
+#Hologram above pinata crate
+Hologram:
+  Crate-Hologram: "&aCrate &e%name%"
+
+#Signs module. Sign can be created starting with '[pinata]' at first line and 'all' or 'gui' or existing pinata name at second line
+Signs:
+  Invalid-Pinata: "%prefix% &cA segunda lihna é inválida! Por favor use 'all' ou 'gui' para funcionar."
+  Sign-Created: "%prefix% &aPlaca criada com sucesso!"
+  Sign-Destroyed: "%prefix% &aPlaca destruida!"
+  No-Permission: "%prefix% &cSem permissão!"
+  Inventory-Name: "&lMenu de Placas de Pinhatas"
+  Lines:
+    First: "&6Adquirir pinhata"
+    Second-Specific-Pinata-Color: "&e"
+    Second-Every-Pinata: "&aClique para abrir a GUI"
+
+
+#Validator console messages.
+#You don't need to translate them because they don't show to your players :)
+Validator:
+  Invalid-Configuration: "Pinata %name% isn't properly configured! Invalid item line: %number%"
+  Invalid-Item: "Item of pinata %name% isn't properly configured! Invalid item line: %number%"
+  Invalid-Item-Type: "Item of pinata %name% is neither item nor command! Invalid item line: %number%"
+  Invalid-Chance: "Item of pinata %name% will never drop! Invalid item line: %number%"
+  Invalid-Permission: "Permission of pinata %name% isn't set!"
+  Invalid-Timer: "Timer of pinata %name% isn't set!"
+  Invalid-Type: "Type of pinata %name% is neither public nor private!"
+  Invalid-Color: "Color of pinata %name% isn't valid!"
+  Invalid-Crate-Time: "Crate time of pinata %name% isn't set!"
+  Invalid-Health: "Health of pinata %name% is invalid!"
+  Invalid-Drop-Type: "Drop type of pinata %name% is invalid!"
+  Invalid-Mob-Type: "Mob of pinata %name% is invalid!"
+  Invalid-Blindness: "Blindness values of pinata %name% are invalid!"
+  Vault-Abandoned: "Pinata %name% doesn't use Vault! (use value -1 to prevent pinata from buying)"
+
+Other:
+  Plugin-Up-To-Date: "&e[Pinata] There is plugin update! Your version: %old%, new version: %new%"
+  Plugin-Update-Check-Failed: "&c[Pinata] Failed to check for update: %error%"
+
+File-Version-Do-Not-Edit: 11

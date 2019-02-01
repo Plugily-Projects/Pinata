@@ -17,6 +17,7 @@ Update-Notifier:
 #de - German / Deutsch
 #nl - Nederlands
 #es - Español
+#br - Brazil
 locale: en
 
 #In this worlds you can create pinata only by console or '/pinata create' admin command.
