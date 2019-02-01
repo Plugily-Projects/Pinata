@@ -53,9 +53,12 @@ public class CrateManager implements Listener {
   public void loadCrates() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, "crates");
     for (String crate : ConfigUtils.getConfig(plugin, "crates").getConfigurationSection("crates").getKeys(false)) {
-      Location crateLoc = new Location(Bukkit.getWorld(config.getString("crates." + crate + ".world")), config.getDouble("crates." + crate + ".x"), config.getDouble("crates." + crate + ".y"), config.getDouble("crates." + crate + ".z"));
+      String key = "crates." + crate + ".";
+      Location crateLoc = new Location(Bukkit.getWorld(config.getString(key + "world")), config.getDouble(key + "x"), config.getDouble(key + "y"), config.getDouble(key + "z"));
       cratesLocations.put(crateLoc, crate);
-      plugin.getLogger().log(Level.INFO, "Loaded crate " + crate + " at location " + config.getString("crates." + crate + ".world") + " " + config.getDouble("crates." + crate + ".x") + " " + config.getDouble("crates." + crate + ".y") + " " + config.getDouble("crates." + crate + ".z"));
+      plugin.getLogger().log(Level.INFO,
+          "Loaded crate " + crate + " at location " + config.getString(key + "world") + " " + config.getDouble(key + "x") + " " + config.getDouble(key + "y")
+              + " " + config.getDouble(key + "z"));
     }
   }
 
@@ -64,8 +67,8 @@ public class CrateManager implements Listener {
    */
   public void particleScheduler() {
     Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-      for (Location l : cratesLocations.keySet()) {
-        l.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 1);
+      for (Location loc : cratesLocations.keySet()) {
+        loc.getWorld().playEffect(loc, Effect.MOBSPAWNER_FLAMES, 1);
       }
     }, (long) plugin.getConfig().getDouble("particle-refresh") * 20, (long) plugin.getConfig().getDouble("particle-refresh") * 20);
   }

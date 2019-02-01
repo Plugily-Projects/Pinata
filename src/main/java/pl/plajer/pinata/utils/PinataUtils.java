@@ -66,42 +66,43 @@ public class PinataUtils {
   }
 
   public static void dropItems(PinataItem item, Entity en, Pinata pinata, Player player) {
-    if (ThreadLocalRandom.current().nextDouble(0.0, 100.0) < item.getDropChance()) {
-      final Item dropItem = en.getWorld().dropItemNaturally(en.getLocation(), new ItemStack(item.getItem().getType()));
-      dropItem.setPickupDelay(1000);
-      if (plugin.isPluginEnabled("HolographicDisplays")) {
-        final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
-
-        hologram.appendTextLine(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name() + " x" + item.getItem().getAmount()));
-        new BukkitRunnable() {
-          int ticksRun;
-
-          @Override
-          public void run() {
-            ticksRun++;
-            hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
-            if (ticksRun > pinata.getDropViewTime() * 20) {
-              hologram.delete();
-              dropItem.remove();
-              cancel();
-            }
-          }
-        }.runTaskTimer(plugin, 1L, 1L);
-      } else {
-        Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, pinata.getDropViewTime() * 20);
-      }
-      //todo cmd
-
-      //Adds color
-      ItemMeta meta = item.getItem().getItemMeta();
-      meta.setDisplayName(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() :
-          item.getItem().getType().name()));
-      item.getItem().setItemMeta(meta);
-
-      player.getInventory().addItem(item.getItem());
-      player.sendMessage(Utils.colorRawMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replace("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() :
-          item.getItem().getType().name()).replace("%amount%", String.valueOf(item.getItem().getAmount()))));
+    if (ThreadLocalRandom.current().nextDouble(0.0, 100.0) > item.getDropChance()) {
+      return;
     }
+    final Item dropItem = en.getWorld().dropItemNaturally(en.getLocation(), new ItemStack(item.getItem().getType()));
+    dropItem.setPickupDelay(1000);
+    if (plugin.isPluginEnabled("HolographicDisplays")) {
+      final Hologram hologram = HologramsAPI.createHologram(plugin, dropItem.getLocation().add(0.0, 1.5, 0.0));
+
+      hologram.appendTextLine(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() : item.getItem().getType().name() + " x" + item.getItem().getAmount()));
+      new BukkitRunnable() {
+        int ticksRun;
+
+        @Override
+        public void run() {
+          ticksRun++;
+          hologram.teleport(dropItem.getLocation().add(0.0, 1.5, 0.0));
+          if (ticksRun > pinata.getDropViewTime() * 20) {
+            hologram.delete();
+            dropItem.remove();
+            cancel();
+          }
+        }
+      }.runTaskTimer(plugin, 1L, 1L);
+    } else {
+      Bukkit.getScheduler().runTaskLater(plugin, dropItem::remove, pinata.getDropViewTime() * 20);
+    }
+    //todo cmd
+
+    //Adds color
+    ItemMeta meta = item.getItem().getItemMeta();
+    meta.setDisplayName(Utils.colorRawMessage(item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() :
+        item.getItem().getType().name()));
+    item.getItem().setItemMeta(meta);
+
+    player.getInventory().addItem(item.getItem());
+    player.sendMessage(Utils.colorRawMessage(Utils.colorMessage("Pinata.Drop.DropMsg").replace("%item%", item.getItem().getItemMeta().getDisplayName() != null ? item.getItem().getItemMeta().getDisplayName() :
+        item.getItem().getType().name()).replace("%amount%", String.valueOf(item.getItem().getAmount()))));
   }
 
 }

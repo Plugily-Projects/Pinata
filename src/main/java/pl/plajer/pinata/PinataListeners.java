@@ -167,8 +167,7 @@ class PinataListeners implements Listener {
     e.setDroppedExp(0);
     plugin.getCommands().getPinata().get(e.getEntity()).getFence().getBlock().setType(Material.AIR);
     plugin.getCommands().getPinata().get(e.getEntity()).getLeash().remove();
-    final List<Item> itemsToGive = new ArrayList<>();
-    final Player p = e.getEntity().getKiller() instanceof Player ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
+    final Player p = e.getEntity().getKiller() != null ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
     //drops won't show if killer is environment and pinata player is not assigned. This pinata will be always in our hearts [*]
     if (p == null) {
       return;
@@ -193,10 +192,9 @@ class PinataListeners implements Listener {
         p.sendMessage(Utils.colorMessage("Pinata.Drop.No-Drops"));
       }
     }
-    PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), e.getEntity(), pinata, items);
-    Bukkit.getPluginManager().callEvent(pde);
+    PinataDeathEvent event = new PinataDeathEvent(e.getEntity().getKiller(), e.getEntity(), pinata, items);
+    Bukkit.getPluginManager().callEvent(event);
     plugin.getCommands().getPinata().remove(e.getEntity());
-    itemsToGive.clear();
   }
 
   @EventHandler
@@ -222,7 +220,6 @@ class PinataListeners implements Listener {
     if (plugin.isNormalUpdate()) {
       e.getPlayer().sendMessage(Utils.colorMessage("Other.Plugin-Up-To-Date").replace("%old%", plugin.getDescription().getVersion()).replace("%new%", plugin.getNewestVersion()));
     }
-
   }
 }
 

@@ -23,18 +23,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import pl.plajer.pinata.Main;
-import pl.plajer.pinata.creator.CreatorMenu;
 import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.utils.Utils;
 
-public class MainCommand{
+@Deprecated
+public class MainCommand {
 
   private Map<Entity, LivingPinata> pinata = new HashMap<>();
   private List<Player> users = new ArrayList<>();
