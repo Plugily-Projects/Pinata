@@ -28,7 +28,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import pl.plajer.pinata.Main;
@@ -44,7 +43,6 @@ import pl.plajer.pinata.commands.arguments.command.BuyArgument;
 import pl.plajer.pinata.commands.arguments.command.ListArgument;
 import pl.plajer.pinata.commands.arguments.command.PreviewArgument;
 import pl.plajer.pinata.commands.arguments.data.CommandArgument;
-import pl.plajer.pinata.pinata.LivingPinata;
 import pl.plajer.pinata.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.StringMatcher;
@@ -84,38 +82,39 @@ public class ArgumentsRegistry implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     try {
       for (String mainCommand : mappedArguments.keySet()) {
-        if (cmd.getName().equalsIgnoreCase(mainCommand)) {
-         if (cmd.getName().equals("pinata") && args.length == 0) {
-            sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Header"));
-            sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Description"));
-            return true;
-          }
-          for (CommandArgument argument : mappedArguments.get(mainCommand)) {
-            if (argument.getArgumentName().equals(args[0])) {
-              boolean hasPerm = false;
-              for (String perm : argument.getPermissions()) {
-                if (sender.hasPermission(perm)) {
-                  hasPerm = true;
-                  break;
-                }
+        if (!cmd.getName().equalsIgnoreCase(mainCommand)) {
+          continue;
+        }
+        if (cmd.getName().equals("pinata") && args.length == 0) {
+          sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Header"));
+          sender.sendMessage(Utils.colorMessage("Pinata.Command.Help-Command.Description"));
+          return true;
+        }
+        for (CommandArgument argument : mappedArguments.get(mainCommand)) {
+          if (argument.getArgumentName().equals(args[0])) {
+            boolean hasPerm = false;
+            for (String perm : argument.getPermissions()) {
+              if (sender.hasPermission(perm)) {
+                hasPerm = true;
+                break;
               }
-              if (!hasPerm) {
-                return true;
-              }
-              if (checkSenderIsExecutorType(sender, argument.getValidExecutors())) {
-                argument.execute(sender, args);
-              }
-              //return true even if sender is not good executor or hasn't got permission
+            }
+            if (!hasPerm) {
               return true;
             }
-          }
-
-          //sending did you mean help
-          List<StringMatcher.Match> matches = StringMatcher.match(args[0], mappedArguments.get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList()));
-          if (!matches.isEmpty()) {
-            sender.sendMessage(Utils.colorMessage("Pinata.Command.Did-You-Mean").replace("%command%", label + " " + matches.get(0).getMatch()));
+            if (checkSenderIsExecutorType(sender, argument.getValidExecutors())) {
+              argument.execute(sender, args);
+            }
+            //return true even if sender is not good executor or hasn't got permission
             return true;
           }
+        }
+
+        //sending did you mean help
+        List<StringMatcher.Match> matches = StringMatcher.match(args[0], mappedArguments.get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList()));
+        if (!matches.isEmpty()) {
+          sender.sendMessage(Utils.colorMessage("Pinata.Command.Did-You-Mean").replace("%command%", label + " " + matches.get(0).getMatch()));
+          return true;
         }
       }
     } catch (Exception ex) {

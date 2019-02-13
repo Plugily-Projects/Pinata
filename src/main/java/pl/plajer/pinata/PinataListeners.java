@@ -62,10 +62,10 @@ class PinataListeners implements Listener {
       if (!pinata.getName().equals(e.getEntity().getCustomName())) {
         continue;
       }
-      if (plugin.getCommands().getPinata().get(e.getEntity()) == null) {
+      if (plugin.getStorage().getPinata().get(e.getEntity()) == null) {
         continue;
       }
-      if (plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() == null) {
+      if (plugin.getStorage().getPinata().get(e.getEntity()).getPlayer() == null) {
         //the type MUST be public, because pinata creator is not assigned
         e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.MOBSPAWNER_FLAMES, 10);
         e.setCancelled(false);
@@ -76,7 +76,7 @@ class PinataListeners implements Listener {
         //override World Guard blocking
         e.setCancelled(false);
       } else /* the type is private */ {
-        if (plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager())) {
+        if (plugin.getStorage().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager())) {
           if (plugin.getConfig().getBoolean("halloween-mode")) {
             e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_GHAST_HURT, 1, 1);
           }
@@ -103,7 +103,7 @@ class PinataListeners implements Listener {
 
   @EventHandler
   public void onPinataPunch(EntityDamageByEntityEvent e) {
-    LivingPinata livingPinata = plugin.getCommands().getPinata().get(e.getEntity());
+    LivingPinata livingPinata = plugin.getStorage().getPinata().get(e.getEntity());
     if (livingPinata == null || !(e.getDamager() instanceof Player)) {
       return;
     }
@@ -111,9 +111,9 @@ class PinataListeners implements Listener {
     if (pinata.getDropType() != Pinata.DropType.PUNCH) {
       return;
     }
-    if (plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() != null) {
+    if (plugin.getStorage().getPinata().get(e.getEntity()).getPlayer() != null) {
       //MUST be public is player is not assigned
-      if (!plugin.getCommands().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager()) && pinata.getPinataType() == Pinata.PinataType.PRIVATE) {
+      if (!plugin.getStorage().getPinata().get(e.getEntity()).getPlayer().equals(e.getDamager()) && pinata.getPinataType() == Pinata.PinataType.PRIVATE) {
         e.setCancelled(true);
         return;
       }
@@ -126,16 +126,16 @@ class PinataListeners implements Listener {
 
   @EventHandler
   public void onPinataDeath(final EntityDeathEvent e) {
-    LivingPinata livingPinata = plugin.getCommands().getPinata().get(e.getEntity());
+    LivingPinata livingPinata = plugin.getStorage().getPinata().get(e.getEntity());
     if (livingPinata == null) {
       return;
     }
     Pinata pinata = livingPinata.getData();
-    if (plugin.getCommands().getPinata().get(e.getEntity()).getPlayer() != null) {
-      if (plugin.getCommands().getUsers().contains(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer())) {
-        List<Player> users = new ArrayList<>(plugin.getCommands().getUsers());
-        users.remove(plugin.getCommands().getPinata().get(e.getEntity()).getPlayer());
-        plugin.getCommands().setUsers(users);
+    if (plugin.getStorage().getPinata().get(e.getEntity()).getPlayer() != null) {
+      if (plugin.getStorage().getUsers().contains(plugin.getStorage().getPinata().get(e.getEntity()).getPlayer())) {
+        List<Player> users = new ArrayList<>(plugin.getStorage().getUsers());
+        users.remove(plugin.getStorage().getPinata().get(e.getEntity()).getPlayer());
+        plugin.getStorage().setUsers(users);
         users.clear();
       }
     }
@@ -165,10 +165,10 @@ class PinataListeners implements Listener {
     e.getEntity().getLocation().getWorld().playEffect(e.getEntity().getLocation().add(0, 1, 0), Effect.POTION_BREAK, 10);
     e.getDrops().clear();
     e.setDroppedExp(0);
-    plugin.getCommands().getPinata().get(e.getEntity()).getFence().getBlock().setType(Material.AIR);
-    plugin.getCommands().getPinata().get(e.getEntity()).getLeash().remove();
+    plugin.getStorage().getPinata().get(e.getEntity()).getFence().getBlock().setType(Material.AIR);
+    plugin.getStorage().getPinata().get(e.getEntity()).getLeash().remove();
     final List<Item> itemsToGive = new ArrayList<>();
-    final Player p = e.getEntity().getKiller() instanceof Player ? e.getEntity().getKiller() : plugin.getCommands().getPinata().get(e.getEntity()).getPlayer();
+    final Player p = e.getEntity().getKiller() instanceof Player ? e.getEntity().getKiller() : plugin.getStorage().getPinata().get(e.getEntity()).getPlayer();
     //drops won't show if killer is environment and pinata player is not assigned. This pinata will be always in our hearts [*]
     if (p == null) {
       return;
@@ -195,20 +195,20 @@ class PinataListeners implements Listener {
     }
     PinataDeathEvent pde = new PinataDeathEvent(e.getEntity().getKiller(), e.getEntity(), pinata, items);
     Bukkit.getPluginManager().callEvent(pde);
-    plugin.getCommands().getPinata().remove(e.getEntity());
+    plugin.getStorage().getPinata().remove(e.getEntity());
     itemsToGive.clear();
   }
 
   @EventHandler
   public void onQuit(PlayerQuitEvent e) {
     for (Entity en : Bukkit.getServer().getWorld(e.getPlayer().getWorld().getName()).getEntities()) {
-      if (plugin.getCommands().getPinata().containsKey(en)) {
-        if (plugin.getCommands().getPinata().get(en).getPlayer().equals(e.getPlayer())) {
-          plugin.getCommands().getPinata().get(en).getFence().getBlock().setType(Material.AIR);
-          plugin.getCommands().getPinata().get(en).getLeash().remove();
+      if (plugin.getStorage().getPinata().containsKey(en)) {
+        if (plugin.getStorage().getPinata().get(en).getPlayer().equals(e.getPlayer())) {
+          plugin.getStorage().getPinata().get(en).getFence().getBlock().setType(Material.AIR);
+          plugin.getStorage().getPinata().get(en).getLeash().remove();
           en.remove();
-          plugin.getCommands().getPinata().remove(en);
-          plugin.getCommands().getUsers().remove(e.getPlayer());
+          plugin.getStorage().getPinata().remove(en);
+          plugin.getStorage().getUsers().remove(e.getPlayer());
         }
       }
     }

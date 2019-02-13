@@ -38,7 +38,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.pinata.commands.MainCommand;
 import pl.plajer.pinata.commands.arguments.ArgumentsRegistry;
 import pl.plajer.pinata.creator.CreatorChatEvents;
 import pl.plajer.pinata.creator.CreatorEvents;
@@ -58,7 +57,7 @@ public class Main extends JavaPlugin {
 
   private List<String> filesToGenerate = Arrays.asList("crates", "config", "language", "pinata_storage");
   private CrateManager crateManager;
-  private MainCommand commands;
+  private Storage storage;
   private PinataManager pinataManager;
   private SignManager signManager;
   private CreatorChatEvents creatorChatEvents;
@@ -115,14 +114,14 @@ public class Main extends JavaPlugin {
     }
     for (World world : Bukkit.getServer().getWorlds()) {
       for (Entity entity : Bukkit.getServer().getWorld(world.getName()).getEntities()) {
-        if (commands.getPinata().containsKey(entity)) {
-          if (commands.getPinata().get(entity).getPlayer() != null) {
-            commands.getPinata().get(entity).getPlayer().sendMessage(Utils.colorMessage("Pinata.Config.Reload-Removed"));
+        if (storage.getPinata().containsKey(entity)) {
+          if (storage.getPinata().get(entity).getPlayer() != null) {
+            storage.getPinata().get(entity).getPlayer().sendMessage(Utils.colorMessage("Pinata.Config.Reload-Removed"));
           }
-          commands.getPinata().get(entity).getFence().getBlock().setType(Material.AIR);
-          commands.getPinata().get(entity).getLeash().remove();
+          storage.getPinata().get(entity).getFence().getBlock().setType(Material.AIR);
+          storage.getPinata().get(entity).getLeash().remove();
           entity.remove();
-          commands.getPinata().remove(entity);
+          storage.getPinata().remove(entity);
         }
       }
     }
@@ -138,7 +137,7 @@ public class Main extends JavaPlugin {
   private void initializeClasses() {
     new Metrics(this);
     crateManager = new CrateManager(this);
-    commands = new MainCommand(this, true);
+    storage = new Storage();
     new MenuHandler(this);
     new PinataListeners(this);
     new SelectorEvents(this);
@@ -164,8 +163,9 @@ public class Main extends JavaPlugin {
     return crateManager;
   }
 
-  public MainCommand getCommands() {
-    return commands;
+  @Deprecated
+  public Storage getStorage() {
+    return storage;
   }
 
   public PinataManager getPinataManager() {

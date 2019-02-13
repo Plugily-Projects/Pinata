@@ -73,7 +73,7 @@ public class PinataFactory implements Listener {
       return false;
     }
     player.sendMessage(Utils.colorMessage("Pinata.Create.Success").replace("%name%", pinata.getID()));
-    plugin.getCommands().getUsers().add(player);
+    plugin.getStorage().getUsers().add(player);
     //Max height check is to avoid problems with different server specifications
     Location safefence = new Location(player.getWorld(), 3, player.getWorld().getMaxHeight() - 1, 2);
     Location safestone = new Location(player.getWorld(), 4, player.getWorld().getMaxHeight() - 1, 2);
@@ -85,7 +85,7 @@ public class PinataFactory implements Listener {
     fenceLocation.getBlock().setType(XMaterial.OAK_FENCE.parseMaterial());
     hitch.teleport(fenceLocation);
     safefence.getBlock().setType(blocksafe);
-    plugin.getCommands().getPinata().put(entity, new LivingPinata(player, fenceLocation, hitch, pinata));
+    plugin.getStorage().getPinata().put(entity, new LivingPinata(player, fenceLocation, hitch, pinata));
     entity.setCustomName(pinata.getName());
     if (entity instanceof Sheep) {
       ((Sheep) entity).setColor(pinata.getSheepColor());
@@ -138,7 +138,7 @@ public class PinataFactory implements Listener {
     fenceLocation.getBlock().setType(XMaterial.OAK_FENCE.parseMaterial());
     hitch.teleport(fenceLocation);
     safefence.getBlock().setType(blocksafe);
-    plugin.getCommands().getPinata().put(entity, new LivingPinata(fenceLocation, hitch, pinata));
+    plugin.getStorage().getPinata().put(entity, new LivingPinata(fenceLocation, hitch, pinata));
     entity.setCustomName(pinata.getName());
     if (entity instanceof Sheep) {
       ((Sheep) entity).setColor(pinata.getSheepColor());

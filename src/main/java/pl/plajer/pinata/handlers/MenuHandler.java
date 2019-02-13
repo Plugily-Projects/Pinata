@@ -114,8 +114,8 @@ public class MenuHandler implements Listener {
         if (!PinataUtils.checkForSale(pinata, (Player) e.getWhoClicked())) {
           return;
         }
-        if (!plugin.getCommands().getUsers().isEmpty()) {
-          if (plugin.getCommands().getUsers().contains(e.getWhoClicked())) {
+        if (!plugin.getStorage().getUsers().isEmpty()) {
+          if (plugin.getStorage().getUsers().contains(e.getWhoClicked())) {
             e.getWhoClicked().sendMessage(Utils.colorMessage("Pinata.Create.Already-Created"));
             e.getWhoClicked().closeInventory();
             return;
@@ -128,7 +128,7 @@ public class MenuHandler implements Listener {
           LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, pinata.getEntityType());
           entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(pinata.getHealth());
           entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-          plugin.getCommands().getUsers().add((Player) e.getWhoClicked());
+          plugin.getStorage().getUsers().add((Player) e.getWhoClicked());
           if (PinataFactory.createPinata(builderLocation, (Player) e.getWhoClicked(), entity, pinata)) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
               if (!(entity.isDead())) {
@@ -140,7 +140,7 @@ public class MenuHandler implements Listener {
           LivingEntity entity = (LivingEntity) entityLocation.getWorld().spawnEntity(entityLocation, pinata.getEntityType());
           entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(pinata.getHealth());
           entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-          plugin.getCommands().getUsers().add((Player) e.getWhoClicked());
+          plugin.getStorage().getUsers().add((Player) e.getWhoClicked());
           if (PinataFactory.createPinata(builderLocation, (Player) e.getWhoClicked(), entity, pinata)) {
             //Pinata created successfully, now we can withdraw $ from player.
             plugin.getEco().withdrawPlayer(Bukkit.getOfflinePlayer(e.getWhoClicked().getUniqueId()), pinata.getPrice());
