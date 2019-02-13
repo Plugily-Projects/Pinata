@@ -37,6 +37,8 @@ import pl.plajerlair.core.utils.MigratorUtils;
  * <p>
  * Created at 01.09.2018
  */
+//should migrate within the class
+@Deprecated
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 11;

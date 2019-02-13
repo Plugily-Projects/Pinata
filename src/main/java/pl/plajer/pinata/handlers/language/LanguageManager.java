@@ -28,6 +28,7 @@ import pl.plajerlair.core.utils.ConfigUtils;
  * <p>
  * Created at 01.09.2018
  */
+@Deprecated
 public class LanguageManager {
 
   private static Main plugin;

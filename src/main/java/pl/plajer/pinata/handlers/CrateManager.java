@@ -48,9 +48,11 @@ public class CrateManager implements Listener {
   public CrateManager(Main plugin) {
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    loadCrates();
+    particleUpdateTask();
   }
 
-  public void loadCrates() {
+  private void loadCrates() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, "crates");
     for (String crate : ConfigUtils.getConfig(plugin, "crates").getConfigurationSection("crates").getKeys(false)) {
       Location crateLoc = new Location(Bukkit.getWorld(config.getString("crates." + crate + ".world")), config.getDouble("crates." + crate + ".x"), config.getDouble("crates." + crate + ".y"), config.getDouble("crates." + crate + ".z"));
@@ -62,7 +64,7 @@ public class CrateManager implements Listener {
   /**
    * Particles at crates locations
    */
-  public void particleScheduler() {
+  private void particleUpdateTask() {
     Bukkit.getScheduler().runTaskTimer(plugin, () -> {
       for (Location l : cratesLocations.keySet()) {
         l.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 1);

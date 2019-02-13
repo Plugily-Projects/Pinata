@@ -136,7 +136,6 @@ public class Main extends JavaPlugin {
 
   private void initializeClasses() {
     new Metrics(this);
-    crateManager = new CrateManager(this);
     storage = new Storage();
     new MenuHandler(this);
     new PinataListeners(this);
@@ -153,10 +152,9 @@ public class Main extends JavaPlugin {
       disabledWorlds.add(world);
       getLogger().info("Pinata creation blocked at world " + world + "!");
     }
-    crateManager.loadCrates();
     pinataManager.loadPinatas();
     new CreatorEvents(this);
-    crateManager.particleScheduler();
+    crateManager = new CrateManager(this);
   }
 
   public CrateManager getCrateManager() {
@@ -227,9 +225,9 @@ public class Main extends JavaPlugin {
    */
   private void hologramScheduler() {
     Bukkit.getScheduler().runTaskTimer(this, () -> {
-      for (Location l : crateManager.getCratesLocations().keySet()) {
-        Hologram holo = HologramsAPI.createHologram(this, l.clone().add(0.5, 1.5, 0.5));
-        holo.appendTextLine(Utils.colorMessage("Hologram.Crate-Hologram").replace("%name%", crateManager.getCratesLocations().get(l)));
+      for (Location loc : crateManager.getCratesLocations().keySet()) {
+        Hologram holo = HologramsAPI.createHologram(this, loc.clone().add(0.5, 1.5, 0.5));
+        holo.appendTextLine(Utils.colorMessage("Hologram.Crate-Hologram").replace("%name%", crateManager.getCratesLocations().get(loc)));
         Bukkit.getScheduler().runTaskLater(this, holo::delete, (long) getConfig().getDouble("hologram-refresh") * 20);
       }
     }, (long) this.getConfig().getDouble("hologram-refresh") * 20, (long) this.getConfig().getDouble("hologram-refresh") * 20);
@@ -252,31 +250,29 @@ public class Main extends JavaPlugin {
   }
 
   private void checkUpdate() {
-    if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
-      UpdateChecker.init(this, 46655).requestUpdateCheck().whenComplete((result, exception) -> {
-        if (result.requiresUpdate()) {
-          newestVersion = result.getNewestVersion();
-          if (result.getNewestVersion().contains("b")) {
-            if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
-              needBetaUpdate = true;
-              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
-              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
-                  result.getNewestVersion()));
-            }
-            return;
-          }
-          MessageUtils.updateIsHere();
-          needNormalUpdate = true;
-          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Pinata plugin is outdated! Download it to keep with latest changes and fixes.");
-          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
-          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
-        }
-      });
+    if (!getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+      return;
     }
-  }
-
-  public boolean isBetaUpdate() {
-    return needBetaUpdate;
+    UpdateChecker.init(this, 46655).requestUpdateCheck().whenComplete((result, exception) -> {
+      if (!result.requiresUpdate()) {
+        return;
+      }
+      newestVersion = result.getNewestVersion();
+      if (result.getNewestVersion().contains("b")) {
+        if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
+          needBetaUpdate = true;
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Pinata] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
+              result.getNewestVersion()));
+        }
+        return;
+      }
+      MessageUtils.updateIsHere();
+      needNormalUpdate = true;
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Pinata plugin is outdated! Download it to keep with latest changes and fixes.");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
+    });
   }
 
   public boolean isNormalUpdate() {
@@ -285,10 +281,6 @@ public class Main extends JavaPlugin {
 
   public String getNewestVersion() {
     return newestVersion;
-  }
-
-  public boolean isPlaceholderAPIEnabled() {
-    return placeholderAPI;
   }
 
 }
